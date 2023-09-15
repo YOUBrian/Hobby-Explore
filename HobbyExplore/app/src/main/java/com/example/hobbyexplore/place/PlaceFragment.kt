@@ -10,20 +10,14 @@ import com.example.hobbyexplore.databinding.FragmentPlaceBinding
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 
-class PlaceFragment : Fragment(), OnMapReadyCallback {
-    private var mGoogleMap: GoogleMap? = null
+class PlaceFragment : Fragment(){
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentPlaceBinding.inflate(inflater)
-        val mapFragment = binding.placeGoogleMap
-        mapFragment
-        return binding.root
-    }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mGoogleMap = googleMap
+        return binding.root
     }
 
 }
