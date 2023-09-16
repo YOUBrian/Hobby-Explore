@@ -3,11 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/mapsFragment">
+    app:startDestination="@id/youTubePlayerFragment">
 
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.example.hobbyexplore.place.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/hobbyCategoryFragment"
+        android:name="com.example.hobbyexplore.hobbycategory.HobbyCategoryFragment"
+        android:label="fragment_hobby_category"
+        tools:layout="@layout/fragment_hobby_category" >
+        <action
+            android:id="@+id/action_hobbyCategoryFragment_to_youTubePlayerFragment"
+            app:destination="@id/youTubePlayerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.hobbyexplore.calendar.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.hobbyexplore.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/hobbyBoardsFragment"
+        android:name="com.example.hobbyexplore.hobbyboards.HobbyBoardsFragment"
+        android:label="fragment_hobby_boards"
+        tools:layout="@layout/fragment_hobby_boards" />
+    <action android:id="@+id/navigate_to_calendar_fragment" app:destination="@id/calendarFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
+    <action android:id="@+id/navigate_to_hobbyBoards_fragment" app:destination="@id/hobbyBoardsFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
+    <action android:id="@+id/navigate_to_hobbyCategory_fragment" app:destination="@id/hobbyCategoryFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
+    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/youTubePlayerFragment"
+        android:name="YouTubePlayerFragment"
+        android:label="YouTubePlayerFragment" />
 </navigation>

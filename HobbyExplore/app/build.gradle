@@ -150,16 +150,19 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'
 
-//    implementation ('com.google.firebase:firebase-firestore:24.4.1')
-
+    implementation ('com.google.firebase:firebase-firestore:24.4.1')
+//    {
+//        exclude module: 'protolite-well-known-types'
+//        exclude module: 'protobuf-javalite'
+//    }
 
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
 
     implementation("com.google.firebase:firebase-firestore-ktx")
-            {
-                exclude module: 'protolite-well-known-types'
-                exclude module: 'protobuf-javalite'
-            }
+//            {
+//                exclude module: 'protolite-well-known-types'
+//                exclude module: 'protobuf-javalite'
+//            }
 
     implementation("com.google.firebase:firebase-auth-ktx")
 
@@ -182,9 +185,9 @@ dependencies {
 
 //    implementation("com.google.cloud:gapic-google-cloud-ai-generativelanguage-v1beta2-java:0.0.0-SNAPSHOT")
     // To use generative AI
-    implementation("com.google.api:gax:2.25.0")
-    implementation("com.google.api:gax-grpc:2.25.0")
-    implementation("com.google.api:gax-httpjson:0.110.0")
+//    implementation("com.google.api:gax:2.25.0")
+//    implementation("com.google.api:gax-grpc:2.25.0")
+//    implementation("com.google.api:gax-httpjson:0.110.0")
     implementation("io.grpc:grpc-okhttp:1.53.0")
 
     // this one is needed by Android's Jetpack Compose
@@ -193,6 +196,13 @@ dependencies {
     //google maps
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+
+    //Youtube
+//    implementation 'com.google.android.youtube:android-player:1.2.2'
+//    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+//    implementation 'com.google.android.gms:play-services-identity:19.0.0'
+//    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.0.1'
+
 /*---------------------------------------------------------------------*/
 }
 

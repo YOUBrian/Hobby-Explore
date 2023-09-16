@@ -2,18 +2,21 @@ package com.example.hobbyexplore.data.local
 
 import android.content.Context
 
+import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.hobbyexplore.data.Hobby
 
-abstract class Database : RoomDatabase() {
+@Database(entities = [Hobby::class], version = 1, exportSchema = false)
+abstract class HobbyDatabase : RoomDatabase() {
     abstract val databaseDao: DatabaseDao
 
     companion object {
 
         @Volatile
-        private var INSTANCE: Database? = null
+        private var INSTANCE: HobbyDatabase? = null
 
-        fun getInstance(context: Context): Database {
+        fun getInstance(context: Context): HobbyDatabase {
             // Multiple threads can ask for the database at the same time, ensure we only initialize
             // it once by using synchronized. Only one thread may enter a synchronized block at a
             // time.
@@ -25,8 +28,8 @@ abstract class Database : RoomDatabase() {
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        Database::class.java,
-                        "database"
+                        HobbyDatabase::class.java,
+                        "hobby_database"
                     )
                         // Wipes and rebuilds instead of migrating if no Migration object.
                         // Migration is not part of this lesson. You can learn more about

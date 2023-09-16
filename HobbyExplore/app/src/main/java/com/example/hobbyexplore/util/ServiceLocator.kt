@@ -5,7 +5,7 @@ import androidx.annotation.VisibleForTesting
 import com.example.hobbyexplore.data.DataSource
 import com.example.hobbyexplore.data.DefaultRepository
 import com.example.hobbyexplore.data.Repository
-import com.example.hobbyexplore.data.local.Database
+import com.example.hobbyexplore.data.local.HobbyDatabase
 import com.example.hobbyexplore.data.local.LocalDataSource
 import com.example.hobbyexplore.data.remote.RemoteDataSource
 
@@ -30,6 +30,6 @@ object ServiceLocator {
     }
 
     private fun createLocalDataSource(context: Context): DataSource {
-        return LocalDataSource(Database.getInstance(context).databaseDao)
+        return LocalDataSource(HobbyDatabase.getInstance(context).databaseDao)
     }
 }
