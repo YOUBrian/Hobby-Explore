@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/youTubePlayerFragment">
+    app:startDestination="@id/hobbyCategoryFragment">
 
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="com.example.hobbyexplore.place.MapsFragment"
+        android:name="com.example.hobbyexplore.hobbyplace.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
     <fragment
@@ -16,8 +16,8 @@
         android:label="fragment_hobby_category"
         tools:layout="@layout/fragment_hobby_category" >
         <action
-            android:id="@+id/action_hobbyCategoryFragment_to_youTubePlayerFragment"
-            app:destination="@id/youTubePlayerFragment" />
+            android:id="@+id/action_hobbyCategoryFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
@@ -53,4 +53,16 @@
         android:id="@+id/youTubePlayerFragment"
         android:name="YouTubePlayerFragment"
         android:label="YouTubePlayerFragment" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.hobbyexplore.detail.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="selectProduct"
+            app:argType="com.example.hobbyexplore.data.Introduce" />
+        <action
+            android:id="@+id/action_detailFragment_to_youTubePlayerFragment"
+            app:destination="@id/youTubePlayerFragment" />
+    </fragment>
 </navigation>

@@ -30,6 +30,6 @@ object ServiceLocator {
     }
 
     private fun createLocalDataSource(context: Context): DataSource {
-        return LocalDataSource(HobbyDatabase.getInstance(context).databaseDao)
+        return LocalDataSource(HobbyDatabase.getInstance(context).hobbyDatabaseDao)
     }
 }

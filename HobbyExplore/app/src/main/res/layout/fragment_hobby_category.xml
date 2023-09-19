@@ -12,16 +12,19 @@
         android:layout_height="match_parent"
         tools:context=".hobbycategory.HobbyCategoryFragment">
 
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/hobby_category_recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintTop_toTopOf="parent" >
+        </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -48,7 +48,7 @@ class YouTubePlayerFragment : Fragment() {
                 player = new YT.Player('player', {
                   height: '195',
                   width: '320',
-                  videoId: 'M7lc1UVf-VE',
+                  videoId: '1v8zwYwQtmo',
                   playerVars: {
                     'playsinline': 1
                   },

@@ -1,4 +1,4 @@
-package com.example.hobbyexplore.place
+package com.example.hobbyexplore.hobbyplace
 
 import androidx.fragment.app.Fragment
 

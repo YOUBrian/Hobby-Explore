@@ -9,7 +9,7 @@ import com.example.hobbyexplore.data.Hobby
 
 @Database(entities = [Hobby::class], version = 1, exportSchema = false)
 abstract class HobbyDatabase : RoomDatabase() {
-    abstract val databaseDao: DatabaseDao
+    abstract val hobbyDatabaseDao: HobbyDatabaseDao
 
     companion object {
 

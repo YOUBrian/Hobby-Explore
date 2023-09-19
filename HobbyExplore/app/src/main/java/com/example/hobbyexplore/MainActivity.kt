@@ -22,13 +22,13 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
 //        setSupportActionBar(toolbar)
         FirebaseApp.initializeApp(this)
 
-//        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-//        binding.lifecycleOwner = this
-//        binding.viewModel = viewModel
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         viewModel.navigateToProfileByBottomNav.observe(
             this,
@@ -40,7 +40,7 @@ class MainActivity : BaseActivity() {
             }
         )
 
-//        setupBottomNav()
+        setupBottomNav()
 //        setupNavController()
     }
 
