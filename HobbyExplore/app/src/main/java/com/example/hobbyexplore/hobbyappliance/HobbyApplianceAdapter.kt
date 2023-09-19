@@ -1,4 +1,4 @@
 package com.example.hobbyexplore.hobbyappliance
 
-class HobbyAppliaceAdapter {
+class HobbyApplianceAdapter {
 }

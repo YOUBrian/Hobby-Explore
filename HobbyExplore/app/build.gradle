@@ -201,7 +201,7 @@ dependencies {
 //    implementation 'com.google.android.youtube:android-player:1.2.2'
 //    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 //    implementation 'com.google.android.gms:play-services-identity:19.0.0'
-//    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.0.1'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
 
     //google calendar
 //    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'

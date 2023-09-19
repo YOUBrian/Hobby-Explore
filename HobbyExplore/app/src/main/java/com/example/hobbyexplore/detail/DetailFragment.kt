@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import com.example.hobbyexplore.R
 import com.example.hobbyexplore.databinding.FragmentDetailBinding
 import com.example.hobbyexplore.hobbycategory.HobbyCategoryViewModel
@@ -16,7 +17,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val application = requireNotNull(activity).application
+//        val application = requireNotNull(activity).application
         val binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -28,6 +29,19 @@ class DetailFragment : Fragment() {
             this, viewModelFactory
         ).get(DetailViewModel::class.java)
         binding.introduce = viewModel
+
+        binding.detailAppliance.setOnClickListener {
+            it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHobbyAppliaceFragment())
+        }
+
+        binding.detailCourse.setOnClickListener {
+            it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHobbyCourseFragment())
+        }
+
+        binding.detailPlace.setOnClickListener {
+            it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHobbyPlaceFragment())
+        }
+
         return binding.root
     }
 
