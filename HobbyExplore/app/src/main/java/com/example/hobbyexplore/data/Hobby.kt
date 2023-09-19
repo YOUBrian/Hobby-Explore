@@ -10,7 +10,7 @@ import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
 
-@Entity(tableName = "products_in_cart_table", primaryKeys = ["id"])
+@Entity(tableName = "hobby_data_table", primaryKeys = ["id"])
 @TypeConverters(HobbyConverters::class)
 @Parcelize
 data class Hobby(
