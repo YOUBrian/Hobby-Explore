@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.example.hobbyexplore.R
 import com.example.hobbyexplore.databinding.FragmentHobbyBoardsBinding
@@ -31,6 +32,10 @@ class HobbyBoardsFragment : Fragment() {
         binding.layoutSwipeRefreshBoards.setOnRefreshListener {
             viewModel.refresh()
 //            viewModel.postMessageData()
+        }
+        binding.button.setOnClickListener {
+            viewModel.postMessageData()
+            Toast.makeText(requireContext(), "POST", Toast.LENGTH_SHORT).show()
         }
 
         viewModel.refreshStatus.observe(

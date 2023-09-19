@@ -54,7 +54,7 @@ class HobbyBoardsViewModel : ViewModel() {
         _refreshStatus.value = false
     }
 
-    fun postMessageData(){
+    fun postApplianceData(){
         val articles = FirebaseFirestore.getInstance()
             .collection("sports")
             .document("baseball")
@@ -66,6 +66,22 @@ class HobbyBoardsViewModel : ViewModel() {
             "id" to document.id,
             "image" to "https://decathlon.tw/media/catalog/product/0/7/07_D341164_p2486007.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=600&width=600&canvas=600:600",
             "price" to "NT$299"
+        )
+        Log.i("addData", "${data}")
+        document.set(data)
+    }
+
+    fun postMessageData(){
+        val articles = FirebaseFirestore.getInstance()
+            .collection("baseball_board")
+        val document = articles.document()
+        val data = hashMapOf(
+            "name" to "Brian",
+            "content" to "棒球讚",
+            "id" to document.id,
+            "image" to "https://decathlon.tw/media/catalog/product/0/7/07_D341164_p2486007.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=600&width=600&canvas=600:600",
+            "createdTime" to Calendar.getInstance()
+                .timeInMillis
         )
         Log.i("addData", "${data}")
         document.set(data)

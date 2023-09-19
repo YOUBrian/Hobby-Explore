@@ -9,50 +9,79 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.Toast
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import com.example.hobbyexplore.R
 import com.example.hobbyexplore.data.CalendarEvent
 import com.example.hobbyexplore.databinding.FragmentCalendarBinding
+import com.example.hobbyexplore.hobbyboards.HobbyBoardsViewModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 import java.util.UUID
 
+private lateinit var stringDateSelected: String
+private lateinit var databaseReference: DatabaseReference
 class CalendarFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
-
-    companion object {
-        fun newInstance() = CalendarFragment()
-    }
-
-    private lateinit var viewModel: CalendarViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val viewModel: CalendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
         val binding = FragmentCalendarBinding.inflate(inflater)
         firestore = FirebaseFirestore.getInstance()
 
+        val rating = binding.calendarInputRating.text
+        val selectedDate = Calendar.getInstance()
+
+        fun calendarClicked() {
+            databaseReference.child(stringDateSelected).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.value != null) {
+                        binding.ratingTextview.setText(snapshot.value.toString())
+                        viewModel.getCalendarData()
+
+                    } else {
+                        binding.ratingTextview.setText("null")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+        }
+
+
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val selectedDate = Calendar.getInstance()
+                stringDateSelected = "$year${month + 1}$dayOfMonth"
+
+
+
             Log.d("CalendarFragment", "Date selected: $year-$month-$dayOfMonth")
             selectedDate.set(year, month, dayOfMonth)
 
-            // 创建一个 CalendarEvent 对象并将其保存到 Firestore
-            val event = CalendarEvent(
-                eventId = UUID.randomUUID().toString(), // 生成唯一的事件ID
-                eventDate = selectedDate.timeInMillis,
-                eventName = "Your Event Name"
-            )
-
-            saveEventToFirestore(event)
+            binding.recordRatingButton.setOnClickListener {
+                val event = CalendarEvent(
+                    eventId = UUID.randomUUID().toString(),
+                    eventDate = stringDateSelected,
+                    eventRating = rating.toString()
+                )
+                saveEventToFirestore(event)
+                databaseReference.child(stringDateSelected).setValue(binding.ratingTextview.text.toString())
+                binding.calendarInputRating.text = null
+            }
+            calendarClicked()
         }
-        return binding.root
-    }
+        databaseReference = FirebaseDatabase.getInstance().getReference("calendarData")
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
-        // TODO: Use the ViewModel
+
+
+        return binding.root
     }
 
     private fun saveEventToFirestore(event: CalendarEvent) {
@@ -69,5 +98,7 @@ class CalendarFragment : Fragment() {
                 Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+
 
 }

@@ -50,7 +50,6 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/appliance_image"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/appliance_image"
             app:layout_constraintTop_toBottomOf="@+id/appliance_title" />
 
@@ -64,7 +63,6 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/appliance_image"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/appliance_image"
             app:layout_constraintTop_toBottomOf="@+id/appliance_price" />
 
