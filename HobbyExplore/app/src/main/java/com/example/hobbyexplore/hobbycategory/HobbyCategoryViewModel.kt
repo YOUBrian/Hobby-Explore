@@ -27,10 +27,10 @@ class HobbyCategoryViewModel() : ViewModel() {
         get() = _navigateToDetail
 
     init {
-        getData()
+        getCategoryData()
     }
 
-    private fun getData() {
+    private fun getCategoryData() {
         val docRef = db.collection("sports")
 //            .document("baseball")
         docRef.addSnapshotListener { snapshot, e ->
@@ -89,7 +89,7 @@ class HobbyCategoryViewModel() : ViewModel() {
 //}
 
     fun refresh() {
-        getData()
+        getCategoryData()
     }
 
     fun navigateToDetail(introduce: Introduce) {

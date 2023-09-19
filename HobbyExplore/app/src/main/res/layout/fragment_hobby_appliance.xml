@@ -12,19 +12,18 @@
         android:layout_height="match_parent"
         tools:context=".hobbyappliance.HobbyApplianceFragment">
 
-        <Button
-            android:id="@+id/appliance_button"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:backgroundTint="@color/black"
-            android:gravity="center"
-            android:text="Click"
-            android:textColor="@color/white"
-            android:textSize="28dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/hobby_appliance_recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" >
+        </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
