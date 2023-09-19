@@ -151,7 +151,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'
 
-    implementation ('com.google.firebase:firebase-firestore:24.4.1')
+//    implementation ('com.google.firebase:firebase-firestore:24.7.0')
 //    {
 //        exclude module: 'protolite-well-known-types'
 //        exclude module: 'protobuf-javalite'
@@ -160,14 +160,14 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
 
     implementation("com.google.firebase:firebase-firestore-ktx")
-//            {
-//                exclude module: 'protolite-well-known-types'
-//                exclude module: 'protobuf-javalite'
-//            }
+            {
+                exclude module: 'protolite-well-known-types'
+                exclude module: 'protobuf-javalite'
+            }
 
     implementation("com.google.firebase:firebase-auth-ktx")
 
-//    implementation ('com.google.firebase:firebase-firestore')
+    implementation ('com.google.firebase:firebase-firestore')
 
     testImplementation 'junit:junit:4.13.2'
 
