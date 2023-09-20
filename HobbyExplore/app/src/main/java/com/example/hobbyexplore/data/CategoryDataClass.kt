@@ -18,7 +18,9 @@ data class Appliance(
     val price : String,
     val content : String
 )
-
+{
+    constructor() : this("", "", "","")
+}
 data class Course(
     val link : String,
     val title : String,

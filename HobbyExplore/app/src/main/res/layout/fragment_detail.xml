@@ -10,6 +10,10 @@
             type="com.example.hobbyexplore.detail.DetailViewModel" />
     </data>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".detail.DetailFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,24 +33,78 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/detail_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@{introduce.selectProduct.title}"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/detail_image"
-                app:layout_constraintTop_toBottomOf="@+id/detail_image" />
+        <TextView
+            android:id="@+id/detail_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{introduce.selectProduct.title}"
+            android:textAlignment="viewStart"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/detail_image"
+            app:layout_constraintStart_toStartOf="@+id/detail_image"
+            app:layout_constraintTop_toBottomOf="@+id/detail_image" />
 
-            <TextView
-                android:id="@+id/detail_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@{introduce.selectProduct.content}"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/detail_title"
-                app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+        <TextView
+            android:id="@+id/detail_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{introduce.selectProduct.content}"
+            android:textAlignment="viewStart"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/detail_title"
+            app:layout_constraintStart_toStartOf="@+id/detail_title"
+            app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+        <Button
+            android:id="@+id/detail_appliance"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/round_corner"
+            android:backgroundTint="@color/black"
+            android:text="@string/appliance_recommend"
+            android:textColor="@color/white"
+            android:textSize="28dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="@id/detail_content"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/detail_content"
+            app:layout_constraintTop_toBottomOf="@+id/detail_course" />
+
+        <Button
+            android:id="@+id/detail_place"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/round_corner"
+            android:backgroundTint="@color/black"
+            android:text="@string/place_recommend"
+            android:textColor="@color/white"
+            android:textSize="28dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="@id/detail_content"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/detail_content"
+            app:layout_constraintTop_toBottomOf="@+id/detail_appliance" />
+
+        <Button
+            android:id="@+id/detail_course"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/course_recommend"
+            android:textSize="28dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@drawable/round_corner"
+            android:backgroundTint="@color/black"
+            app:layout_constraintEnd_toEndOf="@id/detail_content"
+            app:layout_constraintStart_toStartOf="@id/detail_content"
+            app:layout_constraintTop_toBottomOf="@+id/detail_content" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

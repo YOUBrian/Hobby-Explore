@@ -6,27 +6,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.findNavController
 import com.example.hobbyexplore.R
+import com.example.hobbyexplore.databinding.FragmentHobbyCourseBinding
+import com.example.hobbyexplore.databinding.FragmentHobbyPlaceBinding
+import com.example.hobbyexplore.hobbycourse.HobbyCourseFragmentDirections
+import com.example.hobbyexplore.hobbycourse.HobbyCourseViewModel
 
 class HobbyPlaceFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = HobbyPlaceFragment()
-    }
-
-    private lateinit var viewModel: HobbyPlaceViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_hobby_place, container, false)
+        val binding = FragmentHobbyPlaceBinding.inflate(inflater)
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        val viewModel: HobbyPlaceViewModel = ViewModelProvider(this).get(HobbyPlaceViewModel::class.java)
+
+        binding.placeButton.setOnClickListener {
+            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToMapsFragment())
+            Toast.makeText(requireContext(), "Click", Toast.LENGTH_SHORT).show()
+        }
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HobbyPlaceViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
 }

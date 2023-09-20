@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/hobbyCategoryFragment">
+    app:startDestination="@id/calendarFragment">
 
     <fragment
         android:id="@+id/mapsFragment"
@@ -62,7 +62,36 @@
             android:name="selectProduct"
             app:argType="com.example.hobbyexplore.data.Introduce" />
         <action
-            android:id="@+id/action_detailFragment_to_youTubePlayerFragment"
+            android:id="@+id/action_detailFragment_to_hobbyPlaceFragment"
+            app:destination="@id/hobbyPlaceFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_hobbyCourseFragment"
+            app:destination="@id/hobbyCourseFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_hobbyAppliaceFragment"
+            app:destination="@id/hobbyAppliaceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/hobbyAppliaceFragment"
+        android:name="com.example.hobbyexplore.hobbyappliance.HobbyApplianceFragment"
+        android:label="fragment_hobby_appliace"
+        tools:layout="@layout/fragment_hobby_appliance" />
+    <fragment
+        android:id="@+id/hobbyCourseFragment"
+        android:name="com.example.hobbyexplore.hobbycourse.HobbyCourseFragment"
+        android:label="fragment_hobby_course"
+        tools:layout="@layout/fragment_hobby_course" >
+        <action
+            android:id="@+id/action_hobbyCourseFragment_to_youTubePlayerFragment"
             app:destination="@id/youTubePlayerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/hobbyPlaceFragment"
+        android:name="com.example.hobbyexplore.hobbyplace.HobbyPlaceFragment"
+        android:label="fragment_hobby_place"
+        tools:layout="@layout/fragment_hobby_place" >
+        <action
+            android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
 </navigation>
