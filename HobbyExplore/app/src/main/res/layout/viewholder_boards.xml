@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/boards_image"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="105dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:imageUrl="@{boards.image}"
@@ -24,16 +24,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/boards_content"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/grey_round_corner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/boards_image"
-            app:layout_constraintTop_toTopOf="@+id/boards_image" />
+            app:layout_constraintTop_toTopOf="@+id/boards_image" >
 
         <TextView
             android:id="@+id/boards_user"
@@ -49,36 +49,37 @@
 
         <TextView
             android:id="@+id/boards_time"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            app:timeStamp="@{boards.createdTime}"
+            android:layout_marginEnd="8dp"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/boards_content"
-            app:layout_constraintTop_toTopOf="@+id/boards_content" />
+            app:layout_constraintStart_toStartOf="@id/boards_user"
+            app:layout_constraintTop_toBottomOf="@+id/boards_user"
+            app:timeStamp="@{boards.createdTime}" />
 
         <TextView
             android:id="@+id/boards_user_content"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@{boards.content}"
             android:textColor="@color/black"
             android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/boards_content"
             app:layout_constraintStart_toStartOf="@+id/boards_user"
-            app:layout_constraintTop_toBottomOf="@+id/boards_user" />
+            app:layout_constraintTop_toBottomOf="@+id/boards_time" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:background="#CCCCCC"
-            app:layout_constraintTop_toBottomOf="@+id/boards_image"/>
-
+            app:layout_constraintTop_toBottomOf="@+id/boards_content" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
