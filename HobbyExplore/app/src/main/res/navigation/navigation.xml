@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/calendarFragment">
+    app:startDestination="@id/chatGptFragment">
 
     <fragment
         android:id="@+id/mapsFragment"
@@ -94,4 +94,8 @@
             android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/chatGptFragment"
+        android:name="com.example.hobbyexplore.chatgpt.ChatGptFragment"
+        android:label="ChatGptFragment" />
 </navigation>

@@ -28,10 +28,10 @@ class HobbyCourseFragment : Fragment() {
 
         val viewModel: HobbyCourseViewModel = ViewModelProvider(this).get(HobbyCourseViewModel::class.java)
 
-        binding.courseButton.setOnClickListener {
-            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToYouTubePlayerFragment())
-            Toast.makeText(requireContext(), "Click", Toast.LENGTH_SHORT).show()
-        }
+//        binding.courseButton.setOnClickListener {
+//            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToYouTubePlayerFragment())
+//            Toast.makeText(requireContext(), "Click", Toast.LENGTH_SHORT).show()
+//        }
         return binding.root
     }
 
