@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.hobbyexplore.R
 import com.example.hobbyexplore.databinding.FragmentHobbyApplianceBinding
 import com.example.hobbyexplore.databinding.FragmentHobbyCourseBinding
+import com.example.hobbyexplore.detail.DetailFragmentDirections
 import com.example.hobbyexplore.hobbycategory.HobbyCategoryAdapter
 import com.example.hobbyexplore.hobbycategory.HobbyCategoryFragmentDirections
 import com.example.hobbyexplore.hobbycourse.HobbyCourseFragmentDirections
@@ -38,6 +39,14 @@ class HobbyApplianceFragment : Fragment() {
             hobbyApplianceAdapter.submitList(appliances)
             hobbyApplianceAdapter.notifyDataSetChanged()
         })
+
+        binding.courseButton.setOnClickListener {
+            it.findNavController().navigate(HobbyApplianceFragmentDirections.actionHobbyAppliaceFragmentToHobbyCourseFragment())
+        }
+
+        binding.placeButton.setOnClickListener {
+            it.findNavController().navigate(HobbyApplianceFragmentDirections.actionHobbyAppliaceFragmentToHobbyPlaceFragment())
+        }
 
 //        binding.button.setOnClickListener {
 //            it.findNavController().navigate(HobbyCategoryFragmentDirections.actionHobbyCategoryFragmentToYouTubePlayerFragment())

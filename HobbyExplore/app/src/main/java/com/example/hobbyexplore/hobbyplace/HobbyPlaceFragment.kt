@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.hobbyexplore.R
 import com.example.hobbyexplore.databinding.FragmentHobbyCourseBinding
 import com.example.hobbyexplore.databinding.FragmentHobbyPlaceBinding
+import com.example.hobbyexplore.hobbyappliance.HobbyApplianceFragmentDirections
 import com.example.hobbyexplore.hobbycategory.HobbyCategoryFragmentDirections
 import com.example.hobbyexplore.hobbycourse.HobbyCourseAdapter
 import com.example.hobbyexplore.hobbycourse.HobbyCourseFragmentDirections
@@ -44,6 +45,14 @@ class HobbyPlaceFragment : Fragment() {
 //            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToMapsFragment())
 //            Toast.makeText(requireContext(), "Click", Toast.LENGTH_SHORT).show()
 //        }
+
+        binding.courseButton.setOnClickListener {
+            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyCourseFragment())
+        }
+
+        binding.applianceButton.setOnClickListener {
+            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyAppliaceFragment())
+        }
 
         viewModel.navigateToMap.observe(
             viewLifecycleOwner,

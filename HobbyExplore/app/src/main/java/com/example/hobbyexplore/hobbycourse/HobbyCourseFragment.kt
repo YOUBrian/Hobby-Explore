@@ -45,6 +45,14 @@ class HobbyCourseFragment : Fragment() {
             hobbyCourseAdapter.notifyDataSetChanged()
         })
 
+        binding.placeButton.setOnClickListener {
+            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyPlaceFragment())
+        }
+
+        binding.applianceButton.setOnClickListener {
+            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyAppliaceFragment())
+        }
+
         viewModel.navigateToYoutube.observe(
             viewLifecycleOwner,
             Observer {

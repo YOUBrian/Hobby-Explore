@@ -95,6 +95,9 @@
         <action
             android:id="@+id/action_hobbyAppliaceFragment_to_hobbyCourseFragment"
             app:destination="@id/hobbyCourseFragment" />
+        <action
+            android:id="@+id/action_hobbyAppliaceFragment_to_hobbyPlaceFragment"
+            app:destination="@id/hobbyPlaceFragment" />
     </fragment>
     <fragment
         android:id="@+id/hobbyCourseFragment"
@@ -107,6 +110,9 @@
         <action
             android:id="@+id/action_hobbyCourseFragment_to_hobbyPlaceFragment"
             app:destination="@id/hobbyPlaceFragment" />
+        <action
+            android:id="@+id/action_hobbyCourseFragment_to_hobbyAppliaceFragment"
+            app:destination="@id/hobbyAppliaceFragment" />
     </fragment>
     <fragment
         android:id="@+id/hobbyPlaceFragment"
@@ -116,6 +122,12 @@
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_hobbyPlaceFragment_to_hobbyCourseFragment"
+            app:destination="@id/hobbyCourseFragment" />
+        <action
+            android:id="@+id/action_hobbyPlaceFragment_to_hobbyAppliaceFragment"
+            app:destination="@id/hobbyAppliaceFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatGptFragment"
