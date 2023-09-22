@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/chatGptFragment">
+    app:startDestination="@id/personalityTestFragment">
 
     <fragment
         android:id="@+id/mapsFragment"
@@ -98,4 +98,64 @@
         android:id="@+id/chatGptFragment"
         android:name="com.example.hobbyexplore.chatgpt.ChatGptFragment"
         android:label="ChatGptFragment" />
+    <fragment
+        android:id="@+id/personalityTestFragment"
+        android:name="com.example.hobbyexplore.personalitytest.PersonalityTestFragment"
+        android:label="fragment_personality_test"
+        tools:layout="@layout/fragment_personality_test" >
+        <action
+            android:id="@+id/action_personalityTestFragment_to_whetherTakeMbtiTest"
+            app:destination="@id/whetherTakeMbtiTest" />
+        <action
+            android:id="@+id/action_personalityTestFragment_to_hobbyCategoryFragment"
+            app:destination="@id/hobbyCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/whetherTakeMbtiTest"
+        android:name="com.example.hobbyexplore.personalitytest.WhetherTakeMbtiTest"
+        android:label="WhetherTakeMbtiTest" >
+        <action
+            android:id="@+id/action_whetherTakeMbtiTest_to_systemRecommendsHobbyFragment"
+            app:destination="@id/systemRecommendsHobbyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/systemRecommendsHobbyFragment"
+        android:name="com.example.hobbyexplore.personalitytest.SystemRecommendsHobbyFragment"
+        android:label="SystemRecommendsHobbyFragment" >
+        <action
+            android:id="@+id/action_systemRecommendsHobbyFragment_to_enterBudgetFragment"
+            app:destination="@id/enterBudgetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/enterBudgetFragment"
+        android:name="com.example.hobbyexplore.personalitytest.EnterBudgetFragment"
+        android:label="fragment_enter_budget"
+        tools:layout="@layout/fragment_enter_budget" >
+        <action
+            android:id="@+id/action_enterBudgetFragment_to_applianceRecommendFragment"
+            app:destination="@id/applianceRecommendFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/applianceRecommendFragment"
+        android:name="com.example.hobbyexplore.personalitytest.ApplianceRecommendFragment"
+        android:label="fragment_appliance_recommend"
+        tools:layout="@layout/fragment_appliance_recommend" >
+        <action
+            android:id="@+id/action_applianceRecommendFragment_to_courseRecommendFragment"
+            app:destination="@id/courseRecommendFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseRecommendFragment"
+        android:name="com.example.hobbyexplore.personalitytest.CourseRecommendFragment"
+        android:label="fragment_course_recommend"
+        tools:layout="@layout/fragment_course_recommend" >
+        <action
+            android:id="@+id/action_courseRecommendFragment_to_placeRecommendFragment"
+            app:destination="@id/placeRecommendFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeRecommendFragment"
+        android:name="com.example.hobbyexplore.personalitytest.PlaceRecommendFragment"
+        android:label="fragment_place_recommend"
+        tools:layout="@layout/fragment_place_recommend" />
 </navigation>

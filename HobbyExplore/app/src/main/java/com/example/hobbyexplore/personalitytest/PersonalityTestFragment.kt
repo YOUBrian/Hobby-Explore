@@ -1,32 +1,29 @@
 package com.example.hobbyexplore.personalitytest
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.hobbyexplore.R
+import androidx.navigation.findNavController
+import com.example.hobbyexplore.databinding.FragmentPersonalityTestBinding
+import com.example.hobbyexplore.detail.DetailFragmentDirections
 
 class PersonalityTestFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = PersonalityTestFragment()
-    }
-
-    private lateinit var viewModel: PersonalityTestViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_personality_test, container, false)
-    }
+        val binding = FragmentPersonalityTestBinding.inflate(inflater)
+        binding.yesButton.setOnClickListener {
+            it.findNavController().navigate(PersonalityTestFragmentDirections.actionPersonalityTestFragmentToWhetherTakeMbtiTest())
+        }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(PersonalityTestViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+        binding.noButton.setOnClickListener {
+            it.findNavController().navigate(PersonalityTestFragmentDirections.actionPersonalityTestFragmentToHobbyCategoryFragment())
+        }
 
+        return binding.root
+    }
 }

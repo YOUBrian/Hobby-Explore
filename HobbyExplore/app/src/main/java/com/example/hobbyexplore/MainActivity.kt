@@ -1,17 +1,26 @@
 package com.example.hobbyexplore
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.activity.viewModels
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import com.example.hobbyexplore.databinding.ActivityMainBinding
 import com.example.hobbyexplore.ext.getVmFactory
+import com.example.hobbyexplore.util.CurrentFragmentType
+import com.example.hobbyexplore.util.Logger
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.firebase.FirebaseApp
+import kotlinx.coroutines.launch
 
 //import com.google.firebase.FirebaseApp
 
@@ -20,6 +29,16 @@ class MainActivity : BaseActivity() {
     val viewModel by viewModels<MainViewModel> { getVmFactory() }
 
     private lateinit var binding: ActivityMainBinding
+
+    // get the height of status bar from system
+    private val statusBarHeight: Int
+        get() {
+            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+            return when {
+                resourceId > 0 -> resources.getDimensionPixelSize(resourceId)
+                else -> 0
+            }
+        }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
@@ -39,9 +58,9 @@ class MainActivity : BaseActivity() {
                 }
             }
         )
-
+        setupToolbar()
         setupBottomNav()
-//        setupNavController()
+        setupNavController()
     }
 
     private fun setupBottomNav() {
@@ -78,6 +97,71 @@ class MainActivity : BaseActivity() {
 //        val bindingBadge = BadgeBottomBinding.inflate(LayoutInflater.from(this), itemView, true)
 //        bindingBadge.lifecycleOwner = this
 //        bindingBadge.viewModel = viewModel
+    }
+
+    private fun setupNavController() {
+        findNavController(R.id.nav_host_fragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
+            viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
+                R.id.calendarFragment -> CurrentFragmentType.CALENDAR
+                R.id.hobbyBoardsFragment -> CurrentFragmentType.BOARDS
+                R.id.hobbyCategoryFragment -> CurrentFragmentType.CATEGORY
+                R.id.profileFragment -> CurrentFragmentType.PROFILE
+                R.id.detailFragment -> CurrentFragmentType.HOBBY_EXPLORE
+                R.id.hobbyAppliaceFragment -> CurrentFragmentType.HOBBY_APPLIANCE
+                R.id.hobbyCourseFragment -> CurrentFragmentType.HOBBY_COURSE
+                R.id.hobbyPlaceFragment -> CurrentFragmentType.HOBBY_PLACE
+                R.id.systemRecommendsHobbyFragment -> CurrentFragmentType.RECOMMEND_HOBBY
+                R.id.applianceRecommendFragment -> CurrentFragmentType.RECOMMEND_APPLIANCE
+                R.id.courseRecommendFragment -> CurrentFragmentType.RECOMMEND_COURSE
+                R.id.placeRecommendFragment -> CurrentFragmentType.RECOMMEND_PLACE
+                else -> CurrentFragmentType.HOBBY_EXPLORE
+            }
+        }
+    }
+
+    private fun setupToolbar() {
+
+        binding.toolbar.setPadding(0, statusBarHeight, 0, 0)
+
+        launch {
+
+            val dpi = resources.displayMetrics.densityDpi.toFloat()
+            val dpiMultiple = dpi / DisplayMetrics.DENSITY_DEFAULT
+
+            val cutoutHeight = getCutoutHeight()
+
+            Logger.i("====== ${Build.MODEL} ======")
+            Logger.i("$dpi dpi (${dpiMultiple}x)")
+            Logger.i("statusBarHeight: ${statusBarHeight}px/${statusBarHeight / dpiMultiple}dp")
+
+            when {
+                cutoutHeight > 0 -> {
+                    Logger.i("cutoutHeight: ${cutoutHeight}px/${cutoutHeight / dpiMultiple}dp")
+
+                    val oriStatusBarHeight =
+                        resources.getDimensionPixelSize(R.dimen.height_status_bar_origin)
+
+                    binding.toolbar.setPadding(0, oriStatusBarHeight, 0, 0)
+                    val layoutParams = Toolbar.LayoutParams(
+                        Toolbar.LayoutParams.WRAP_CONTENT,
+                        Toolbar.LayoutParams.WRAP_CONTENT
+                    )
+                    layoutParams.gravity = Gravity.CENTER
+
+                    when (Build.MODEL) {
+                        "Pixel 5" -> {
+                            Logger.i("Build.MODEL is ${Build.MODEL}")
+                        }
+
+                        else -> {
+                            layoutParams.topMargin = statusBarHeight - oriStatusBarHeight
+                        }
+                    }
+                    binding.textToolbarTitle.layoutParams = layoutParams
+                }
+            }
+            Logger.i("====== ${Build.MODEL} ======")
+        }
     }
 }
 /*---------------------------------------------------------*/

@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.example.hobbyexplore.util.CurrentFragmentType"/>
+        <import type="android.view.View"/>
         <variable name="viewModel" type="com.example.hobbyexplore.MainViewModel"/>
     </data>
 
@@ -11,6 +13,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.HOBBY_EXPLORE ? View.VISIBLE : View.VISIBLE}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/text_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily=""
+                android:textColor="@color/black"
+                android:letterSpacing="0.15"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.HOBBY_EXPLORE ? View.VISIBLE : View.VISIBLE}"
+                android:text="@{viewModel.currentFragmentType.value}"
+                android:layout_gravity="center"
+                tools:visibility="visible"
+                tools:text="Stylish"/>
+
+<!--            <ImageView-->
+<!--                android:id="@+id/image_toolbar_logo"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:background="@drawable/logo_stylish_s"-->
+<!--                android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.HOME ? View.VISIBLE : View.GONE}"-->
+<!--                tools:visibility="gone"/>-->
+
+        </androidx.appcompat.widget.Toolbar>
 
         <fragment
             android:id="@+id/nav_host_fragment"
