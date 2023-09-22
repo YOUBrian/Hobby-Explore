@@ -9,12 +9,16 @@
         android:id="@+id/mapsFragment"
         android:name="com.example.hobbyexplore.hobbyplace.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps">
+        <argument
+            android:name="place"
+            app:argType="com.example.hobbyexplore.data.Place" />
+    </fragment>
     <fragment
         android:id="@+id/hobbyCategoryFragment"
         android:name="com.example.hobbyexplore.hobbycategory.HobbyCategoryFragment"
         android:label="fragment_hobby_category"
-        tools:layout="@layout/fragment_hobby_category" >
+        tools:layout="@layout/fragment_hobby_category">
         <action
             android:id="@+id/action_hobbyCategoryFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
@@ -34,30 +38,42 @@
         android:name="com.example.hobbyexplore.hobbyboards.HobbyBoardsFragment"
         android:label="fragment_hobby_boards"
         tools:layout="@layout/fragment_hobby_boards" />
-    <action android:id="@+id/navigate_to_calendar_fragment" app:destination="@id/calendarFragment"
+    <action
+        android:id="@+id/navigate_to_calendar_fragment"
+        app:destination="@id/calendarFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
 
-    <action android:id="@+id/navigate_to_hobbyBoards_fragment" app:destination="@id/hobbyBoardsFragment"
+    <action
+        android:id="@+id/navigate_to_hobbyBoards_fragment"
+        app:destination="@id/hobbyBoardsFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
 
-    <action android:id="@+id/navigate_to_hobbyCategory_fragment" app:destination="@id/hobbyCategoryFragment"
+    <action
+        android:id="@+id/navigate_to_hobbyCategory_fragment"
+        app:destination="@id/hobbyCategoryFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
 
-    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
+    <action
+        android:id="@+id/navigate_to_profile_fragment"
+        app:destination="@id/profileFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/youTubePlayerFragment"
         android:name="YouTubePlayerFragment"
-        android:label="YouTubePlayerFragment" />
+        android:label="YouTubePlayerFragment">
+        <argument
+            android:name="course"
+            app:argType="com.example.hobbyexplore.data.Course" />
+    </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.hobbyexplore.detail.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" >
+        tools:layout="@layout/fragment_detail">
         <argument
             android:name="selectProduct"
             app:argType="com.example.hobbyexplore.data.Introduce" />
@@ -75,21 +91,28 @@
         android:id="@+id/hobbyAppliaceFragment"
         android:name="com.example.hobbyexplore.hobbyappliance.HobbyApplianceFragment"
         android:label="fragment_hobby_appliace"
-        tools:layout="@layout/fragment_hobby_appliance" />
+        tools:layout="@layout/fragment_hobby_appliance">
+        <action
+            android:id="@+id/action_hobbyAppliaceFragment_to_hobbyCourseFragment"
+            app:destination="@id/hobbyCourseFragment" />
+    </fragment>
     <fragment
         android:id="@+id/hobbyCourseFragment"
         android:name="com.example.hobbyexplore.hobbycourse.HobbyCourseFragment"
         android:label="fragment_hobby_course"
-        tools:layout="@layout/fragment_hobby_course" >
+        tools:layout="@layout/fragment_hobby_course">
         <action
             android:id="@+id/action_hobbyCourseFragment_to_youTubePlayerFragment"
             app:destination="@id/youTubePlayerFragment" />
+        <action
+            android:id="@+id/action_hobbyCourseFragment_to_hobbyPlaceFragment"
+            app:destination="@id/hobbyPlaceFragment" />
     </fragment>
     <fragment
         android:id="@+id/hobbyPlaceFragment"
         android:name="com.example.hobbyexplore.hobbyplace.HobbyPlaceFragment"
         android:label="fragment_hobby_place"
-        tools:layout="@layout/fragment_hobby_place" >
+        tools:layout="@layout/fragment_hobby_place">
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
@@ -102,7 +125,7 @@
         android:id="@+id/personalityTestFragment"
         android:name="com.example.hobbyexplore.personalitytest.PersonalityTestFragment"
         android:label="fragment_personality_test"
-        tools:layout="@layout/fragment_personality_test" >
+        tools:layout="@layout/fragment_personality_test">
         <action
             android:id="@+id/action_personalityTestFragment_to_whetherTakeMbtiTest"
             app:destination="@id/whetherTakeMbtiTest" />
@@ -113,7 +136,7 @@
     <fragment
         android:id="@+id/whetherTakeMbtiTest"
         android:name="com.example.hobbyexplore.personalitytest.WhetherTakeMbtiTest"
-        android:label="WhetherTakeMbtiTest" >
+        android:label="WhetherTakeMbtiTest">
         <action
             android:id="@+id/action_whetherTakeMbtiTest_to_systemRecommendsHobbyFragment"
             app:destination="@id/systemRecommendsHobbyFragment" />
@@ -121,7 +144,7 @@
     <fragment
         android:id="@+id/systemRecommendsHobbyFragment"
         android:name="com.example.hobbyexplore.personalitytest.SystemRecommendsHobbyFragment"
-        android:label="SystemRecommendsHobbyFragment" >
+        android:label="SystemRecommendsHobbyFragment">
         <action
             android:id="@+id/action_systemRecommendsHobbyFragment_to_enterBudgetFragment"
             app:destination="@id/enterBudgetFragment" />
@@ -130,16 +153,16 @@
         android:id="@+id/enterBudgetFragment"
         android:name="com.example.hobbyexplore.personalitytest.EnterBudgetFragment"
         android:label="fragment_enter_budget"
-        tools:layout="@layout/fragment_enter_budget" >
+        tools:layout="@layout/fragment_enter_budget">
         <action
-            android:id="@+id/action_enterBudgetFragment_to_applianceRecommendFragment"
-            app:destination="@id/applianceRecommendFragment" />
+            android:id="@+id/action_enterBudgetFragment_to_hobbyAppliaceFragment"
+            app:destination="@id/hobbyAppliaceFragment" />
     </fragment>
     <fragment
         android:id="@+id/applianceRecommendFragment"
         android:name="com.example.hobbyexplore.personalitytest.ApplianceRecommendFragment"
         android:label="fragment_appliance_recommend"
-        tools:layout="@layout/fragment_appliance_recommend" >
+        tools:layout="@layout/fragment_appliance_recommend">
         <action
             android:id="@+id/action_applianceRecommendFragment_to_courseRecommendFragment"
             app:destination="@id/courseRecommendFragment" />
@@ -148,7 +171,7 @@
         android:id="@+id/courseRecommendFragment"
         android:name="com.example.hobbyexplore.personalitytest.CourseRecommendFragment"
         android:label="fragment_course_recommend"
-        tools:layout="@layout/fragment_course_recommend" >
+        tools:layout="@layout/fragment_course_recommend">
         <action
             android:id="@+id/action_courseRecommendFragment_to_placeRecommendFragment"
             app:destination="@id/placeRecommendFragment" />

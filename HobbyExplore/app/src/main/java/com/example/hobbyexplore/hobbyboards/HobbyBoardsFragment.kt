@@ -34,7 +34,8 @@ class HobbyBoardsFragment : Fragment() {
 //            viewModel.postMessageData()
         }
         binding.button.setOnClickListener {
-            viewModel.postMessageData()
+//            viewModel.postMessageData()
+            viewModel.postApplianceData()
             Toast.makeText(requireContext(), "POST", Toast.LENGTH_SHORT).show()
         }
 

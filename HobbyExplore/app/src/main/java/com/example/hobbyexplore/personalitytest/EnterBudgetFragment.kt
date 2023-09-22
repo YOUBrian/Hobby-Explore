@@ -19,8 +19,8 @@ class EnterBudgetFragment : Fragment() {
         val binding = FragmentEnterBudgetBinding.inflate(inflater)
         val budget = binding.budgetInput.text.toString()
         binding.systemRecommendApplianceButton.setOnClickListener {
-            val budgetToInt = budget.toInt()
-            it.findNavController().navigate(EnterBudgetFragmentDirections.actionEnterBudgetFragmentToApplianceRecommendFragment(budgetToInt))
+//            val budgetToInt = budget.toInt()
+            it.findNavController().navigate(EnterBudgetFragmentDirections.actionEnterBudgetFragmentToHobbyAppliaceFragment())
         }
         return binding.root
     }

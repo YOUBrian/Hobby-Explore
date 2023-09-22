@@ -12,27 +12,36 @@ data class Introduce(
 {
     constructor() : this( "", "","")
 }
+@Parcelize
 data class Appliance(
     val image : String,
     val title : String,
     val price : String,
     val content : String
-)
+): Parcelable
 {
     constructor() : this("", "", "","")
 }
+@Parcelize
 data class Course(
     val link : String,
     val title : String,
     val price : String,
-    val content : String
-)
-
+    val content : String,
+    val image : String
+): Parcelable
+{
+    constructor() : this("", "", "","","")
+}
+@Parcelize
 data class Place(
     val image : String,
     val title : String,
     val price : String,
     val content : String
-)
+): Parcelable
+{
+    constructor() : this("", "", "","")
+}
 
 
