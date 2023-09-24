@@ -159,6 +159,9 @@
         <action
             android:id="@+id/action_whetherTakeMbtiTest_to_systemRecommendsHobbyFragment"
             app:destination="@id/systemRecommendsHobbyFragment" />
+        <action
+            android:id="@+id/action_whetherTakeMbtiTest_to_mbtiTestFragment"
+            app:destination="@id/mbtiTestFragment" />
     </fragment>
     <fragment
         android:id="@+id/systemRecommendsHobbyFragment"
@@ -201,7 +204,36 @@
         android:label="fragment_place_recommend"
         tools:layout="@layout/fragment_place_recommend" />
     <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.hobbyexplore.hobbyboards.CameraFragment"
+        android:label="PostFragment" />
+    <fragment
+        android:id="@+id/mbtiTestFragment"
+        android:name="com.example.hobbyexplore.personalitytest.mbti.MbtiTestFragment"
+        android:label="MbtiTestFragment" >
+        <action
+            android:id="@+id/action_mbtiTestFragment_to_mbtiTestResultFragment"
+            app:destination="@id/mbtiTestResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mbtiTestResultFragment"
+        android:name="com.example.hobbyexplore.personalitytest.mbti.MbtiTestResultFragment"
+        android:label="fragment_mbti_test_result"
+        tools:layout="@layout/fragment_mbti_test_result" >
+        <action
+            android:id="@+id/action_mbtiTestResultFragment_to_systemRecommendsHobbyFragment"
+            app:destination="@id/systemRecommendsHobbyFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/postFragment"
         android:name="com.example.hobbyexplore.hobbyboards.PostFragment"
-        android:label="PostFragment" />
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post" >
+        <action
+            android:id="@+id/action_postFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_hobbyBoardsFragment"
+            app:destination="@id/hobbyBoardsFragment" />
+    </fragment>
 </navigation>

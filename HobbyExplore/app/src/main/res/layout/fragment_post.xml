@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -9,42 +10,57 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="16dp"
         tools:context=".hobbyboards.PostFragment">
 
-        <androidx.camera.view.PreviewView
-            android:id="@+id/viewFinder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <Button
-            android:id="@+id/image_capture_button"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_marginBottom="50dp"
-            android:layout_marginEnd="50dp"
-            android:elevation="2dp"
-            android:text="@string/take_photo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/vertical_centerline" />
-
-        <Button
-            android:id="@+id/video_capture_button"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_marginBottom="50dp"
-            android:layout_marginStart="50dp"
-            android:elevation="2dp"
-            android:text="@string/start_capture"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/vertical_centerline" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/vertical_centerline"
+        <ImageView
+            android:id="@+id/user_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".50" />
+            android:src="@drawable/icon_72"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Brian"
+            android:textSize="30sp"
+            app:layout_constraintStart_toEndOf="@+id/user_image"
+            app:layout_constraintTop_toTopOf="@+id/user_image" />
+
+        <Button
+            android:id="@+id/publish_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:text="發佈"
+            android:textSize="24sp"
+            android:background="@drawable/custom_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/user_content_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="24sp"
+            android:hint="分享您對興趣的想法"
+            app:layout_constraintStart_toStartOf="@+id/user_image"
+            app:layout_constraintTop_toBottomOf="@+id/user_image" />
+
+        <ImageButton
+            android:id="@+id/camera_button"
+            android:layout_width="80dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/camera"
+            app:layout_constraintStart_toStartOf="@+id/user_content_input"
+            app:layout_constraintTop_toBottomOf="@+id/user_content_input" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

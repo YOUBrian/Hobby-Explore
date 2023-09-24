@@ -30,6 +30,9 @@ class WhetherTakeMbtiTest : Fragment() {
         binding.systemRecommendButton.setOnClickListener {
             it.findNavController().navigate(WhetherTakeMbtiTestDirections.actionWhetherTakeMbtiTestToSystemRecommendsHobbyFragment())
         }
+        binding.mbtiYesButton.setOnClickListener {
+            it.findNavController().navigate(WhetherTakeMbtiTestDirections.actionWhetherTakeMbtiTestToMbtiTestFragment())
+        }
         return binding.root
     }
 }
