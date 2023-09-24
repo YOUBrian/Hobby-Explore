@@ -37,7 +37,11 @@
         android:id="@+id/hobbyBoardsFragment"
         android:name="com.example.hobbyexplore.hobbyboards.HobbyBoardsFragment"
         android:label="fragment_hobby_boards"
-        tools:layout="@layout/fragment_hobby_boards" />
+        tools:layout="@layout/fragment_hobby_boards" >
+        <action
+            android:id="@+id/action_hobbyBoardsFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+    </fragment>
     <action
         android:id="@+id/navigate_to_calendar_fragment"
         app:destination="@id/calendarFragment"
@@ -98,6 +102,9 @@
         <action
             android:id="@+id/action_hobbyAppliaceFragment_to_hobbyPlaceFragment"
             app:destination="@id/hobbyPlaceFragment" />
+        <argument
+            android:name="budgetToInt"
+            app:argType="integer"/>
     </fragment>
     <fragment
         android:id="@+id/hobbyCourseFragment"
@@ -193,4 +200,8 @@
         android:name="com.example.hobbyexplore.personalitytest.PlaceRecommendFragment"
         android:label="fragment_place_recommend"
         tools:layout="@layout/fragment_place_recommend" />
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="com.example.hobbyexplore.hobbyboards.PostFragment"
+        android:label="PostFragment" />
 </navigation>

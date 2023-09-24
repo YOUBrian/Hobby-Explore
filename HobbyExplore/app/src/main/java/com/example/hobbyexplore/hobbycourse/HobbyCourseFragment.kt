@@ -50,7 +50,7 @@ class HobbyCourseFragment : Fragment() {
         }
 
         binding.applianceButton.setOnClickListener {
-            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyAppliaceFragment())
+            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyAppliaceFragment(-1))
         }
 
         viewModel.navigateToYoutube.observe(

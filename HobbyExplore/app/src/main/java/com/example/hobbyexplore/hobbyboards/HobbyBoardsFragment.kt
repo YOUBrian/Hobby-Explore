@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import com.example.hobbyexplore.R
 import com.example.hobbyexplore.databinding.FragmentHobbyBoardsBinding
 
@@ -33,10 +34,11 @@ class HobbyBoardsFragment : Fragment() {
             viewModel.refresh()
 //            viewModel.postMessageData()
         }
-        binding.button.setOnClickListener {
+        binding.postButton.setOnClickListener {
 //            viewModel.postMessageData()
-            viewModel.postApplianceData()
+//            viewModel.postApplianceData()
             Toast.makeText(requireContext(), "POST", Toast.LENGTH_SHORT).show()
+            it.findNavController().navigate(HobbyBoardsFragmentDirections.actionHobbyBoardsFragmentToPostFragment())
         }
 
         viewModel.refreshStatus.observe(

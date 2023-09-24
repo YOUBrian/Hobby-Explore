@@ -51,7 +51,7 @@ class HobbyPlaceFragment : Fragment() {
         }
 
         binding.applianceButton.setOnClickListener {
-            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyAppliaceFragment())
+            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyAppliaceFragment(-1))
         }
 
         viewModel.navigateToMap.observe(

@@ -20,7 +20,7 @@ class EnterBudgetFragment : Fragment() {
         val budget = binding.budgetInput.text.toString()
         binding.systemRecommendApplianceButton.setOnClickListener {
 //            val budgetToInt = budget.toInt()
-            it.findNavController().navigate(EnterBudgetFragmentDirections.actionEnterBudgetFragmentToHobbyAppliaceFragment())
+            it.findNavController().navigate(EnterBudgetFragmentDirections.actionEnterBudgetFragmentToHobbyAppliaceFragment(999))
         }
         return binding.root
     }
