@@ -22,6 +22,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.hobbyexplore.databinding.FragmentCameraBinding
 import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
@@ -36,12 +37,14 @@ class CameraFragment : Fragment() {
     private var imageCapture: ImageCapture? = null
     private var videoCapture: VideoCapture? = null
 
+
+
     private fun uploadImageToFirebase(selectedPhotoUri: Uri) {
         val storageReference = FirebaseStorage.getInstance().reference
         val imageRef = storageReference.child("images/${UUID.randomUUID()}.jpg")
 
         val uploadTask = imageRef.putFile(selectedPhotoUri)
-
+        Log.i("getPhotoURI", "uploadTask: ${imageRef.putFile(selectedPhotoUri)}")
         uploadTask.addOnSuccessListener {
             // 上传成功
             // 可以获取下载 URL
@@ -50,6 +53,7 @@ class CameraFragment : Fragment() {
                 // 在这里可以将下载链接保存到数据库或者进行其他操作
                 Log.i("getPhotoURI", "selectedPhotoUri: $selectedPhotoUri")
                 Log.i("getPhotoURI", "downloadUrl: $downloadUrl")
+                findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToPostFragment(downloadUrl))
             }
         }.addOnFailureListener {
             // 上传失败
@@ -115,6 +119,12 @@ class CameraFragment : Fragment() {
             }
         }
     }
+
+//    private fun navigateToPostFragmentWithUri(uri: Uri) {
+//        val action = CameraFragmentDirections
+//            .actionCameraFragmentToPostFragment(selectedPhotoUri = uri.toString())
+//        findNavController().navigate(action)
+//    }
 
     private fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case

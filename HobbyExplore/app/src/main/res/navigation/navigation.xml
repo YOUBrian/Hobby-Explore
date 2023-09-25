@@ -210,7 +210,11 @@
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.example.hobbyexplore.hobbyboards.CameraFragment"
-        android:label="PostFragment" />
+        android:label="PostFragment" >
+        <action
+            android:id="@+id/action_cameraFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mbtiTestFragment"
         android:name="com.example.hobbyexplore.personalitytest.mbti.MbtiTestFragment"
@@ -239,5 +243,8 @@
         <action
             android:id="@+id/action_postFragment_to_hobbyBoardsFragment"
             app:destination="@id/hobbyBoardsFragment" />
+        <argument
+            android:name="imageUrl"
+            app:argType="string"/>
     </fragment>
 </navigation>

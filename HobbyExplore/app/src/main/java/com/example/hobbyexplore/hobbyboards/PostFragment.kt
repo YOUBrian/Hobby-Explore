@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import com.example.hobbyexplore.R
 import com.example.hobbyexplore.databinding.FragmentPostBinding
+import com.example.hobbyexplore.detail.DetailFragmentArgs
 
 class PostFragment : Fragment() {
 
@@ -20,7 +21,8 @@ class PostFragment : Fragment() {
         val binding = FragmentPostBinding.inflate(inflater)
         val viewModel: PostViewModel = ViewModelProvider(this).get(PostViewModel::class.java)
         val content = binding.userContentInput.text
-        val imageUrl = "sss"
+        val imageUrl =  PostFragmentArgs.fromBundle(requireArguments()).imageUrl
+
 
         binding.cameraButton.setOnClickListener {
             it.findNavController().navigate(PostFragmentDirections.actionPostFragmentToCameraFragment())
