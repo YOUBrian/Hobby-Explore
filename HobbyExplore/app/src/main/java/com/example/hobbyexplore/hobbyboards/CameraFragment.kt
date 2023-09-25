@@ -1,8 +1,10 @@
 package com.example.hobbyexplore.hobbyboards
 import android.Manifest
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,8 +23,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.hobbyexplore.databinding.FragmentCameraBinding
+import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.UUID
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -31,6 +35,27 @@ class CameraFragment : Fragment() {
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
     private var videoCapture: VideoCapture? = null
+
+    private fun uploadImageToFirebase(selectedPhotoUri: Uri) {
+        val storageReference = FirebaseStorage.getInstance().reference
+        val imageRef = storageReference.child("images/${UUID.randomUUID()}.jpg")
+
+        val uploadTask = imageRef.putFile(selectedPhotoUri)
+
+        uploadTask.addOnSuccessListener {
+            // 上传成功
+            // 可以获取下载 URL
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                val downloadUrl = uri.toString()
+                // 在这里可以将下载链接保存到数据库或者进行其他操作
+                Log.i("getPhotoURI", "selectedPhotoUri: $selectedPhotoUri")
+                Log.i("getPhotoURI", "downloadUrl: $downloadUrl")
+            }
+        }.addOnFailureListener {
+            // 上传失败
+            Log.e("uploadImageToFirebase", "Upload failed", it)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,8 +81,8 @@ class CameraFragment : Fragment() {
         }
 
         // Set up the listeners for take photo and video capture buttons
-        viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
-        viewBinding.videoCaptureButton.setOnClickListener {
+        viewBinding.shutterButton.setOnClickListener { takePhoto() }
+        viewBinding.selectPhotoButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this.requireContext(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                 val intent = Intent()
@@ -70,6 +95,25 @@ class CameraFragment : Fragment() {
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+
+
+
+
+
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
+            // 获取选中图片的 URI
+            val selectedPhotoUri = data?.data
+            if (selectedPhotoUri != null) {
+                // 执行上传图片到 Firebase Storage 的逻辑
+                uploadImageToFirebase(selectedPhotoUri)
+            }
+        }
     }
 
     private fun takePhoto() {
@@ -194,5 +238,7 @@ class CameraFragment : Fragment() {
     private fun showPermissionDeniedMessage() {
         Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
     }
+
+
 
 }

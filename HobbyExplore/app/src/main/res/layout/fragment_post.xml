@@ -31,6 +31,18 @@
             app:layout_constraintStart_toEndOf="@+id/user_image"
             app:layout_constraintTop_toTopOf="@+id/user_image" />
 
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:numStars="5"
+            android:rating="5"
+            android:isIndicator="false"
+            android:stepSize="1"
+            app:layout_constraintStart_toStartOf="@+id/user_image"
+            app:layout_constraintTop_toBottomOf="@+id/user_image" />
+
         <Button
             android:id="@+id/publish_button"
             android:layout_width="wrap_content"
@@ -46,11 +58,11 @@
             android:id="@+id/user_content_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="24sp"
+            android:layout_marginTop="8dp"
             android:hint="分享您對興趣的想法"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="@+id/user_image"
-            app:layout_constraintTop_toBottomOf="@+id/user_image" />
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
         <ImageButton
             android:id="@+id/camera_button"
