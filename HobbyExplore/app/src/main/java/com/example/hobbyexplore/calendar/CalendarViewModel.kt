@@ -67,7 +67,7 @@ class CalendarViewModel : ViewModel() {
 
 
     //get
-    private fun getCalendarData() {
+    fun getCalendarData() {
         val docRef = db.collection("calendarData")
         docRef.orderBy("eventDate", Query.Direction.ASCENDING)
             .get()
@@ -78,16 +78,18 @@ class CalendarViewModel : ViewModel() {
                     val eventDate = document.getString("eventDate") ?: ""
                     val eventRating = document.getLong("eventRating")?.toInt() ?: 0
                     if (rating != null) {
-                        ratings.add(rating)
-                        Log.i("getCalendarData", "rating: $rating")
-                        dataList.add(Pair(eventDate, eventRating))
+                        // 在添加数据之前检查是否已存在相同的数据
+                        val pair = Pair(eventDate, eventRating)
+                        if (!dataList.contains(pair)) {
+                            ratings.add(rating)
+                            Log.i("getCalendarData", "rating: $rating")
+                            dataList.add(pair)
+                        }
                     }
                 }
                 _ratingDate.postValue(ratings)
                 dataList.sortBy { it.first }
-                for (data in dataList) {
-                    Log.i("dataList","dataList:$dataList")
-                }
+                Log.i("dataListttttt","dataList:$dataList")
             }
             .addOnFailureListener { e ->
                 Log.w("READ_DATA", "Error reading data.", e)

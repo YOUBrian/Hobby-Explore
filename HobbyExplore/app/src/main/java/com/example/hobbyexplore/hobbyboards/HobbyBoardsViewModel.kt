@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.hobbyexplore.data.Appliance
 import com.example.hobbyexplore.data.Message
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.Calendar
@@ -31,7 +32,8 @@ class HobbyBoardsViewModel : ViewModel() {
 
     private fun getMessageData() {
         val docRef = db.collection("baseball_board")
-        docRef.addSnapshotListener { snapshot, e ->
+        docRef.orderBy("createdTime", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w("READ_DATA", "Listen failed.", e)
                 return@addSnapshotListener
