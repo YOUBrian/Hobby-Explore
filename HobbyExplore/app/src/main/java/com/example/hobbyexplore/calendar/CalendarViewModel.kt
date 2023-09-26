@@ -15,10 +15,25 @@ class CalendarViewModel : ViewModel() {
     val ratingDate: LiveData<List<CalendarEvent>>
         get() = _ratingDate
 
+    private val _progress = MutableLiveData<Int>()
+    val progress: MutableLiveData<Int>
+    get() = _progress
+
+
+
     init {
         getCalendarData()
+//        getDateData()
+        progress.value = 50
     }
-    fun getCalendarData() {
+
+//    fun setProgress(progressValue: Int) {
+//        _progress.value = progressValue
+//        Log.i("ratingValue", "progress.value:${_progress.value}")
+//    }
+
+    //snapshot
+    fun getDateData() {
         val docRef = db.collection("calendarData")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -45,5 +60,28 @@ class CalendarViewModel : ViewModel() {
             }
         }
 
+    }
+
+
+    //get
+    private fun getCalendarData() {
+        val docRef = db.collection("calendarData")
+        docRef.get()
+            .addOnSuccessListener { querySnapshot ->
+                val ratings = mutableListOf<CalendarEvent>()
+                for (document in querySnapshot) {
+                    val rating = document.toObject(CalendarEvent::class.java)
+//                    Log.i("GetRating", "querySnapshot: $querySnapshot")
+//                    Log.i("GetRating", "document: $document")
+                    if (rating != null) {
+                        ratings.add(rating)
+                        Log.i("GetRating", "rating: $rating")
+                    }
+                }
+                _ratingDate.postValue(ratings)
+            }
+            .addOnFailureListener { e ->
+                Log.w("READ_DATA", "Error reading data.", e)
+            }
     }
 }

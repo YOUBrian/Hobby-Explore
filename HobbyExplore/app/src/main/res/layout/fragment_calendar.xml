@@ -21,19 +21,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <TextView
             android:id="@+id/calendar_input_rating"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/grey_round_corner"
-            android:hint="學習自我評分"
-            android:inputType="number"
-            android:text=""
+            android:text="學習自我評分 :"
             android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@+id/record_rating_Button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
@@ -47,19 +41,34 @@
             android:text="RECORD"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/calendar_input_rating"
+            app:layout_constraintBottom_toBottomOf="@+id/rating_seekBar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/calendar_input_rating" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/rating_seekBar"
+            app:layout_constraintTop_toTopOf="@+id/rating_seekBar" />
 
         <TextView
             android:id="@+id/rating_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/calendar_input_rating"
+            app:layout_constraintStart_toEndOf="@+id/calendar_input_rating"
+            app:layout_constraintTop_toTopOf="@+id/calendar_input_rating" />
+
+        <SeekBar
+            android:id="@+id/rating_seekBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="@+id/calendar_input_rating"
-            app:layout_constraintStart_toStartOf="@+id/calendar_input_rating"
+            android:max="100"
+            android:progress="50"
+            android:progressDrawable="@drawable/seekbar_style"
+            app:layout_constraintEnd_toStartOf="@+id/record_rating_Button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendar_input_rating" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
