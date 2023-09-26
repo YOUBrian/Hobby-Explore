@@ -230,6 +230,12 @@ dependencies {
 
     implementation "androidx.camera:camera-view:${camerax_version}"
     implementation "androidx.camera:camera-extensions:${camerax_version}"
+
+    //LineChart compose
+//    implementation 'co.yml:ycharts:2.1.0'
+
+    //LineChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 /*---------------------------------------------------------------------*/
 }
 

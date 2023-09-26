@@ -43,12 +43,12 @@ class CalendarViewModel : ViewModel() {
             try {
                 val ratings = mutableListOf<CalendarEvent>()
                 for (document in snapshot?.documents.orEmpty()) {
-                    Log.i("GetRating", "$snapshot")
-                    Log.i("GetRating", "$document")
+                    Log.i("getDateData", "$snapshot")
+                    Log.i("getDateData", "$document")
                     val rating = document.toObject(CalendarEvent::class.java)
                     if (rating != null) {
                         ratings.add(rating)
-                        Log.i("GetRating", "$rating")
+                        Log.i("getDateData", "$rating")
                     }
                 }
 
@@ -75,7 +75,7 @@ class CalendarViewModel : ViewModel() {
 //                    Log.i("GetRating", "document: $document")
                     if (rating != null) {
                         ratings.add(rating)
-                        Log.i("GetRating", "rating: $rating")
+                        Log.i("getCalendarData", "rating: $rating")
                     }
                 }
                 _ratingDate.postValue(ratings)

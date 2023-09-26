@@ -26,6 +26,7 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$version_android_gradle_plugin"

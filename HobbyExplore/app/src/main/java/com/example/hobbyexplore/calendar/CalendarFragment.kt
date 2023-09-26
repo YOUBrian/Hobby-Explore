@@ -10,11 +10,16 @@ import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import com.example.hobbyexplore.R
 import com.example.hobbyexplore.data.CalendarEvent
 import com.example.hobbyexplore.databinding.FragmentCalendarBinding
 import com.example.hobbyexplore.hobbyboards.HobbyBoardsViewModel
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -106,6 +111,39 @@ class CalendarFragment : Fragment() {
         bindViews()
 
 
+
+        /*-----------------------------------*/
+        val lineChart = binding.chart1
+        fun setLineChartData() {
+            val xValue = ArrayList<String>()
+            xValue.add("11:00")
+            xValue.add("12:00")
+            xValue.add("13:00")
+            xValue.add("14:00")
+            xValue.add("15:00")
+            xValue.add("16:00")
+
+            val entries = ArrayList<Entry>()
+            entries.add(Entry(0f, 1f))
+            entries.add(Entry(1f, 4f))
+            entries.add(Entry(2f, 2f))
+            entries.add(Entry(3f, 6f))
+            entries.add(Entry(4f, 3f))
+
+            val lineDataSet = LineDataSet(entries, "學習評分曲線")
+            lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+            lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.orange)
+
+            val dataSets = ArrayList<ILineDataSet>()
+            dataSets.add(lineDataSet)
+
+            val data = LineData(dataSets)
+            lineChart.data = data
+            lineChart.animateXY(3000, 3000)
+        }
+        /*-----------------------------------*/
+
+        setLineChartData()
         return binding.root
     }
 
