@@ -38,6 +38,7 @@ class CalendarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val viewModel: CalendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
+
         val binding = FragmentCalendarBinding.inflate(inflater)
         firestore = FirebaseFirestore.getInstance()
 
@@ -65,11 +66,11 @@ class CalendarFragment : Fragment() {
 
 
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-                stringDateSelected = "$year/${month + 1}/$dayOfMonth"
+            val formattedMonth = String.format("%02d", month + 1) // 将月份格式化为两位数
+            val formattedDay = String.format("%02d", dayOfMonth) // 将日期格式化为两位数
+            stringDateSelected = "$year/$formattedMonth/$formattedDay"
 
-
-
-            Log.d("CalendarFragment", "Date selected: $year-$month-$dayOfMonth")
+            Log.d("CalendarFragment", "Date selected: $year-$formattedMonth-$formattedDay")
             selectedDate.set(year, month, dayOfMonth)
 
             binding.recordRatingButton.setOnClickListener {
@@ -78,7 +79,7 @@ class CalendarFragment : Fragment() {
                     eventDate = stringDateSelected,
                     eventRating = viewModel.progress.value
                 )
-//                Log.i("ratingValue", "ratingValue:$rating")
+
                 saveEventToFirestore(event)
                 databaseReference.child(stringDateSelected).setValue(binding.ratingTextview.text.toString())
             }
@@ -123,12 +124,12 @@ class CalendarFragment : Fragment() {
             xValue.add("15:00")
             xValue.add("16:00")
 
-            val entries = ArrayList<Entry>()
-            entries.add(Entry(0f, 1f))
-            entries.add(Entry(1f, 4f))
-            entries.add(Entry(2f, 2f))
-            entries.add(Entry(3f, 6f))
-            entries.add(Entry(4f, 3f))
+            val entries = mutableListOf<Entry>()
+
+            for ((index, pair) in viewModel.dataList.withIndex()) {
+                entries.add(Entry(index.toFloat(), pair.second.toFloat()))
+                Log.i("daadadada", "${viewModel.dataList.withIndex()}")
+            }
 
             val lineDataSet = LineDataSet(entries, "學習評分曲線")
             lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER

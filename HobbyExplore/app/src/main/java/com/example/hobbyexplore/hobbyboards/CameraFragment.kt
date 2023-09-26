@@ -46,17 +46,17 @@ class CameraFragment : Fragment() {
         val uploadTask = imageRef.putFile(selectedPhotoUri)
         Log.i("getPhotoURI", "uploadTask: ${imageRef.putFile(selectedPhotoUri)}")
         uploadTask.addOnSuccessListener {
-            // 上传成功
-            // 可以获取下载 URL
+
+
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 val downloadUrl = uri.toString()
-                // 在这里可以将下载链接保存到数据库或者进行其他操作
+
                 Log.i("getPhotoURI", "selectedPhotoUri: $selectedPhotoUri")
                 Log.i("getPhotoURI", "downloadUrl: $downloadUrl")
                 findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToPostFragment(downloadUrl))
             }
         }.addOnFailureListener {
-            // 上传失败
+
             Log.e("uploadImageToFirebase", "Upload failed", it)
         }
     }

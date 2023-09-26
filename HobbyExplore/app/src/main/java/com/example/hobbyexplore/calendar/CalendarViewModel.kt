@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.hobbyexplore.data.CalendarEvent
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -18,6 +19,8 @@ class CalendarViewModel : ViewModel() {
     private val _progress = MutableLiveData<Int>()
     val progress: MutableLiveData<Int>
     get() = _progress
+
+    val dataList = mutableListOf<Pair<String, Int>>()
 
 
 
@@ -66,22 +69,29 @@ class CalendarViewModel : ViewModel() {
     //get
     private fun getCalendarData() {
         val docRef = db.collection("calendarData")
-        docRef.get()
+        docRef.orderBy("eventDate", Query.Direction.ASCENDING)
+            .get()
             .addOnSuccessListener { querySnapshot ->
                 val ratings = mutableListOf<CalendarEvent>()
                 for (document in querySnapshot) {
                     val rating = document.toObject(CalendarEvent::class.java)
-//                    Log.i("GetRating", "querySnapshot: $querySnapshot")
-//                    Log.i("GetRating", "document: $document")
+                    val eventDate = document.getString("eventDate") ?: ""
+                    val eventRating = document.getLong("eventRating")?.toInt() ?: 0
                     if (rating != null) {
                         ratings.add(rating)
                         Log.i("getCalendarData", "rating: $rating")
+                        dataList.add(Pair(eventDate, eventRating))
                     }
                 }
                 _ratingDate.postValue(ratings)
+                dataList.sortBy { it.first }
+                for (data in dataList) {
+                    Log.i("dataList","dataList:$dataList")
+                }
             }
             .addOnFailureListener { e ->
                 Log.w("READ_DATA", "Error reading data.", e)
             }
     }
+
 }
