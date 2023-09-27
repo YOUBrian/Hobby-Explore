@@ -45,6 +45,8 @@ class CalendarFragment : Fragment() {
         val viewModel: CalendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
 
         val binding = FragmentCalendarBinding.inflate(inflater)
+        viewModel.getCalendarData()
+        Log.i("ssssssssss", "fffffffff")
         firestore = FirebaseFirestore.getInstance()
 
 
@@ -117,7 +119,7 @@ class CalendarFragment : Fragment() {
             val markData2 = LineData(markDataSets)
 
             lineChart.data = data
-            lineChart.animateXY(3000, 3000)
+            lineChart.animateXY(1000, 1000)
 
             lineChart2.data = markData2
 //            lineChart2.animateXY(3000, 3000)
@@ -199,6 +201,7 @@ class CalendarFragment : Fragment() {
         bindViews()
 
         setLineChartData()
+        Log.i("ssssssssss", "sdddddddddd")
         return binding.root
     }
 

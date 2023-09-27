@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -58,12 +59,33 @@ class MainActivity : BaseActivity() {
                 }
             }
         )
+
+        val navController = findNavController(R.id.nav_host_fragment)
+
+//        dataSource.getAllOrders().observe(this){
+//            navView.getOrCreateBadge(R.id.navigation_cart_menu).number = it.size
+//        }
+
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.personalityTestFragment ||
+                destination.id == R.id.whetherTakeMbtiTest ||
+                destination.id == R.id.mbtiTestFragment ||
+                destination.id == R.id.systemRecommendsHobbyFragment ||
+                destination.id == R.id.budget_input) {
+                binding.bottomNavView.visibility = View.GONE
+            }
+            else {
+                binding.bottomNavView.visibility = View.VISIBLE
+            }
+        }
         setupToolbar()
         setupBottomNav()
         setupNavController()
     }
 
     private fun setupBottomNav() {
+
         binding.bottomNavView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_calendar -> {
@@ -86,9 +108,12 @@ class MainActivity : BaseActivity() {
                     findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToProfileFragment())
                     return@setOnItemSelectedListener true
                 }
-
-
+                R.id.personalityTestFragment -> {
+                    binding.bottomNavView.visibility = View.GONE
+                    return@setOnItemSelectedListener true
+                }
             }
+
             false
         }
 
