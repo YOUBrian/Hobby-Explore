@@ -71,6 +71,7 @@ class MainActivity : BaseActivity() {
             if (destination.id == R.id.personalityTestFragment ||
                 destination.id == R.id.whetherTakeMbtiTest ||
                 destination.id == R.id.mbtiTestFragment ||
+                destination.id == R.id.mbtiTestResultFragment ||
                 destination.id == R.id.systemRecommendsHobbyFragment ||
                 destination.id == R.id.budget_input) {
                 binding.bottomNavView.visibility = View.GONE
@@ -88,6 +89,10 @@ class MainActivity : BaseActivity() {
 
         binding.bottomNavView.setOnItemSelectedListener { item ->
             when (item.itemId) {
+                R.id.navigation_hobbyCategory -> {
+                    findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToHobbyCategoryFragment())
+                    return@setOnItemSelectedListener true
+                }
                 R.id.navigation_calendar -> {
 
                     findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToCalendarFragment())
@@ -98,11 +103,7 @@ class MainActivity : BaseActivity() {
                     findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToHobbyBoardsFragment())
                     return@setOnItemSelectedListener true
                 }
-                R.id.navigation_hobbyCategory -> {
 
-                    findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToHobbyCategoryFragment())
-                    return@setOnItemSelectedListener true
-                }
                 R.id.navigation_profile -> {
 
                     findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToProfileFragment())
