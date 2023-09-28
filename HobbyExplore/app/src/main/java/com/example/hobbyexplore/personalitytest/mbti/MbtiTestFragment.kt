@@ -20,11 +20,13 @@ class MbtiTestFragment : Fragment() {
     lateinit var progressBar: ProgressBar
     lateinit var choiceOneButton: Button
     lateinit var choiceTwoButton: Button
+    var typeString = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
 
         viewBinding = FragmentMbtiTestBinding.inflate(inflater, container, false)
         dialogDismissed()
@@ -52,84 +54,121 @@ class MbtiTestFragment : Fragment() {
 
 
         } else {
-            findNavController().navigate(MbtiTestFragmentDirections.actionMbtiTestFragmentToMbtiTestResultFragment())
+            val bundle = Bundle()
+            bundle.putString("typeString", typeString) // 假設typeString是你要傳遞的字串
+
+            val resultFragment = MbtiTestResultFragment()
+            resultFragment.arguments = bundle
+            findNavController().navigate(MbtiTestFragmentDirections.actionMbtiTestFragmentToMbtiTestResultFragment(typeString))
             dialogDismissed()
         }
     }
 
+//    private fun onChoiceButtonClick(view: View) {
+//        Log.i("Click_Choice", "View ID: ${view.id}, R.id.button_choice1: ${R.id.button_choice1}, R.id.button_choice2: ${R.id.button_choice2}")
+//        val choiceIndex = when (view.id) {
+//            viewBinding.buttonChoice1.id -> 0
+//            viewBinding.buttonChoice2.id -> 1
+//            else -> -1
+//        }
+//        Log.i("Click_Choice", "choiceIndex: $choiceIndex")
+//        if (choiceIndex != -1) {
+//            // 用戶選擇了某個選項，您可以在這裡進行相應的處理
+//            if (currentQuestionIndex < questions.size) {
+//                val selectedChoice = questions[currentQuestionIndex].choices[choiceIndex]
+//
+//
+////                val selectedChoice = questions[currentQuestionIndex].choices[choiceIndex]
+//                val content = selectedChoice.content
+//                val score = selectedChoice.score
+//                buttonTapped(view)
+//                Log.i("Click_Choice", "selectedChoice: $selectedChoice")
+//                Log.i("Click_Choice", "content: $content")
+//                Log.i("Click_Choice", "score: $score")
+//                // 處理所選選項的內容和分數
+//                // 這裡可以添加您的邏輯
+//
+//                // 更新當前問題的索引，準備跳轉到下一題
+////            currentQuestionIndex++
+//
+//                // 顯示下一個問題
+//                showQuestion(currentQuestionIndex)
+//            }
+//        }
+//    }
+
     private fun onChoiceButtonClick(view: View) {
-        Log.i("Click_Choice", "View ID: ${view.id}, R.id.button_choice1: ${R.id.button_choice1}, R.id.button_choice2: ${R.id.button_choice2}")
         val choiceIndex = when (view.id) {
             viewBinding.buttonChoice1.id -> 0
             viewBinding.buttonChoice2.id -> 1
             else -> -1
         }
-        Log.i("Click_Choice", "choiceIndex: $choiceIndex")
-        if (choiceIndex != -1) {
-            // 用戶選擇了某個選項，您可以在這裡進行相應的處理
-            if (currentQuestionIndex < questions.size) {
-                val selectedChoice = questions[currentQuestionIndex].choices[choiceIndex]
 
+        if (choiceIndex != -1 && currentQuestionIndex < questions.size) {
+            // 更新分數
+            questions[currentQuestionIndex].choices[choiceIndex].score++
 
-//                val selectedChoice = questions[currentQuestionIndex].choices[choiceIndex]
-                val content = selectedChoice.content
-                val score = selectedChoice.score
-                buttonTapped(view)
-                Log.i("Click_Choice", "selectedChoice: $selectedChoice")
-                Log.i("Click_Choice", "content: $content")
-                Log.i("Click_Choice", "score: $score")
-                // 處理所選選項的內容和分數
-                // 這裡可以添加您的邏輯
-
-                // 更新當前問題的索引，準備跳轉到下一題
-//            currentQuestionIndex++
-
+            // 繼續下一個問題或計算最終結果
+            currentQuestionIndex++
+            if (currentQuestionIndex == questions.size) {
+                // 所有問題都已回答，計算結果
+                val personalityType = computePersonalityType()
+                // ... 做其他相關的處理，比如顯示結果或導航到另一個頁面
+                showQuestion(currentQuestionIndex)
+            } else {
                 // 顯示下一個問題
                 showQuestion(currentQuestionIndex)
             }
         }
     }
 
-    fun buttonTapped(view: View) {
+    private fun buttonTapped(view: View) {
         var personalityTypeText = ""
         var index = 0
 
         currentQuestionIndex++
 
-        // 沒下一題了，計算是哪一個人格 type，回傳字串
-        if (currentQuestionIndex == questions.size) {
-            personalityTypeText = computePersonalityType()
 
-            // 求出 personalityTypeText 屬於的 struct 在陣列中的 index
-            index = when (personalityTypeText) {
-                "INTJ" -> 0
-                "INTP" -> 1
-                "ENTJ" -> 2
-                "ENTP" -> 3
-                "INFJ" -> 4
-                "INFP" -> 5
-                "ENFJ" -> 6
-                "ENFP" -> 7
-                "ISTJ" -> 8
-                "ISFJ" -> 9
-                "ESTJ" -> 10
-                "ESFJ" -> 11
-                "ISTP" -> 12
-                "ISFP" -> 13
-                "ESTP" -> 14
-                "ESFP" -> 15
-                else -> -1
-            }
-        } else if (currentQuestionIndex < questions.size) { // 還有題目
+        // 求出 personalityTypeText 屬於的 struct 在陣列中的 index
+        index = when (personalityTypeText) {
+            "INTJ" -> 0
+            "INTP" -> 1
+            "ENTJ" -> 2
+            "ENTP" -> 3
+            "INFJ" -> 4
+            "INFP" -> 5
+            "ENFJ" -> 6
+            "ENFP" -> 7
+            "ISTJ" -> 8
+            "ISFJ" -> 9
+            "ESTJ" -> 10
+            "ESFJ" -> 11
+            "ISTP" -> 12
+            "ISFP" -> 13
+            "ESTP" -> 14
+            "ESFP" -> 15
+            else -> -1
+        }
+        if (currentQuestionIndex < questions.size) { // 還有題目
             if (view.tag == 0) {
                 questions[currentQuestionIndex - 1].choices[0].score++
-                Log.i("Score_Update", "Question: $currentQuestionIndex, Choice: 0, Score: ${questions[currentQuestionIndex - 1].choices[0].score}")
+                Log.i(
+                    "Score_Update",
+                    "Question: $currentQuestionIndex, Choice: 0, Score: ${questions[currentQuestionIndex - 1].choices[0].score}"
+                )
             } else {
                 questions[currentQuestionIndex - 1].choices[1].score++
-                Log.i("Score_Update", "Question: $currentQuestionIndex, Choice: 1, Score: ${questions[currentQuestionIndex - 1].choices[1].score}")
+                Log.i(
+                    "Score_Update",
+                    "Question: $currentQuestionIndex, Choice: 1, Score: ${questions[currentQuestionIndex - 1].choices[1].score}"
+                )
             }
             showQuestion(currentQuestionIndex) // 顯示下題
         }
+        // 沒下一題了，計算是哪一個人格 type，回傳字串
+        if (currentQuestionIndex == questions.size) {
+            personalityTypeText = computePersonalityType()
+    }
     }
 
     private fun computePersonalityType(): String {
@@ -213,7 +252,7 @@ class MbtiTestFragment : Fragment() {
                     questions[27].choices[1].score +
                     questions[31].choices[0].score
 
-        var typeString = ""
+
 
         val arrTemp1 = arrayOf("I", "E")
         typeString += when {
@@ -243,7 +282,7 @@ class MbtiTestFragment : Fragment() {
             else -> arrTemp4.random()
         }
         Log.i("Click_Choice", "typeString: $typeString")
-        Log.i("MBTI_Scores", "P Score: $pTypeScore, J Score: $jTypeScore")
+        Log.i("MBTI_Scores", "I Score: $iTypeScore, E Score: $eTypeScore, N Score: $nTypeScore, S Score: $sTypeScore, T Score: $tTypeScore, F Score: $fTypeScore, P Score: $pTypeScore, J Score: $jTypeScore")
         return typeString
 
     }

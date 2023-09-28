@@ -231,6 +231,10 @@
         <action
             android:id="@+id/action_mbtiTestResultFragment_to_systemRecommendsHobbyFragment"
             app:destination="@id/systemRecommendsHobbyFragment" />
+        <argument
+            android:name="typeString"
+            app:argType="string"/>
+
     </fragment>
     <fragment
         android:id="@+id/postFragment"

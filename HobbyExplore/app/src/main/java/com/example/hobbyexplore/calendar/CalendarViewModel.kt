@@ -55,7 +55,6 @@ class CalendarViewModel : ViewModel() {
                     }
                 }
 
-
                 _ratingDate.postValue(ratings)
                 Log.i("GetRating", "$ratings")
             } catch (e: Exception) {

@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="mbtiData"
+            type="com.example.hobbyexplore.personalitytest.mbti.Personality" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,12 +54,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="ESTP 企業家"
                     android:textSize="30sp"
+                    android:text=""
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mbti_test_result" />
+
+                <TextView
+                    android:id="@+id/mbti_test_result_tw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textSize="30sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mbti_test_result_en" />
 
                 <TextView
                     android:id="@+id/mbti_test_result_content"
@@ -66,12 +78,12 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:text="行動力十足，而且心臟大顆、很能承擔風險，具有洞察事物的天賦，做事不拖泥帶水，擅長解決難題"
+                    android:text=""
                     android:textAlignment="textStart"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mbti_test_result_en" />
+                    app:layout_constraintTop_toBottomOf="@+id/mbti_test_result_tw" />
 
                 <Button
                     android:id="@+id/system_recommend_button"
