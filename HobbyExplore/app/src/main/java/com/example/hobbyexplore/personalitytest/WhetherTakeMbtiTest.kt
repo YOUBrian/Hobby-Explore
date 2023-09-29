@@ -28,7 +28,7 @@ class WhetherTakeMbtiTest : Fragment() {
             binding.systemRecommendButton.visibility = View.VISIBLE
         }
         binding.systemRecommendButton.setOnClickListener {
-            it.findNavController().navigate(WhetherTakeMbtiTestDirections.actionWhetherTakeMbtiTestToSystemRecommendsHobbyFragment())
+            it.findNavController().navigate(WhetherTakeMbtiTestDirections.actionWhetherTakeMbtiTestToChatGptFragment(""))
         }
         binding.mbtiYesButton.setOnClickListener {
             it.findNavController().navigate(WhetherTakeMbtiTestDirections.actionWhetherTakeMbtiTestToMbtiTestFragment())

@@ -17,10 +17,10 @@ class SystemRecommendsHobbyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentSystemRecommendsHobbyBinding.inflate(inflater)
-        binding.selectButton.setOnClickListener {
-            it.findNavController()
-                .navigate(SystemRecommendsHobbyFragmentDirections.actionSystemRecommendsHobbyFragmentToEnterBudgetFragment())
-        }
+//        binding.selectButton.setOnClickListener {
+//            it.findNavController()
+//                .navigate(SystemRecommendsHobbyFragmentDirections.actionSystemRecommendsHobbyFragmentToEnterBudgetFragment())
+//        }
 
         binding.changeButton.setOnClickListener {
             binding.detailImage.setImageResource(R.drawable.baseball)

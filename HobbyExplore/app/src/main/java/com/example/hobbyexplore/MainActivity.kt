@@ -72,7 +72,7 @@ class MainActivity : BaseActivity() {
                 destination.id == R.id.whetherTakeMbtiTest ||
                 destination.id == R.id.mbtiTestFragment ||
                 destination.id == R.id.mbtiTestResultFragment ||
-                destination.id == R.id.systemRecommendsHobbyFragment ||
+                destination.id == R.id.chatGptFragment ||
                 destination.id == R.id.budget_input) {
                 binding.bottomNavView.visibility = View.GONE
             }
@@ -136,7 +136,7 @@ class MainActivity : BaseActivity() {
                 R.id.hobbyAppliaceFragment -> CurrentFragmentType.HOBBY_APPLIANCE
                 R.id.hobbyCourseFragment -> CurrentFragmentType.HOBBY_COURSE
                 R.id.hobbyPlaceFragment -> CurrentFragmentType.HOBBY_PLACE
-                R.id.systemRecommendsHobbyFragment -> CurrentFragmentType.RECOMMEND_HOBBY
+                R.id.chatGptFragment -> CurrentFragmentType.RECOMMEND_HOBBY
                 R.id.applianceRecommendFragment -> CurrentFragmentType.RECOMMEND_APPLIANCE
                 R.id.courseRecommendFragment -> CurrentFragmentType.RECOMMEND_COURSE
                 R.id.placeRecommendFragment -> CurrentFragmentType.RECOMMEND_PLACE

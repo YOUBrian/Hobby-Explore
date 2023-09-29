@@ -32,7 +32,7 @@ class MbtiTestResultFragment : Fragment() {
 
 
         binding.systemRecommendButton.setOnClickListener {
-            it.findNavController().navigate(MbtiTestResultFragmentDirections.actionMbtiTestResultFragmentToSystemRecommendsHobbyFragment())
+            it.findNavController().navigate(MbtiTestResultFragmentDirections.actionMbtiTestResultFragmentToChatGptFragment(typeString))
         }
         return binding.root
     }

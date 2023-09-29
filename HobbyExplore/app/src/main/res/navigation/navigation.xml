@@ -143,7 +143,14 @@
     <fragment
         android:id="@+id/chatGptFragment"
         android:name="com.example.hobbyexplore.chatgpt.ChatGptFragment"
-        android:label="ChatGptFragment" />
+        android:label="ChatGptFragment" >
+        <action
+            android:id="@+id/action_chatGptFragment_to_enterBudgetFragment"
+            app:destination="@id/enterBudgetFragment" />
+        <argument
+            android:name="typeString"
+            app:argType="string"/>
+    </fragment>
     <fragment
         android:id="@+id/personalityTestFragment"
         android:name="com.example.hobbyexplore.personalitytest.PersonalityTestFragment"
@@ -161,19 +168,11 @@
         android:name="com.example.hobbyexplore.personalitytest.WhetherTakeMbtiTest"
         android:label="WhetherTakeMbtiTest">
         <action
-            android:id="@+id/action_whetherTakeMbtiTest_to_systemRecommendsHobbyFragment"
-            app:destination="@id/systemRecommendsHobbyFragment" />
-        <action
             android:id="@+id/action_whetherTakeMbtiTest_to_mbtiTestFragment"
             app:destination="@id/mbtiTestFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/systemRecommendsHobbyFragment"
-        android:name="com.example.hobbyexplore.personalitytest.SystemRecommendsHobbyFragment"
-        android:label="SystemRecommendsHobbyFragment">
         <action
-            android:id="@+id/action_systemRecommendsHobbyFragment_to_enterBudgetFragment"
-            app:destination="@id/enterBudgetFragment" />
+            android:id="@+id/action_whetherTakeMbtiTest_to_chatGptFragment"
+            app:destination="@id/chatGptFragment" />
     </fragment>
     <fragment
         android:id="@+id/enterBudgetFragment"
@@ -228,12 +227,12 @@
         android:name="com.example.hobbyexplore.personalitytest.mbti.MbtiTestResultFragment"
         android:label="fragment_mbti_test_result"
         tools:layout="@layout/fragment_mbti_test_result" >
-        <action
-            android:id="@+id/action_mbtiTestResultFragment_to_systemRecommendsHobbyFragment"
-            app:destination="@id/systemRecommendsHobbyFragment" />
         <argument
             android:name="typeString"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_mbtiTestResultFragment_to_chatGptFragment"
+            app:destination="@id/chatGptFragment" />
 
     </fragment>
     <fragment

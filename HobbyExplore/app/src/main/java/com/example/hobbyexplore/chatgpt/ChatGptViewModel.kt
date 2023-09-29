@@ -1,5 +1,6 @@
 package com.example.hobbyexplore.chatgpt
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,13 +39,13 @@ class ChatGptViewModel : ViewModel() {
         addToChat(response,ChatGPTMessage.SENT_BY_BOT,getCurrentTimestamp())
     }
 
-    fun callApi(question : String){
+    fun callApi(typeString : String){
         addToChat("Typing....",ChatGPTMessage.SENT_BY_BOT,getCurrentTimestamp())
 
         val completionRequest = CompletionRequest(
             model = "text-davinci-003",
-            prompt = question,
-            max_tokens = 4000
+            prompt = typeString,
+            max_tokens = 100
         )
 
         viewModelScope.launch {
@@ -57,27 +58,43 @@ class ChatGptViewModel : ViewModel() {
         }
     }
 
+//    private suspend fun handleApiResponse(response: Response<CompletionResponse>) {
+//        withContext(Dispatchers.Main){
+//            if (response.isSuccessful){
+//                response.body()?.let { completionResponse ->
+//                    val result = completionResponse.choices.firstOrNull()?.text
+//                    if (result != null){
+//                        addResponse(result.trim())
+//                    }else{
+//                        addResponse("No choices found")
+//                    }
+//                }
+//            }else{
+//                addResponse("Failed to get response ${response.errorBody()}")
+//            }
+//        }
+//
+//    }
     private suspend fun handleApiResponse(response: Response<CompletionResponse>) {
-        withContext(Dispatchers.Main){
-            if (response.isSuccessful){
-                response.body()?.let { completionResponse ->
-                    val result = completionResponse.choices.firstOrNull()?.text
-                    if (result != null){
-                        addResponse(result.trim())
-                    }else{
-                        addResponse("No choices found")
-                    }
-                }
-            }else{
+        withContext(Dispatchers.Main) {
+            if (response.isSuccessful) {
+                val sportRecommendation = getRandomSport()
+                addResponse(sportRecommendation)
+                Log.i("sportResponse", "sportResponse:$sportRecommendation")
+                Log.i("sportResponse", "addResponse:${addResponse(sportRecommendation)}")
+            } else {
                 addResponse("Failed to get response ${response.errorBody()}")
             }
         }
-
     }
 
     fun getCurrentTimestamp(): String {
         return SimpleDateFormat("hh mm a", Locale.getDefault()).format(Date())
     }
 
+    fun getRandomSport(): String {
+        val sports = listOf("baseball", "basketball", "tennis", "badminton", "billiards", "volleyball")
+        return sports.random()
+    }
 
 }
