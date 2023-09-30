@@ -30,6 +30,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.*
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -103,6 +105,21 @@ class CalendarFragment : Fragment() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
+
+        binding.shareButton.setOnClickListener {
+            firestore.collection("calendarData")
+                .whereEqualTo("eventDate", stringDateSelected)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    val event = querySnapshot.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
+                    event?.let {
+                        val contentFromFirebase = it.eventContent
+                        val imageUrlFromFirebase = it.eventImage
+                        findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToPostFragment(contentFromFirebase,imageUrlFromFirebase))
+                    }
+                }
+        }
+
 
     }
 

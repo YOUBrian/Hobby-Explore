@@ -86,6 +86,18 @@
             app:layout_constraintStart_toStartOf="@+id/record_rating_Button"
             app:layout_constraintTop_toBottomOf="@+id/record_rating_Button" />
 
+        <Button
+            android:id="@+id/share_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:backgroundTint="#3F3A3A"
+            android:padding="4dp"
+            android:text="SHARE"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/record_rating_Button"
+            app:layout_constraintTop_toBottomOf="@+id/calendar_image_button" />
+
         <EditText
             android:id="@+id/calendar_input_content"
             android:layout_width="wrap_content"

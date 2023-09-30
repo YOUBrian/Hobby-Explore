@@ -95,7 +95,7 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.navigation_calendar -> {
 
-                    findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToCalendarFragment())
+                    findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToCalendarFragment("",""))
                     return@setOnItemSelectedListener true
                 }
                 R.id.navigation_hobbyBoards -> {

@@ -22,7 +22,7 @@ class PostFragment : Fragment() {
     ): View? {
         val binding = FragmentPostBinding.inflate(inflater)
         val viewModel: PostViewModel = ViewModelProvider(this).get(PostViewModel::class.java)
-        val content = binding.userContentInput.text
+        val content = binding.userContentInput.text.toString()
         val imageUri =  PostFragmentArgs.fromBundle(requireArguments()).imageUri
         val imageStringToUri = Uri.parse(imageUri)
         viewModel.uploadPhoto.value = imageUri
@@ -40,9 +40,10 @@ class PostFragment : Fragment() {
         }
 
         binding.publishButton.setOnClickListener {
+            val content = binding.userContentInput.text.toString()
             val rating = binding.ratingBar.rating
             it.findNavController().navigate(PostFragmentDirections.actionPostFragmentToHobbyBoardsFragment())
-            viewModel.postMessageData(content.toString(),rating,imageUri)
+            viewModel.postMessageData(content, rating, imageUri)
             Log.i("getImageUri", "getImageUri: $imageUri")
             Log.i("getimageStringToUri", "imageStringToUri: $imageStringToUri")
             Log.i("getrating", "star: $rating")
@@ -52,6 +53,15 @@ class PostFragment : Fragment() {
 //            Log.i("getrating", "star: $rating")
 //            viewModel.postMessageData(content.toString(),rating.toFloat(),imageUrl.toString())
         }
+
+        val args = PostFragmentArgs.fromBundle(requireArguments())
+        val contentFromArgs = args.content
+        val imageUrlFromArgs = args.imageUri
+
+        binding.userContentInput.setText(contentFromArgs)
+        Glide.with(this).load(imageUrlFromArgs).into(binding.postImage)
+
+
         return binding.root
     }
 

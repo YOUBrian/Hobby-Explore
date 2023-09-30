@@ -53,7 +53,7 @@ class CameraFragment : Fragment() {
 
                 Log.i("getPhotoURI", "selectedPhotoUri: $selectedPhotoUri")
                 Log.i("getPhotoURI", "downloadUrl: $downloadUrl")
-                findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToPostFragment(downloadUrl))
+                findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToPostFragment("",downloadUrl))
             }
         }.addOnFailureListener {
 

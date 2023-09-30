@@ -38,7 +38,7 @@ class HobbyBoardsFragment : Fragment() {
 //            viewModel.postMessageData()
 //            viewModel.postApplianceData()
             Toast.makeText(requireContext(), "POST", Toast.LENGTH_SHORT).show()
-            it.findNavController().navigate(HobbyBoardsFragmentDirections.actionHobbyBoardsFragmentToPostFragment("ssss"))
+            it.findNavController().navigate(HobbyBoardsFragmentDirections.actionHobbyBoardsFragmentToPostFragment("",""))
         }
 
         viewModel.refreshStatus.observe(

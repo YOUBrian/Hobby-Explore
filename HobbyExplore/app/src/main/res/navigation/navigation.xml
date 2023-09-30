@@ -27,7 +27,17 @@
         android:id="@+id/calendarFragment"
         android:name="com.example.hobbyexplore.calendar.CalendarFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <argument
+            android:name="content"
+            app:argType="string" />
+        <argument
+            android:name="imageUrl"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.hobbyexplore.profile.ProfileFragment"
@@ -246,6 +256,9 @@
         <action
             android:id="@+id/action_postFragment_to_hobbyBoardsFragment"
             app:destination="@id/hobbyBoardsFragment" />
+        <argument
+            android:name="content"
+            app:argType="string" />
         <argument
             android:name="imageUri"
             app:argType="string"/>
