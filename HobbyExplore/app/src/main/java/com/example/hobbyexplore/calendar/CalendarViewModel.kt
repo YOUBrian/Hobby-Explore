@@ -20,8 +20,13 @@ class CalendarViewModel : ViewModel() {
     val progress: MutableLiveData<Int>
     get() = _progress
 
-    val dataList = mutableListOf<Pair<String, Int>>()
+    val dataList: MutableLiveData<List<Pair<String, Int>>> = MutableLiveData()
 
+
+
+    private val _uploadPhoto = MutableLiveData<String>()
+    val uploadPhoto: MutableLiveData<String>
+        get() = _uploadPhoto
 
 
     init {
@@ -72,27 +77,48 @@ class CalendarViewModel : ViewModel() {
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val ratings = mutableListOf<CalendarEvent>()
+                val dataListValues = dataList.value?.toMutableList() ?: mutableListOf()
                 for (document in querySnapshot) {
                     val rating = document.toObject(CalendarEvent::class.java)
                     val eventDate = document.getString("eventDate") ?: ""
                     val eventRating = document.getLong("eventRating")?.toInt() ?: 0
+                    Log.i("FirebaseData", "Event Date: $eventDate, Event Rating: $eventRating")
                     if (rating != null) {
-                        // 在添加数据之前检查是否已存在相同的数据
                         val pair = Pair(eventDate, eventRating)
-                        if (!dataList.contains(pair)) {
+                        if (!dataListValues.contains(pair)) {
                             ratings.add(rating)
                             Log.i("getCalendarData", "rating: $rating")
-                            dataList.add(pair)
+                            dataListValues.add(pair)
                         }
                     }
                 }
                 _ratingDate.postValue(ratings)
-                dataList.sortBy { it.first }
-                Log.i("dataListttttt","dataList:$dataList")
+                dataListValues.sortBy { it.first }
+                dataList.postValue(dataListValues.toList())
+                Log.i("dataListttttt","dataList:$dataListValues")
             }
             .addOnFailureListener { e ->
                 Log.w("READ_DATA", "Error reading data.", e)
             }
     }
+
+    fun getDataForSpecificDate(date: String): LiveData<CalendarEvent?> {
+        val eventLiveData = MutableLiveData<CalendarEvent?>()
+        db.collection("calendarData")
+            .whereEqualTo("eventDate", date)
+            .get()
+            .addOnSuccessListener { documents ->
+                // 假設只有一個文檔對應於指定的日期
+                val event = documents.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
+                eventLiveData.postValue(event)
+            }
+            .addOnFailureListener {
+                eventLiveData.postValue(null)
+            }
+        return eventLiveData
+    }
+
+
+
 
 }
