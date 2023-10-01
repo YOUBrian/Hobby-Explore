@@ -18,19 +18,13 @@ import com.google.android.gms.maps.model.MarkerOptions
 class MapsFragment : Fragment() {
 
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(24.992335278732433, 121.43873123956986)
+        val latitude = arguments?.getDouble("latitude", 24.992335278732433) ?: 24.992335278732433
+        val longitude = arguments?.getDouble("longitude", 121.43873123956986) ?: 121.43873123956986
+
+        val location = LatLng(latitude, longitude)
         val zoomLevel = 18f
-        googleMap.addMarker(MarkerOptions().position(sydney).title("浮洲橋棒球場"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomLevel))
+        googleMap.addMarker(MarkerOptions().position(location).title("您的位置"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
     }
 
     override fun onCreateView(
