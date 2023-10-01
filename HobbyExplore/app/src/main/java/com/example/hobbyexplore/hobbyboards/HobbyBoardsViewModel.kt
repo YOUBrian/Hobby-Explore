@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.hobbyexplore.data.Appliance
 import com.example.hobbyexplore.data.Message
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.Calendar
@@ -31,7 +32,8 @@ class HobbyBoardsViewModel : ViewModel() {
 
     private fun getMessageData() {
         val docRef = db.collection("baseball_board")
-        docRef.addSnapshotListener { snapshot, e ->
+        docRef.orderBy("createdTime", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w("READ_DATA", "Listen failed.", e)
                 return@addSnapshotListener
@@ -58,14 +60,14 @@ class HobbyBoardsViewModel : ViewModel() {
         val articles = FirebaseFirestore.getInstance()
             .collection("sports")
             .document("baseball")
-            .collection("Appliance")
+            .collection("Place")
         val document = articles.document()
         val data = hashMapOf(
-            "title" to "KIPSTA 棒球 BA180 (2 入)",
-            "content" to "此為真皮棒球。適合練習與比賽用這款帶有浮凸縫線的硬式皮革棒球，讓你的練習和比賽表現更上一層樓。球觸佳又耐用。",
+            "title" to "浮洲橋棒球場",
+            "content" to "河濱簡易型棒球場",
             "id" to document.id,
-            "image" to "https://decathlon.tw/media/catalog/product/0/7/07_D341164_p2486007.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=600&width=600&canvas=600:600",
-            "price" to "NT$299"
+            "image" to "https://www.hrcm.ntpc.gov.tw/Uploads/%E6%96%BD%E6%94%BF%E5%9C%B0%E5%9C%96/%E8%A8%AD%E6%96%BD%E4%BB%8B%E7%B4%B9/%E7%90%83%E5%A0%B4/%E6%A3%92%E5%A3%98%E7%90%83%E5%A0%B4/%E6%B5%AE%E6%B4%B2%E6%A3%92%E7%90%83%E5%A0%B41.JPG",
+            "price" to "免費對外場地租借"
         )
         Log.i("addData", "${data}")
         document.set(data)

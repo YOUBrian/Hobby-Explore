@@ -3,9 +3,11 @@ package com.example.hobbyexplore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import com.example.hobbyexplore.data.Repository
 import com.example.hobbyexplore.data.User
 import com.example.hobbyexplore.network.LoadApiStatus
+import com.example.hobbyexplore.util.CurrentFragmentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -59,6 +61,9 @@ class MainViewModel : ViewModel() {
     fun onProfileNavigated() {
         _navigateToProfileByBottomNav.value = null
     }
+
+    // Record current fragment to support data binding
+    val currentFragmentType = MutableLiveData<CurrentFragmentType>()
 
 }
 //import androidx.lifecycle.ViewModel

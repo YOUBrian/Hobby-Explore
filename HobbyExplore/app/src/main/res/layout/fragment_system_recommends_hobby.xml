@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="introduce"
+            type="com.example.hobbyexplore.detail.DetailViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".detail.DetailFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/detail_image"
+                android:layout_width="0dp"
+                android:layout_height="400dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/basketball"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/detail_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="籃球"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/detail_image"
+                app:layout_constraintStart_toStartOf="@+id/detail_image"
+                app:layout_constraintTop_toBottomOf="@+id/detail_image" />
+
+            <TextView
+                android:id="@+id/detail_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="籃球，是一種由兩隊參與，在一個長方形籃球場進行的球類運動。 每隊出場5名隊員，可將球向任何方向傳、投、拍、滾或運，目的是將籃球投入對方球籃得分，並阻止對方獲得控球權或得分。 籃球是世界上最多人觀看的球類活動之一，從1936年起就是奧運會的正式競賽項目之一。 在三分線內投進可得兩分，若在三分線外投籃，可以得到三分。"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/detail_title"
+                app:layout_constraintStart_toStartOf="@+id/detail_title"
+                app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+            <Button
+                android:id="@+id/select_button"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center"
+                android:background="@drawable/custom_button"
+                android:gravity="center"
+                android:text="@string/select_this_hobby"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/change_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_content" />
+
+            <Button
+                android:id="@+id/change_button"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/custom_button"
+                android:backgroundTint="@color/black"
+                android:gravity="center"
+                android:text="@string/change_hobby"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/select_button"
+                app:layout_constraintTop_toTopOf="@+id/select_button" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

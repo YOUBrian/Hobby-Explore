@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_hobbyCategory"
+        android:icon="@drawable/ic_nav_category_selector"
+        android:title=""/>
+    <item
         android:id="@+id/navigation_calendar"
         android:icon="@drawable/ic_nav_calendar_selector"
         android:title=""/>
@@ -11,10 +15,6 @@
         android:icon="@drawable/ic_nav_boards_selector"
         android:title=""/>
 
-    <item
-        android:id="@+id/navigation_hobbyCategory"
-        android:icon="@drawable/ic_nav_category_selector"
-        android:title=""/>
 
     <item
         android:id="@+id/navigation_profile"

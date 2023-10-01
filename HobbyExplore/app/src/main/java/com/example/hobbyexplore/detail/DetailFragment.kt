@@ -31,7 +31,7 @@ class DetailFragment : Fragment() {
         binding.introduce = viewModel
 
         binding.detailAppliance.setOnClickListener {
-            it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHobbyAppliaceFragment())
+            it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHobbyAppliaceFragment(-1))
         }
 
         binding.detailCourse.setOnClickListener {

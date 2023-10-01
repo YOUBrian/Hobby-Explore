@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.hobbyexplore.data.CalendarEvent
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -15,10 +16,32 @@ class CalendarViewModel : ViewModel() {
     val ratingDate: LiveData<List<CalendarEvent>>
         get() = _ratingDate
 
+    private val _progress = MutableLiveData<Int>()
+    val progress: MutableLiveData<Int>
+    get() = _progress
+
+    val dataList: MutableLiveData<List<Pair<String, Int>>> = MutableLiveData()
+
+
+
+    private val _uploadPhoto = MutableLiveData<String>()
+    val uploadPhoto: MutableLiveData<String>
+        get() = _uploadPhoto
+
+
     init {
         getCalendarData()
+//        getDateData()
+        progress.value = 50
     }
-    fun getCalendarData() {
+
+//    fun setProgress(progressValue: Int) {
+//        _progress.value = progressValue
+//        Log.i("ratingValue", "progress.value:${_progress.value}")
+//    }
+
+    //snapshot
+    fun getDateData() {
         val docRef = db.collection("calendarData")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -28,15 +51,14 @@ class CalendarViewModel : ViewModel() {
             try {
                 val ratings = mutableListOf<CalendarEvent>()
                 for (document in snapshot?.documents.orEmpty()) {
-                    Log.i("GetRating", "$snapshot")
-                    Log.i("GetRating", "$document")
+                    Log.i("getDateData", "$snapshot")
+                    Log.i("getDateData", "$document")
                     val rating = document.toObject(CalendarEvent::class.java)
                     if (rating != null) {
                         ratings.add(rating)
-                        Log.i("GetRating", "$rating")
+                        Log.i("getDateData", "$rating")
                     }
                 }
-
 
                 _ratingDate.postValue(ratings)
                 Log.i("GetRating", "$ratings")
@@ -46,4 +68,57 @@ class CalendarViewModel : ViewModel() {
         }
 
     }
+
+
+    //get
+    fun getCalendarData() {
+        val docRef = db.collection("calendarData")
+        docRef.orderBy("eventDate", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val ratings = mutableListOf<CalendarEvent>()
+                val dataListValues = dataList.value?.toMutableList() ?: mutableListOf()
+                for (document in querySnapshot) {
+                    val rating = document.toObject(CalendarEvent::class.java)
+                    val eventDate = document.getString("eventDate") ?: ""
+                    val eventRating = document.getLong("eventRating")?.toInt() ?: 0
+                    Log.i("FirebaseData", "Event Date: $eventDate, Event Rating: $eventRating")
+                    if (rating != null) {
+                        val pair = Pair(eventDate, eventRating)
+                        if (!dataListValues.contains(pair)) {
+                            ratings.add(rating)
+                            Log.i("getCalendarData", "rating: $rating")
+                            dataListValues.add(pair)
+                        }
+                    }
+                }
+                _ratingDate.postValue(ratings)
+                dataListValues.sortBy { it.first }
+                dataList.postValue(dataListValues.toList())
+                Log.i("dataListttttt","dataList:$dataListValues")
+            }
+            .addOnFailureListener { e ->
+                Log.w("READ_DATA", "Error reading data.", e)
+            }
+    }
+
+    fun getDataForSpecificDate(date: String): LiveData<CalendarEvent?> {
+        val eventLiveData = MutableLiveData<CalendarEvent?>()
+        db.collection("calendarData")
+            .whereEqualTo("eventDate", date)
+            .get()
+            .addOnSuccessListener { documents ->
+                // 假設只有一個文檔對應於指定的日期
+                val event = documents.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
+                eventLiveData.postValue(event)
+            }
+            .addOnFailureListener {
+                eventLiveData.postValue(null)
+            }
+        return eventLiveData
+    }
+
+
+
+
 }
