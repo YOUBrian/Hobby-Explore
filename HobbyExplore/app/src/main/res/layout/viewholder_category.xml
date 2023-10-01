@@ -8,31 +8,56 @@
         type="com.example.hobbyexplore.data.Introduce" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FDF5E8"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp">
 
-        <ImageView
-            android:id="@+id/category_image"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_width="160dp"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
-            app:imageUrl="@{introduce.image}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/catalog_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{introduce.title}"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/category_image"
-            app:layout_constraintTop_toBottomOf="@+id/category_image" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/category_image"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{introduce.image}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#a3b2d1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/category_image" />
+
+            <TextView
+                android:id="@+id/catalog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{introduce.title}"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:hint="棒球"
+                android:paddingStart="15dp"
+                android:paddingBottom="4dp"
+                app:layout_constraintStart_toStartOf="@+id/category_image"
+                app:layout_constraintTop_toBottomOf="@+id/category_image" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
 </layout>

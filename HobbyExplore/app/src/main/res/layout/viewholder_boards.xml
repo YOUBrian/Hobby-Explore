@@ -9,21 +9,34 @@
             type="com.example.hobbyexplore.data.Message" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/place_image_cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/boards_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/grey_round_corner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+
+                android:background="#a3b2d1"
+                app:layout_constraintBottom_toTopOf="@+id/boards_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/boards_user"
@@ -32,8 +45,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@{boards.name}"
-                android:textColor="@color/orange"
-                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/boards_content"
                 app:layout_constraintTop_toTopOf="@+id/boards_content" />
 
@@ -41,25 +54,28 @@
                 android:id="@+id/boards_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/boards_content"
                 app:layout_constraintStart_toStartOf="@id/boards_user"
                 app:layout_constraintTop_toBottomOf="@+id/boards_user"
                 app:timeStamp="@{boards.createdTime}" />
 
-            <RatingBar
+            <me.zhanghai.android.materialratingbar.MaterialRatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:isIndicator="false"
+                android:layout_height="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:isIndicator="true"
                 android:numStars="5"
                 android:rating="5"
                 android:stepSize="1"
-                app:layout_constraintStart_toStartOf="@+id/boards_time"
-                app:layout_constraintTop_toBottomOf="@+id/boards_time" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/boards_time"
+                app:mrb_progressTint="#fecb3c"
+                app:mrb_secondaryProgressTint="#ffffff" />
 
             <TextView
                 android:id="@+id/boards_user_content"
@@ -68,36 +84,24 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="@{boards.content}"
-                android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/boards_content"
                 app:layout_constraintStart_toStartOf="@+id/boards_user"
                 app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
             <ImageView
                 android:id="@+id/boards_image"
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:scaleType="fitXY"
                 app:imageUrl="@{boards.image}"
+                app:layout_constraintBottom_toBottomOf="@+id/boards_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/boards_user_content"
-                app:layout_constraintBottom_toBottomOf="@+id/boards_content"/>
+                app:layout_constraintTop_toBottomOf="@+id/boards_user_content" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            android:background="#cccccc"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/boards_content" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 </layout>

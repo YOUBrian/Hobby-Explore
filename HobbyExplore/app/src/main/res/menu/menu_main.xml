@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/calendar_share"
+        android:title="分享"
+        android:icon="@drawable/calendar_share_icon"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/boards_post"
+        android:title="發文"
+        android:icon="@drawable/boards_post_icon"
+        app:showAsAction="ifRoom|withText" />
+</menu>

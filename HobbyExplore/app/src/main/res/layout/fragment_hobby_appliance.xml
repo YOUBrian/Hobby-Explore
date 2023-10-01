@@ -18,10 +18,10 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/hobby_appliance_recyclerView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/course_button"
             app:layout_constraintEnd_toEndOf="parent"

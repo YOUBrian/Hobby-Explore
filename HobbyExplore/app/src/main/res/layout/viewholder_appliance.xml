@@ -13,17 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/appliance_image"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/appliance_image_cardView"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:imageUrl="@{appliance.image}"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="#FDF5E8"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/appliance_image"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scaleType="center"
+                app:imageUrl="@{appliance.image}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/appliance_title"
@@ -33,11 +45,11 @@
             android:text="@{appliance.title}"
             android:textAlignment="viewStart"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/appliance_image"
-            app:layout_constraintStart_toStartOf="@+id/appliance_image"
-            app:layout_constraintTop_toBottomOf="@+id/appliance_image" />
+            app:layout_constraintEnd_toEndOf="@+id/appliance_image_cardView"
+            app:layout_constraintStart_toStartOf="@+id/appliance_image_cardView"
+            app:layout_constraintTop_toBottomOf="@+id/appliance_image_cardView" />
 
         <TextView
             android:id="@+id/appliance_price"
@@ -47,10 +59,10 @@
             android:text="@{appliance.price}"
             android:textAlignment="viewStart"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/appliance_image"
-            app:layout_constraintStart_toStartOf="@+id/appliance_image"
+            app:layout_constraintEnd_toEndOf="@+id/appliance_image_cardView"
+            app:layout_constraintStart_toStartOf="@+id/appliance_image_cardView"
             app:layout_constraintTop_toBottomOf="@+id/appliance_title" />
 
         <TextView
@@ -61,9 +73,9 @@
             android:text="@{appliance.content}"
             android:textAlignment="viewStart"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/appliance_image"
-            app:layout_constraintStart_toStartOf="@+id/appliance_image"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/appliance_image_cardView"
+            app:layout_constraintStart_toStartOf="@+id/appliance_image_cardView"
             app:layout_constraintTop_toBottomOf="@+id/appliance_price" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@
     <style name="Base.Theme.HobbyExplore" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">#777777</item>
+        <item name="colorPrimary">#a3b2d1</item>
 
     </style>
 

@@ -8,6 +8,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
@@ -30,7 +33,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.*
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -54,6 +56,7 @@ class CalendarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val viewModel: CalendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
+        setHasOptionsMenu(true)
         binding = FragmentCalendarBinding.inflate(inflater)
         lineChart = binding.chart1
         lineChart2 = binding.chart2
@@ -106,19 +109,19 @@ class CalendarFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        binding.shareButton.setOnClickListener {
-            firestore.collection("calendarData")
-                .whereEqualTo("eventDate", stringDateSelected)
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    val event = querySnapshot.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
-                    event?.let {
-                        val contentFromFirebase = it.eventContent
-                        val imageUrlFromFirebase = it.eventImage
-                        findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToPostFragment(contentFromFirebase,imageUrlFromFirebase))
-                    }
-                }
-        }
+//        binding.shareButton.setOnClickListener {
+//            firestore.collection("calendarData")
+//                .whereEqualTo("eventDate", stringDateSelected)
+//                .get()
+//                .addOnSuccessListener { querySnapshot ->
+//                    val event = querySnapshot.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
+//                    event?.let {
+//                        val contentFromFirebase = it.eventContent
+//                        val imageUrlFromFirebase = it.eventImage
+//                        findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToPostFragment(contentFromFirebase,imageUrlFromFirebase))
+//                    }
+//                }
+//        }
 
 
     }
@@ -298,6 +301,30 @@ class CalendarFragment : Fragment() {
                 Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
+    // Toolbar share fun
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(R.id.boards_post).isVisible = false
+    }
 
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.calendar_share -> {
+                firestore.collection("calendarData")
+                    .whereEqualTo("eventDate", stringDateSelected)
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        val event = querySnapshot.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
+                        event?.let {
+                            val contentFromFirebase = it.eventContent
+                            val imageUrlFromFirebase = it.eventImage
+                            findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToPostFragment(contentFromFirebase,imageUrlFromFirebase))
+                        }
+                    }
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
 }
