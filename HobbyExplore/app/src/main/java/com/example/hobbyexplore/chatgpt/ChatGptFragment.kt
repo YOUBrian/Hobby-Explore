@@ -52,6 +52,7 @@ class ChatGptFragment : Fragment() {
         viewModel.callApi(typeString)
 
         binding.changeButton.setOnClickListener {
+            binding.nestedScrollView.smoothScrollTo(0, 0)
             binding.loadingAnimation.visibility = View.VISIBLE
             binding.loadingAnimation.playAnimation()
 
