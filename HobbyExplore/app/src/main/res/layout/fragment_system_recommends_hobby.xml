@@ -6,7 +6,7 @@
     <data>
         <variable
             name="introduce"
-            type="com.example.hobbyexplore.detail.DetailViewModel" />
+            type="com.example.hobbyexplore.chatgpt.ChatGptViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -18,6 +18,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_animation"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/waiting" />
+
             <ImageView
                 android:id="@+id/detail_image"
                 android:layout_width="0dp"
@@ -26,7 +39,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/basketball"
+                app:imageUrl="@{introduce.introduceList.image}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +49,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="籃球"
+                android:text="@{introduce.introduceList.title}"
                 android:textAlignment="viewStart"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -49,7 +62,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="籃球，是一種由兩隊參與，在一個長方形籃球場進行的球類運動。 每隊出場5名隊員，可將球向任何方向傳、投、拍、滾或運，目的是將籃球投入對方球籃得分，並阻止對方獲得控球權或得分。 籃球是世界上最多人觀看的球類活動之一，從1936年起就是奧運會的正式競賽項目之一。 在三分線內投進可得兩分，若在三分線外投籃，可以得到三分。"
+                android:text="@{introduce.introduceList.content}"
                 android:textAlignment="viewStart"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/detail_title"
