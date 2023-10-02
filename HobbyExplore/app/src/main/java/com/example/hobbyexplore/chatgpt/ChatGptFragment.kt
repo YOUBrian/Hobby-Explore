@@ -66,4 +66,6 @@ class ChatGptFragment : Fragment() {
 
         return binding.root
     }
+
+
 }
