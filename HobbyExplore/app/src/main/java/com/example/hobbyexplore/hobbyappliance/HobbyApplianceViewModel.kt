@@ -22,11 +22,11 @@ class HobbyApplianceViewModel : ViewModel() {
         get() = _refreshStatus
 
     init {
-        getApplianceData()
+//        getApplianceData("")
     }
-    private fun getApplianceData() {
+    fun getApplianceData(sportName: String) {
         val docRef = db.collection("sports")
-            .document("baseball")
+            .document(sportName)
             .collection("Appliance")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {

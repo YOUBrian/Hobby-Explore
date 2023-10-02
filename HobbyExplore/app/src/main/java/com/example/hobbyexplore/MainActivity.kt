@@ -137,7 +137,7 @@ class MainActivity : BaseActivity() {
                 R.id.hobbyCategoryFragment -> CurrentFragmentType.CATEGORY
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
                 R.id.detailFragment -> CurrentFragmentType.HOBBY_EXPLORE
-                R.id.hobbyAppliaceFragment -> CurrentFragmentType.HOBBY_APPLIANCE
+                R.id.hobbyApplianceFragment -> CurrentFragmentType.HOBBY_APPLIANCE
                 R.id.hobbyCourseFragment -> CurrentFragmentType.HOBBY_COURSE
                 R.id.hobbyPlaceFragment -> CurrentFragmentType.HOBBY_PLACE
                 R.id.chatGptFragment -> CurrentFragmentType.RECOMMEND_HOBBY

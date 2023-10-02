@@ -101,19 +101,36 @@
             app:argType="com.example.hobbyexplore.data.Introduce" />
         <action
             android:id="@+id/action_detailFragment_to_hobbyPlaceFragment"
-            app:destination="@id/hobbyPlaceFragment" />
+            app:destination="@id/hobbyPlaceFragment" >
+        <argument
+            android:name="sportName"
+            app:argType="string" />
+        </action>
+
         <action
             android:id="@+id/action_detailFragment_to_hobbyCourseFragment"
-            app:destination="@id/hobbyCourseFragment" />
+            app:destination="@id/hobbyCourseFragment" >
+        <argument
+            android:name="sportName"
+            app:argType="string" />
+        </action>
+
         <action
             android:id="@+id/action_detailFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyAppliaceFragment" />
+            app:destination="@id/hobbyApplianceFragment" >
+            <argument
+                android:name="sportName"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
-        android:id="@+id/hobbyAppliaceFragment"
+        android:id="@+id/hobbyApplianceFragment"
         android:name="com.example.hobbyexplore.hobbyappliance.HobbyApplianceFragment"
         android:label="fragment_hobby_appliace"
         tools:layout="@layout/fragment_hobby_appliance">
+        <argument
+            android:name="sportName"
+            app:argType="string" />
         <action
             android:id="@+id/action_hobbyAppliaceFragment_to_hobbyCourseFragment"
             app:destination="@id/hobbyCourseFragment" />
@@ -129,6 +146,9 @@
         android:name="com.example.hobbyexplore.hobbycourse.HobbyCourseFragment"
         android:label="fragment_hobby_course"
         tools:layout="@layout/fragment_hobby_course">
+        <argument
+            android:name="sportName"
+            app:argType="string" />
         <action
             android:id="@+id/action_hobbyCourseFragment_to_youTubePlayerFragment"
             app:destination="@id/youTubePlayerFragment" />
@@ -137,13 +157,16 @@
             app:destination="@id/hobbyPlaceFragment" />
         <action
             android:id="@+id/action_hobbyCourseFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyAppliaceFragment" />
+            app:destination="@id/hobbyApplianceFragment" />
     </fragment>
     <fragment
         android:id="@+id/hobbyPlaceFragment"
         android:name="com.example.hobbyexplore.hobbyplace.HobbyPlaceFragment"
         android:label="fragment_hobby_place"
         tools:layout="@layout/fragment_hobby_place">
+        <argument
+            android:name="sportName"
+            app:argType="string" />
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" >
@@ -159,7 +182,7 @@
             app:destination="@id/hobbyCourseFragment" />
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyAppliaceFragment" />
+            app:destination="@id/hobbyApplianceFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatGptFragment"
@@ -202,7 +225,7 @@
         tools:layout="@layout/fragment_enter_budget">
         <action
             android:id="@+id/action_enterBudgetFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyAppliaceFragment" />
+            app:destination="@id/hobbyApplianceFragment" />
     </fragment>
     <fragment
         android:id="@+id/applianceRecommendFragment"

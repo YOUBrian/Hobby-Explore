@@ -5,10 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.hobbyexplore.data.Introduce
 import com.example.hobbyexplore.data.gpt.ApiClient
 import com.example.hobbyexplore.data.gpt.ChatGPTMessage
 import com.example.hobbyexplore.data.gpt.CompletionRequest
 import com.example.hobbyexplore.data.gpt.CompletionResponse
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,6 +22,13 @@ import java.util.Date
 import java.util.Locale
 
 class ChatGptViewModel : ViewModel() {
+
+    val db = Firebase.firestore
+
+    private val _introduceList = MutableLiveData<List<Introduce>>()
+
+    val introduceList: LiveData<List<Introduce>>
+        get() = _introduceList
 
     private val _messageList = MutableLiveData<MutableList<ChatGPTMessage>>()
     val messageList : LiveData<MutableList<ChatGPTMessage>> get() = _messageList
@@ -83,6 +93,9 @@ class ChatGptViewModel : ViewModel() {
                 Log.i("sportResponse", "sportResponse:$sportRecommendation")
                 Log.i("sportResponse", "addResponse:${addResponse(sportRecommendation)}")
             } else {
+                val statusCode = response.code()
+                val errorBodyStr = response.errorBody()?.string()
+                Log.e("API_ERROR", "StatusCode: $statusCode, ErrorBody: $errorBodyStr")
                 addResponse("Failed to get response ${response.errorBody()}")
             }
         }
@@ -93,8 +106,41 @@ class ChatGptViewModel : ViewModel() {
     }
 
     fun getRandomSport(): String {
-        val sports = listOf("baseball", "basketball", "tennis", "badminton", "billiards", "volleyball")
+        val sports = listOf("baseball", "basketball", "tennis", "badminton", "table_tennis", "volleyball")
         return sports.random()
+    }
+
+    private fun getCategoryData(sportName:String) {
+        val docRef = db.collection("sports")//.document(sport)
+//            .document("baseball")
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w("READ_DATA", "Listen failed.", e)
+                return@addSnapshotListener
+            } else if (snapshot != null && !snapshot.metadata.hasPendingWrites()) {
+//            Log.i("getdata", "document:${snapshot}")
+                try {
+                    val introduceData = mutableListOf<Introduce>()
+
+                    for (document in snapshot) {
+                        Log.i("getdata", "document:${document.data}")
+                        Log.i("getdata", "snapshot:$snapshot")
+                        val introduce = document.toObject(Introduce::class.java)
+                        Log.i("getdata", "introduce:$introduce")
+                        if (introduce != null) {
+                            introduceData.add(introduce)
+                        }
+                    }
+
+
+                    _introduceList.postValue(introduceData)
+                    Log.i("getdata", "introduceData:$introduceData")
+                } catch (e: Exception) {
+                    println("error: ${e.message}")
+                }
+            }
+//            _refreshStatus.value = false
+        }
     }
 
 }

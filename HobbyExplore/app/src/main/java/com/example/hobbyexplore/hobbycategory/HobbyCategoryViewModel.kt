@@ -27,19 +27,19 @@ class HobbyCategoryViewModel() : ViewModel() {
         get() = _navigateToDetail
 
     init {
-        getCategoryData()
+        getCategoryData("")
     }
 
-    private fun getCategoryData() {
-        val docRef = db.collection("sports")
+    private fun getCategoryData(sportName:String) {
+        val docRef = db.collection("sports")//.document(sport)
 //            .document("baseball")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w("READ_DATA", "Listen failed.", e)
                 return@addSnapshotListener
             } else if (snapshot != null && !snapshot.metadata.hasPendingWrites()) {
-//            Log.i("getdata", "document:${snapshot?.data}")
-//            try {
+//            Log.i("getdata", "document:${snapshot}")
+            try {
                 val introduceData = mutableListOf<Introduce>()
 
                 for (document in snapshot) {
@@ -55,9 +55,9 @@ class HobbyCategoryViewModel() : ViewModel() {
 
                 _introduceList.postValue(introduceData)
                 Log.i("getdata", "introduceData:$introduceData")
-//            } catch (e: Exception) {
-//                println("error: ${e.message}")
-//            }
+            } catch (e: Exception) {
+                println("error: ${e.message}")
+            }
             }
             _refreshStatus.value = false
         }
@@ -89,7 +89,7 @@ class HobbyCategoryViewModel() : ViewModel() {
 //}
 
     fun refresh() {
-        getCategoryData()
+        getCategoryData("")
     }
 
     fun navigateToDetail(introduce: Introduce) {

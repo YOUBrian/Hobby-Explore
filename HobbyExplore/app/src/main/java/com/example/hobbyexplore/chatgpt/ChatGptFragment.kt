@@ -1,7 +1,9 @@
 package com.example.hobbyexplore.chatgpt
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +23,7 @@ class ChatGptFragment : Fragment() {
 
     private lateinit var viewModel: ChatGptViewModel
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +46,6 @@ class ChatGptFragment : Fragment() {
 
             chatGptViewModel.addToChat(typeString, ChatGPTMessage.SENT_BY_ME,chatGptViewModel.getCurrentTimestamp())
             chatGptViewModel.callApi(typeString)
-
 
 
         binding.changeButton.setOnClickListener {

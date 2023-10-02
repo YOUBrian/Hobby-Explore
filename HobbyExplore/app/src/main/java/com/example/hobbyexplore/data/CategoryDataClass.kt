@@ -7,10 +7,11 @@ import kotlinx.parcelize.Parcelize
 data class Introduce(
     val image : String,
     val title : String,
-    val content : String
+    val content : String,
+    val name : String
 ): Parcelable
 {
-    constructor() : this( "", "","")
+    constructor() : this( "", "","", "")
 }
 @Parcelize
 data class Appliance(

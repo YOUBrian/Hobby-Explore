@@ -27,11 +27,11 @@ class HobbyPlaceViewModel : ViewModel() {
     val navigateToMap: LiveData<Place>
         get() = _navigateToMap
     init {
-        getPlaceData()
+//        getPlaceData("")
     }
-    private fun getPlaceData() {
+    fun getPlaceData(sportName: String) {
         val docRef = db.collection("sports")
-            .document("baseball")
+            .document(sportName)
             .collection("Place")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
