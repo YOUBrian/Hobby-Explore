@@ -55,7 +55,8 @@ class CalendarFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewModel: CalendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
+        val viewModel: CalendarViewModel =
+            ViewModelProvider(this).get(CalendarViewModel::class.java)
         setHasOptionsMenu(true)
         binding = FragmentCalendarBinding.inflate(inflater)
         lineChart = binding.chart1
@@ -149,14 +150,20 @@ class CalendarFragment : Fragment() {
                 eventContent = binding.calendarInputContent.text.toString()
             )
             saveEventToFirestore(event)
-            databaseReference.child(stringDateSelected).setValue(binding.ratingTextview.text.toString())
+            databaseReference.child(stringDateSelected)
+                .setValue(binding.ratingTextview.text.toString())
             viewModel.getCalendarData()
             delay(1000)
             setLineChartData(viewModel)
         }
     }
 
-    private fun handleDateChange(viewModel: CalendarViewModel, year: Int, month: Int, dayOfMonth: Int) {
+    private fun handleDateChange(
+        viewModel: CalendarViewModel,
+        year: Int,
+        month: Int,
+        dayOfMonth: Int
+    ) {
         val formattedMonth = String.format("%02d", month + 1)
         val formattedDay = String.format("%02d", dayOfMonth)
         stringDateSelected = "$year/$formattedMonth/$formattedDay"
@@ -182,11 +189,18 @@ class CalendarFragment : Fragment() {
 
 
     private fun hasWritePermission(): Boolean {
-        return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestWritePermission() {
-        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            1
+        )
     }
 
     private fun setInitialValues(viewModel: CalendarViewModel) {
@@ -260,14 +274,15 @@ class CalendarFragment : Fragment() {
     /*-----------------------------------*/
 
     private fun calendarClicked(viewModel: CalendarViewModel) {
-        databaseReference.child(stringDateSelected).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.value?.let { binding.ratingTextview.text = it.toString() }
-                viewModel.getDateData()
-            }
+        databaseReference.child(stringDateSelected)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.value?.let { binding.ratingTextview.text = it.toString() }
+                    viewModel.getDateData()
+                }
 
-            override fun onCancelled(error: DatabaseError) {}
-        })
+                override fun onCancelled(error: DatabaseError) {}
+            })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -301,6 +316,7 @@ class CalendarFragment : Fragment() {
                 Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
     // Toolbar share fun
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
@@ -315,15 +331,31 @@ class CalendarFragment : Fragment() {
                     .whereEqualTo("eventDate", stringDateSelected)
                     .get()
                     .addOnSuccessListener { querySnapshot ->
-                        val event = querySnapshot.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
-                        event?.let {
-                            val contentFromFirebase = it.eventContent
-                            val imageUrlFromFirebase = it.eventImage
-                            findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToPostFragment(contentFromFirebase,imageUrlFromFirebase))
+                        val event = querySnapshot.documents.firstOrNull()
+                            ?.toObject(CalendarEvent::class.java)
+                        if (event != null) {
+                            val contentFromFirebase = event.eventContent
+                            val imageUrlFromFirebase = event.eventImage
+                            findNavController().navigate(
+                                CalendarFragmentDirections.actionCalendarFragmentToPostFragment(
+                                    contentFromFirebase,
+                                    imageUrlFromFirebase
+                                )
+                            )
+                        } else {
+                            // 沒有數據與該日期相關，可以顯示一個提示給用戶。
+                            Toast.makeText(
+                                requireContext(),
+                                "尚未有該日期的數據!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
+
+
                     }
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
