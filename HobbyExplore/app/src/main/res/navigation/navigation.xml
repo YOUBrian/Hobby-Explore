@@ -10,15 +10,13 @@
         android:name="com.example.hobbyexplore.hobbyplace.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps">
-<!--        <argument-->
-<!--            android:name="latitude"-->
-<!--            app:argType="double"-->
-<!--            android:defaultValue="0" />-->
+        <argument
+            android:name="latitude"
+            app:argType="float" />
 
-<!--        <argument-->
-<!--            android:name="longitude"-->
-<!--            app:argType="double"-->
-<!--            android:defaultValue="0" />-->
+        <argument
+            android:name="longitude"
+            app:argType="float" />
     </fragment>
     <fragment
         android:id="@+id/hobbyCategoryFragment"
@@ -149,14 +147,12 @@
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" >
-<!--            <argument-->
-<!--                android:name="latitude"-->
-<!--                app:argType="double"-->
-<!--                android:defaultValue="0" />-->
-<!--            <argument-->
-<!--                android:name="longitude"-->
-<!--                app:argType="double"-->
-<!--                android:defaultValue="0" />-->
+            <argument
+                android:name="latitude"
+                app:argType="float" />
+            <argument
+                android:name="longitude"
+                app:argType="float" />
         </action>
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_hobbyCourseFragment"

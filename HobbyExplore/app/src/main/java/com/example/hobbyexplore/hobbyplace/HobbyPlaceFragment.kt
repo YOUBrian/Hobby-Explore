@@ -65,7 +65,7 @@ class HobbyPlaceFragment : Fragment() {
             viewLifecycleOwner,
             Observer {
                 if (null != it) {
-                    findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToMapsFragment())
+                    findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToMapsFragment(latitude.toFloat(), longitude.toFloat()))
                     viewModel.onMapNavigated()
                 }
             }
