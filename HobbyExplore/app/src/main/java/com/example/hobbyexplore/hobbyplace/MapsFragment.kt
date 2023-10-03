@@ -12,19 +12,27 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsFragment : Fragment() {
 
-    private val callback = OnMapReadyCallback { googleMap ->
-        val latitude = arguments?.getDouble("latitude", 24.992335278732433) ?: 24.992335278732433
-        val longitude = arguments?.getDouble("longitude", 121.43873123956986) ?: 121.43873123956986
+    private var userLatitude: Double = 0.0
+    private var userLongitude: Double = 0.0
+    private var placeLatitude: Double = 0.0
+    private var placeLongitude: Double = 0.0
+    private var placeTitle: String = ""
 
-        val location = LatLng(latitude, longitude)
+
+    private val callback = OnMapReadyCallback { googleMap ->
+        val userLocation = LatLng(userLatitude, userLongitude)
+        val placeLocation = LatLng(placeLatitude, placeLongitude)
         val zoomLevel = 18f
-        googleMap.addMarker(MarkerOptions().position(location).title("您的位置"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
+        val userMarker = BitmapDescriptorFactory.fromResource(R.drawable.location_blue)
+        googleMap.addMarker(MarkerOptions().position(userLocation).title("您的位置").icon(userMarker))
+        googleMap.addMarker(MarkerOptions().position(placeLocation).title(placeTitle).icon(userMarker))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placeLocation, zoomLevel))
     }
 
     override fun onCreateView(
@@ -37,7 +45,14 @@ class MapsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        userLatitude = MapsFragmentArgs.fromBundle(requireArguments()).userLatitude.toDouble()
+        userLongitude = MapsFragmentArgs.fromBundle(requireArguments()).userLongitude.toDouble()
+        placeLatitude = MapsFragmentArgs.fromBundle(requireArguments()).placeLatitude.toDouble()
+        placeLongitude = MapsFragmentArgs.fromBundle(requireArguments()).placeLongitude.toDouble()
+        placeTitle = MapsFragmentArgs.fromBundle(requireArguments()).placeTitle
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
     }
 }
+

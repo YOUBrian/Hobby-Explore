@@ -14,6 +14,24 @@
         android:layout_height="match_parent"
         tools:context=".personalitytest.mbti.MbtiTestResultFragment">
 
+        <View
+            android:layout_width="550dp"
+            android:layout_height="550dp"
+            android:layout_marginEnd="-350dp"
+            android:layout_marginTop="-350dp"
+            android:background="@drawable/blue_gradient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="550dp"
+            android:layout_height="550dp"
+            android:layout_marginStart="-350dp"
+            android:layout_marginBottom="-350dp"
+            android:background="@drawable/yellow_gradient"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,9 +40,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/detail_image_cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FDF5E8"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +63,7 @@
                 <ImageView
                     android:id="@+id/mbti_test_result_image"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="250dp"
                     android:src="@drawable/estp_14"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="0dp" />
@@ -44,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="您的測驗結果為 :"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mbti_test_result_image" />
@@ -54,8 +84,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textSize="30sp"
+                    android:textSize="24sp"
                     android:text=""
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
@@ -66,33 +97,36 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textSize="30sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mbti_test_result_en" />
 
                 <TextView
                     android:id="@+id/mbti_test_result_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:text=""
-                    android:textAlignment="textStart"
-                    android:textSize="24sp"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mbti_test_result_tw" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/system_recommend_button"
                     style="@style/Base.Widget.AppCompat.Button.Borderless"
                     android:layout_width="150dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/custom_button"
+                    android:background="@drawable/blue_button_full"
                     android:gravity="center"
                     android:padding="4dp"
                     android:text="@string/system_recommend_hobby"
@@ -103,6 +137,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mbti_test_result_content" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
         </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

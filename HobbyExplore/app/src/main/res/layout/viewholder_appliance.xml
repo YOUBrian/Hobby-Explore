@@ -1,82 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="appliance"
             type="com.example.hobbyexplore.data.Appliance" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/appliance_image_cardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="#FDF5E8"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/appliance_image_cardView"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="#FDF5E8"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content">
+
 
             <ImageView
                 android:id="@+id/appliance_image"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:scaleType="center"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
                 app:imageUrl="@{appliance.image}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/appliance_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{appliance.title}"
-            android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/appliance_image_cardView"
-            app:layout_constraintStart_toStartOf="@+id/appliance_image_cardView"
-            app:layout_constraintTop_toBottomOf="@+id/appliance_image_cardView" />
+            <TextView
+                android:id="@+id/appliance_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{appliance.title}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/appliance_image"
+                app:layout_constraintStart_toStartOf="@+id/appliance_image"
+                app:layout_constraintTop_toBottomOf="@+id/appliance_image" />
 
-        <TextView
-            android:id="@+id/appliance_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{appliance.price}"
-            android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/appliance_image_cardView"
-            app:layout_constraintStart_toStartOf="@+id/appliance_image_cardView"
-            app:layout_constraintTop_toBottomOf="@+id/appliance_title" />
+            <TextView
+                android:id="@+id/appliance_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{appliance.price}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/appliance_image"
+                app:layout_constraintStart_toStartOf="@+id/appliance_image"
+                app:layout_constraintTop_toBottomOf="@+id/appliance_title" />
 
-        <TextView
-            android:id="@+id/appliance_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{appliance.content}"
-            android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/appliance_image_cardView"
-            app:layout_constraintStart_toStartOf="@+id/appliance_image_cardView"
-            app:layout_constraintTop_toBottomOf="@+id/appliance_price" />
+            <TextView
+                android:id="@+id/appliance_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{appliance.content}"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/appliance_image"
+                app:layout_constraintStart_toStartOf="@+id/appliance_image"
+                app:layout_constraintTop_toBottomOf="@+id/appliance_price" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

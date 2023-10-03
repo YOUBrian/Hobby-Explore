@@ -11,12 +11,20 @@
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps">
         <argument
-            android:name="latitude"
+            android:name="userLatitude"
             app:argType="float" />
-
         <argument
-            android:name="longitude"
+            android:name="userLongitude"
             app:argType="float" />
+        <argument
+            android:name="placeLatitude"
+            app:argType="float" />
+        <argument
+            android:name="placeLongitude"
+            app:argType="float" />
+        <argument
+            android:name="placeTitle"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/hobbyCategoryFragment"
@@ -171,11 +179,20 @@
             android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" >
             <argument
-                android:name="latitude"
+                android:name="userLatitude"
                 app:argType="float" />
             <argument
-                android:name="longitude"
+                android:name="userLongitude"
                 app:argType="float" />
+            <argument
+                android:name="placeLatitude"
+                app:argType="float" />
+            <argument
+                android:name="placeLongitude"
+                app:argType="float" />
+            <argument
+                android:name="placeTitle"
+                app:argType="string" />
         </action>
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_hobbyCourseFragment"

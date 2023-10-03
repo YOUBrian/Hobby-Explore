@@ -59,14 +59,15 @@ class HobbyBoardsViewModel : ViewModel() {
     fun postApplianceData(){
         val articles = FirebaseFirestore.getInstance()
             .collection("sports")
-            .document("volleyball")
-            .collection("Course")
+            .document("tennis")
+            .collection("Place")
         val document = articles.document()
         val data = hashMapOf(
-            "title" to "How to Spike a Volleyball (Best Tutorial For Begginers)",
-            "videoId" to "VrMI1dpV8c0",
+            "title" to "中正河濱網球場",
+            "latitude" to 25.023411673361995,
+            "longitude" to 121.51419609998652,
             "id" to document.id,
-            "image" to "https://img.youtube.com/vi/VrMI1dpV8c0/hqdefault.jpg",
+            "image" to "https://pic.pimg.tw/gn0930150655/1618299056-1977311349-g.jpg",
         )
         Log.i("addData", "${data}")
         document.set(data)

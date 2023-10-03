@@ -50,31 +50,31 @@
             app:layout_constraintStart_toStartOf="@+id/place_image_cardView"
             app:layout_constraintTop_toBottomOf="@+id/place_image_cardView" />
 
-        <TextView
-            android:id="@+id/place_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{place.price}"
-            android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/place_image_cardView"
-            app:layout_constraintStart_toStartOf="@+id/place_image_cardView"
-            app:layout_constraintTop_toBottomOf="@+id/place_title" />
+<!--        <TextView-->
+<!--            android:id="@+id/place_price"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:text="@{place.price}"-->
+<!--            android:textAlignment="viewStart"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="14sp"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/place_image_cardView"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/place_image_cardView"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/place_title" />-->
 
-        <TextView
-            android:id="@+id/place_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{place.content}"
-            android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/place_image_cardView"
-            app:layout_constraintStart_toStartOf="@+id/place_image_cardView"
-            app:layout_constraintTop_toBottomOf="@+id/place_price" />
+<!--        <TextView-->
+<!--            android:id="@+id/place_content"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:text="@{place.content}"-->
+<!--            android:textAlignment="viewStart"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="14sp"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/place_image_cardView"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/place_image_cardView"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/place_price" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

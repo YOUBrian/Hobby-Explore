@@ -32,7 +32,10 @@ class ChatGptFragment : Fragment() {
 
         binding.selectButton.visibility = View.GONE
         binding.changeButton.visibility = View.GONE
+        binding.orangeView.visibility = View.GONE
         binding.loadingAnimation.visibility = View.VISIBLE
+        binding.detailImageCardView.visibility = View.GONE
+        binding.detailContentCardView.visibility = View.GONE
         binding.loadingAnimation.playAnimation()
 
         val typeString = arguments?.getString("typeString") ?: return null
@@ -43,6 +46,9 @@ class ChatGptFragment : Fragment() {
                 binding.loadingAnimation.visibility = View.GONE
                 binding.selectButton.visibility = View.VISIBLE
                 binding.changeButton.visibility = View.VISIBLE
+                binding.orangeView.visibility = View.VISIBLE
+                binding.detailImageCardView.visibility = View.VISIBLE
+                binding.detailContentCardView.visibility = View.VISIBLE
 
                 binding.detailTitle.text = introduce.title
                 binding.detailContent.text = introduce.content

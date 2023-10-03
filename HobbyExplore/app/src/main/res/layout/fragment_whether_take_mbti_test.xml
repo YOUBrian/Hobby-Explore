@@ -11,7 +11,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View
+            android:layout_width="550dp"
+            android:layout_height="550dp"
+            android:layout_marginEnd="-350dp"
+            android:layout_marginTop="-350dp"
+            android:background="@drawable/blue_gradient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="550dp"
+            android:layout_height="550dp"
+            android:layout_marginStart="-350dp"
+            android:layout_marginBottom="-350dp"
+            android:background="@drawable/yellow_gradient"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -23,19 +42,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/take_mbti_test"
-                android:textSize="36dp"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/mbti_yes_button"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/custom_button"
+                android:background="@drawable/blue_button_full"
                 android:gravity="center"
                 android:text="@string/yes"
                 android:textColor="#FFFFFF"
@@ -45,17 +64,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mbtiTestText" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/no_button"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:background="@drawable/custom_button"
-                android:backgroundTint="@color/black"
+                android:background="@drawable/blue_button_stroke"
                 android:gravity="center"
                 android:text="@string/no"
-                android:textColor="#FFFFFF"
+                android:textColor="#a3b2d1"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/mbti_yes_button"
@@ -78,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="請輸入您的MBTI測驗結果"
-                android:textSize="30dp"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/no_hint" />
@@ -92,7 +110,8 @@
                 android:hint=""
                 android:inputType="text"
                 android:text=""
-                android:textSize="24sp"
+                android:textAlignment="center"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/enter_mbti_result" />
@@ -103,7 +122,7 @@
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/custom_button"
+                android:background="@drawable/blue_button_full"
                 android:gravity="center"
                 android:padding="4dp"
                 android:text="@string/system_recommend_hobby"
