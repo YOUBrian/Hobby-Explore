@@ -9,7 +9,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
 class PostViewModel : ViewModel() {
-
+    val userContent: MutableLiveData<String> = MutableLiveData()
+    val userRating: MutableLiveData<Float> = MutableLiveData()
     private val _uploadPhoto = MutableLiveData<String>()
     val uploadPhoto: MutableLiveData<String>
         get() = _uploadPhoto

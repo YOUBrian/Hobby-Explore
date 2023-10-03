@@ -188,12 +188,12 @@
         android:id="@+id/chatGptFragment"
         android:name="com.example.hobbyexplore.chatgpt.ChatGptFragment"
         android:label="ChatGptFragment" >
-        <action
-            android:id="@+id/action_chatGptFragment_to_enterBudgetFragment"
-            app:destination="@id/enterBudgetFragment" />
         <argument
             android:name="typeString"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_chatGptFragment_to_hobbyApplianceFragment"
+            app:destination="@id/hobbyApplianceFragment" />
     </fragment>
     <fragment
         android:id="@+id/personalityTestFragment"

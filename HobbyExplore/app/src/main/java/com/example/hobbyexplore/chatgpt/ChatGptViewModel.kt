@@ -102,7 +102,11 @@ class ChatGptViewModel : ViewModel() {
                 val statusCode = response.code()
                 val errorBodyStr = response.errorBody()?.string()
                 Log.e("API_ERROR", "StatusCode: $statusCode, ErrorBody: $errorBodyStr")
-                addResponse("Failed to get response ${response.errorBody()}")
+
+                // If the API call was not successful, get a random sport without repetition.
+                val randomSport = getRandomSportWithoutRepetition()
+                addResponse("Based on our analysis, we recommend trying out $randomSport.")
+                getHobbyData(randomSport)
             }
         }
     }

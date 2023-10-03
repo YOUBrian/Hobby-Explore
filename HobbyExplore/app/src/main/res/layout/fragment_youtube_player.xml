@@ -11,15 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<!--        <Button-->
-<!--            android:id="@+id/button"-->
-<!--            android:layout_width="239dp"-->
-<!--            android:layout_height="83dp"-->
-<!--            android:layout_marginStart="84dp"-->
-<!--            android:layout_marginTop="44dp"-->
-<!--            android:text="Play YouTube Video"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -30,16 +21,8 @@
             android:id="@+id/youtube_player_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:videoId="skOsApsF0jQ"
-            app:autoPlay="true" />
+            />
         </LinearLayout>
-<!--        <WebView-->
-<!--            android:id="@+id/webView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="30dp"-->
-<!--            android:layout_marginTop="33dp"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/button" />-->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

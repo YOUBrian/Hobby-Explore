@@ -2,6 +2,7 @@ package com.example.hobbyexplore.hobbyappliance
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,8 @@ class HobbyApplianceFragment : Fragment() {
         val sportName = HobbyApplianceFragmentArgs.fromBundle(requireArguments()).sportName
         val binding = FragmentHobbyApplianceBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
+
+        Log.i("getSportssss", "$sportName")
         viewModel.getApplianceData(sportName)
 
         val hobbyApplianceAdapter = HobbyApplianceAdapter(HobbyApplianceAdapter.OnClickListener {

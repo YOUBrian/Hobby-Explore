@@ -1,4 +1,5 @@
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,14 +20,14 @@ class YouTubePlayerFragment : Fragment() {
     ): View? {
         val binding = FragmentYoutubePlayerBinding.inflate(inflater)
 
-        var youTubePlayerView: YouTubePlayerView = binding.youtubePlayerView
-        viewLifecycleOwner.lifecycle.addObserver(binding.youtubePlayerView)
+        val args = YouTubePlayerFragmentArgs.fromBundle(requireArguments())
+        val videoId = YouTubePlayerFragmentArgs.fromBundle(requireArguments()).course.videoId
 
-        youTubePlayerView.addYouTubePlayerListener(object: AbstractYouTubePlayerListener() {
 
+        Log.i("sadfeaasfd", "$videoId")
+        binding.youtubePlayerView.addYouTubePlayerListener(object: AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
-//                val videoId: String = bundle.youtubeId;
-//                youTubePlayer.loadVideo(videoId, 0F);
+                youTubePlayer.loadVideo(videoId, 0F)
             }
         })
         return binding.root

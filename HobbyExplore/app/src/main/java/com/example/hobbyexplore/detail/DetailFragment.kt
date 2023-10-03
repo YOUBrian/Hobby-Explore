@@ -32,6 +32,7 @@ class DetailFragment : Fragment() {
         binding.introduce = viewModel
         Log.i("viewModel", "viewModelData:${introduce}")
         binding.detailAppliance.setOnClickListener {
+            Log.i("asfddasf", "${introduce.name}")
             it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHobbyAppliaceFragment(introduce.name,9999))
         }
 

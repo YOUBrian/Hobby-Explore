@@ -40,15 +40,27 @@ class PostFragment : Fragment() {
         val imageStringToUri = Uri.parse(imageUri)
         viewModel.uploadPhoto.value = imageUri
         viewModel.uploadPhoto.observe(viewLifecycleOwner, Observer { newImageUri ->
-            // 在这里更新 binding.imageView 的图片
-            Glide.with(this) // 使用 Glide 或其他图片加载库加载图片
-                .load(newImageUri) // 使用新的图片 URI 更新 ImageView
+
+            Glide.with(this)
+                .load(newImageUri)
                 .into(binding.postImage)
         })
 
 
 
+        viewModel.userContent.observe(viewLifecycleOwner, Observer {
+            binding.userContentInput.setText(it)
+        })
+
+        viewModel.userRating.observe(viewLifecycleOwner, Observer {
+            binding.ratingBar.rating = it
+        })
+
         binding.cameraButton.setOnClickListener {
+            // Save data to ViewModel before navigating
+            viewModel.userContent.value = binding.userContentInput.text.toString()
+            viewModel.userRating.value = binding.ratingBar.rating
+
             it.findNavController().navigate(PostFragmentDirections.actionPostFragmentToCameraFragment())
         }
 
@@ -100,7 +112,6 @@ class PostFragment : Fragment() {
             )
         }
 
-        // ... (您原本的其他代码)
     }
     private fun allPermissionsGranted() = CameraFragment.REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(

@@ -25,14 +25,12 @@ data class Appliance(
 }
 @Parcelize
 data class Course(
-    val link : String,
+    val videoId : String,
     val title : String,
-    val price : String,
-    val content : String,
     val image : String
 ): Parcelable
 {
-    constructor() : this("", "", "","","")
+    constructor() : this("", "","")
 }
 @Parcelize
 data class Place(

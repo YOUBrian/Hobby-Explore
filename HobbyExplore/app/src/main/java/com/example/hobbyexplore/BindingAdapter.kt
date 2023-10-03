@@ -24,3 +24,4 @@ fun timestampToDateString(textView: TextView, timestamp: Long){
     val date = Date(timestamp)
     textView.text = dateFormat.format(date)
 }
+

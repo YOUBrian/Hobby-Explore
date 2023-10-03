@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -71,9 +72,11 @@ class ChatGptFragment : Fragment() {
                 with(sharedPref?.edit()) {
                     this?.putString("Selected_Hobby_Title", introduce.title)
                     this?.apply()
+                    Log.i("cccccccccc", "$typeString")
+                    it.findNavController().navigate(ChatGptFragmentDirections.actionChatGptFragmentToHobbyApplianceFragment(introduce.name, 9999))
                 }
             }
-            it.findNavController().navigate(ChatGptFragmentDirections.actionChatGptFragmentToEnterBudgetFragment())
+
         }
 
 
