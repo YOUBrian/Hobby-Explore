@@ -18,8 +18,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
             tools:context=".detail.DetailFragment">
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/detail_image_cardView"
@@ -33,15 +33,38 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="550dp"
+                    android:layout_height="550dp"
+                    android:layout_marginEnd="-355dp"
+                    android:layout_marginTop="-350dp"
+                    android:background="@drawable/blue_gradient"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:layout_width="550dp"
+                    android:layout_height="550dp"
+                    android:layout_marginStart="-364dp"
+                    android:layout_marginBottom="-350dp"
+                    android:background="@drawable/yellow_gradient"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
                 <ImageView
                     android:id="@+id/detail_image"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:scaleType="center"
+                    android:layout_height="300dp"
+                    android:scaleType="fitCenter"
                     app:imageUrl="@{introduce.selectProduct.image}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -59,6 +82,24 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
+                    <View
+                        android:layout_width="550dp"
+                        android:layout_height="550dp"
+                        android:layout_marginEnd="-400dp"
+                        android:layout_marginTop="-400dp"
+                        android:background="@drawable/blue_gradient"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:layout_width="550dp"
+                        android:layout_height="550dp"
+                        android:layout_marginStart="-400dp"
+                        android:layout_marginBottom="-400dp"
+                        android:background="@drawable/yellow_gradient"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/detail_title"
