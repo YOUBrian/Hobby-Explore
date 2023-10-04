@@ -14,7 +14,9 @@
         android:id="@+id/appliance_image_cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:background="#FDF5E8"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
@@ -26,6 +28,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <View
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginBottom="-200dp"
+                android:layout_marginEnd="-200dp"
+                android:background="@drawable/blue_gradient"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <View
+                android:id="@+id/orange_view"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginStart="-190dp"
+                android:layout_marginBottom="-190dp"
+                android:background="@drawable/yellow_gradient"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/appliance_image"

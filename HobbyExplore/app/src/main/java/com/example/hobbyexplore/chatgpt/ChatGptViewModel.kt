@@ -97,6 +97,8 @@ class ChatGptViewModel : ViewModel() {
     private suspend fun handleApiResponse(response: Response<CompletionResponse>, sportRecommendation: String) {
         withContext(Dispatchers.Main) {
             if (response.isSuccessful) {
+                // Remove the sportRecommendation from the availableSports list
+                availableSports.remove(sportRecommendation)
                 getHobbyData(sportRecommendation)
             } else {
                 val statusCode = response.code()
@@ -110,6 +112,7 @@ class ChatGptViewModel : ViewModel() {
             }
         }
     }
+
 
 
 
