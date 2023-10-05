@@ -14,6 +14,7 @@ class CourseRecommendFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        // test
         return inflater.inflate(R.layout.fragment_course_recommend, container, false)
     }
 
