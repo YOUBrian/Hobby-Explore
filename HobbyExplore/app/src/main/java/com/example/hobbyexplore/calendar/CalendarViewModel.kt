@@ -108,7 +108,7 @@ class CalendarViewModel : ViewModel() {
             .whereEqualTo("eventDate", date)
             .get()
             .addOnSuccessListener { documents ->
-                // 假設只有一個文檔對應於指定的日期
+
                 val event = documents.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
                 eventLiveData.postValue(event)
             }

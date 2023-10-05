@@ -2,6 +2,7 @@ package com.example.hobbyexplore.calendar
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -65,6 +66,9 @@ class CalendarFragment : Fragment() {
         val year = currentDate.get(Calendar.YEAR)
         val month = currentDate.get(Calendar.MONTH) + 1  // Calendar.MONTH returns 0-based month
         val day = currentDate.get(Calendar.DAY_OF_MONTH)
+        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val userId = logInSharedPref?.getString("userId", "N/A")
+
         stringDateSelected = "$year/${String.format("%02d", month)}/${String.format("%02d", day)}"
 
         lineChart = binding.chart1
@@ -82,11 +86,11 @@ class CalendarFragment : Fragment() {
         })
 
         viewModel.ratingDate.observe(viewLifecycleOwner, Observer { events ->
-            // 更新UI以顯示events中的數據。 例如，您可以設置一個TextView來顯示評分。
+
             if (events.isNotEmpty()) {
                 val event = events[0]
                 binding.ratingTextview.text = event.eventRating.toString()
-                // ... 更新其他UI元素 ...
+
             }
         })
 
@@ -149,13 +153,16 @@ class CalendarFragment : Fragment() {
 
     private fun handleRecordButtonPress(viewModel: CalendarViewModel) {
         lifecycleScope.launch(Dispatchers.Main) {
+            val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+            val userId = logInSharedPref?.getString("userId", "N/A")
             val imageUrl = selectedPhotoUri?.let { uploadImageToFirebase(it) } ?: ""
             val event = CalendarEvent(
                 eventId = UUID.randomUUID().toString(),
                 eventDate = stringDateSelected,
                 eventRating = viewModel.progress.value,
                 eventImage = imageUrl,
-                eventContent = binding.calendarInputContent.text.toString()
+                eventContent = binding.calendarInputContent.text.toString(),
+                eventUserId = userId.toString()
             )
             saveEventToFirestore(event)
             stringDateSelected?.let {
@@ -180,14 +187,12 @@ class CalendarFragment : Fragment() {
 
         viewModel.getDataForSpecificDate(stringDateSelected!!).observe(viewLifecycleOwner) { event ->
             event?.let {
-                // 更新UI以顯示從Firestore獲取的數據
                 binding.ratingTextview.text = it.eventRating.toString()
                 Glide.with(this).load(it.eventImage).into(binding.calendarImage)
                 binding.calendarInputContent.setText(it.eventContent)
                 binding.recordRatingButton.alpha = 0.5f
                 binding.recordRatingButton.isEnabled = false
             } ?: run {
-                // 如果沒有數據或查詢失敗，更新UI以顯示默認值或錯誤消息
                 binding.ratingTextview.text = "未評分"
                 binding.recordRatingButton.visibility = View.VISIBLE
                 binding.recordRatingButton.isEnabled = true
@@ -227,10 +232,10 @@ class CalendarFragment : Fragment() {
     }
     private fun setLineChartData(viewModel: CalendarViewModel) {
 
-        // 設置格式化器使數值為整數
+
         val intValueFormatter = IntegerValueFormatter()
 
-        // 設置lineChart的X軸和Y軸格式
+
         lineChart.xAxis.granularity = 1f
         lineChart.xAxis.valueFormatter = intValueFormatter
         lineChart.axisLeft.granularity = 1f
@@ -238,7 +243,7 @@ class CalendarFragment : Fragment() {
         lineChart.axisRight.granularity = 1f
         lineChart.axisRight.valueFormatter = intValueFormatter
 
-        // 設置lineChart2的X軸和Y軸格式
+
         lineChart2.xAxis.granularity = 1f
         lineChart2.xAxis.valueFormatter = intValueFormatter
         lineChart2.axisLeft.granularity = 1f
@@ -380,7 +385,7 @@ class CalendarFragment : Fragment() {
                                 )
                             )
                         } else {
-                            // 沒有數據與該日期相關，可以顯示一個提示給用戶。
+
                             Toast.makeText(
                                 requireContext(),
                                 "尚未有該日期的數據!",

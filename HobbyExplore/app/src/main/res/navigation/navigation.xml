@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/personalityTestFragment">
+    app:startDestination="@id/googleLogInFragment">
 
     <fragment
         android:id="@+id/mapsFragment"
@@ -313,5 +313,14 @@
         <argument
             android:name="imageUri"
             app:argType="string"/>
+    </fragment>
+    <fragment
+        android:id="@+id/googleLogInFragment"
+        android:name="com.example.hobbyexplore.googlelogin.GoogleLogInFragment"
+        android:label="fragment_google_log_in"
+        tools:layout="@layout/fragment_google_log_in" >
+        <action
+            android:id="@+id/action_googleLogInFragment_to_personalityTestFragment"
+            app:destination="@id/personalityTestFragment" />
     </fragment>
 </navigation>

@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="image"
+            name="user"
             type="com.example.hobbyexplore.hobbyboards.PostViewModel" />
     </data>
 
@@ -56,7 +56,7 @@
                 android:layout_height="250dp"
                 android:layout_marginTop="16dp"
                 android:scaleType="fitCenter"
-                app:imageUrl="@{image.uploadPhoto}"
+                app:imageUrl="@{user.uploadPhoto}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/user_content_input" />
@@ -65,7 +65,7 @@
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Brian"
+                android:text="@{user.userName}"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

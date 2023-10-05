@@ -29,6 +29,7 @@ class HobbyBoardsFragment : Fragment() {
         viewModel.refresh()
         val hobbyBoardsAdapter = HobbyBoardsAdapter(HobbyBoardsAdapter.OnClickListener{})
 
+
         binding.hobbyBoardsRecyclerView.adapter = hobbyBoardsAdapter
 
         viewModel.messageList.observe(viewLifecycleOwner, Observer { messages ->

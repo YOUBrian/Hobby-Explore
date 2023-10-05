@@ -202,7 +202,6 @@ dependencies {
 
     //Youtube
 //    implementation 'com.google.android.youtube:android-player:1.2.2'
-//    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 //    implementation 'com.google.android.gms:play-services-identity:19.0.0'
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
 
@@ -242,6 +241,9 @@ dependencies {
 
     //Lottie
     implementation 'com.airbnb.android:lottie:6.1.0'
+
+    //google login
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
 /*---------------------------------------------------------------------*/
 }
 
