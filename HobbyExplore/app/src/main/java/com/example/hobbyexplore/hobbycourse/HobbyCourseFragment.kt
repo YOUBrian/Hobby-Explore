@@ -19,6 +19,7 @@ import com.example.hobbyexplore.detail.DetailFragmentDirections
 import com.example.hobbyexplore.detail.DetailViewModel
 import com.example.hobbyexplore.detail.DetailViewModelFactory
 import com.example.hobbyexplore.hobbyappliance.HobbyApplianceAdapter
+import com.example.hobbyexplore.hobbyappliance.HobbyApplianceFragmentArgs
 import com.example.hobbyexplore.hobbyappliance.HobbyApplianceViewModel
 import com.example.hobbyexplore.hobbycategory.HobbyCategoryViewModel
 import com.example.hobbyexplore.hobbyplace.HobbyPlaceFragmentDirections
@@ -30,9 +31,10 @@ class HobbyCourseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val viewModel: HobbyCourseViewModel = ViewModelProvider(this).get(HobbyCourseViewModel::class.java)
+        val sportName = HobbyCourseFragmentArgs.fromBundle(requireArguments()).sportName
         val binding = FragmentHobbyCourseBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
-
+        viewModel.getCourseData(sportName.toString())
 
         val hobbyCourseAdapter = HobbyCourseAdapter(HobbyCourseAdapter.OnClickListener {
             viewModel.navigateToYoutube(it)
@@ -46,11 +48,11 @@ class HobbyCourseFragment : Fragment() {
         })
 
         binding.placeButton.setOnClickListener {
-            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyPlaceFragment())
+            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyPlaceFragment(sportName))
         }
 
         binding.applianceButton.setOnClickListener {
-            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyAppliaceFragment(-1))
+            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyAppliaceFragment(sportName,9999))
         }
 
         viewModel.navigateToYoutube.observe(

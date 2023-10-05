@@ -10,15 +10,21 @@
         android:name="com.example.hobbyexplore.hobbyplace.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps">
-<!--        <argument-->
-<!--            android:name="latitude"-->
-<!--            app:argType="double"-->
-<!--            android:defaultValue="0" />-->
-
-<!--        <argument-->
-<!--            android:name="longitude"-->
-<!--            app:argType="double"-->
-<!--            android:defaultValue="0" />-->
+        <argument
+            android:name="userLatitude"
+            app:argType="float" />
+        <argument
+            android:name="userLongitude"
+            app:argType="float" />
+        <argument
+            android:name="placeLatitude"
+            app:argType="float" />
+        <argument
+            android:name="placeLongitude"
+            app:argType="float" />
+        <argument
+            android:name="placeTitle"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/hobbyCategoryFragment"
@@ -103,19 +109,36 @@
             app:argType="com.example.hobbyexplore.data.Introduce" />
         <action
             android:id="@+id/action_detailFragment_to_hobbyPlaceFragment"
-            app:destination="@id/hobbyPlaceFragment" />
+            app:destination="@id/hobbyPlaceFragment" >
+        <argument
+            android:name="sportName"
+            app:argType="string" />
+        </action>
+
         <action
             android:id="@+id/action_detailFragment_to_hobbyCourseFragment"
-            app:destination="@id/hobbyCourseFragment" />
+            app:destination="@id/hobbyCourseFragment" >
+        <argument
+            android:name="sportName"
+            app:argType="string" />
+        </action>
+
         <action
             android:id="@+id/action_detailFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyAppliaceFragment" />
+            app:destination="@id/hobbyApplianceFragment" >
+            <argument
+                android:name="sportName"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
-        android:id="@+id/hobbyAppliaceFragment"
+        android:id="@+id/hobbyApplianceFragment"
         android:name="com.example.hobbyexplore.hobbyappliance.HobbyApplianceFragment"
         android:label="fragment_hobby_appliace"
         tools:layout="@layout/fragment_hobby_appliance">
+        <argument
+            android:name="sportName"
+            app:argType="string" />
         <action
             android:id="@+id/action_hobbyAppliaceFragment_to_hobbyCourseFragment"
             app:destination="@id/hobbyCourseFragment" />
@@ -131,6 +154,9 @@
         android:name="com.example.hobbyexplore.hobbycourse.HobbyCourseFragment"
         android:label="fragment_hobby_course"
         tools:layout="@layout/fragment_hobby_course">
+        <argument
+            android:name="sportName"
+            app:argType="string" />
         <action
             android:id="@+id/action_hobbyCourseFragment_to_youTubePlayerFragment"
             app:destination="@id/youTubePlayerFragment" />
@@ -139,42 +165,52 @@
             app:destination="@id/hobbyPlaceFragment" />
         <action
             android:id="@+id/action_hobbyCourseFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyAppliaceFragment" />
+            app:destination="@id/hobbyApplianceFragment" />
     </fragment>
     <fragment
         android:id="@+id/hobbyPlaceFragment"
         android:name="com.example.hobbyexplore.hobbyplace.HobbyPlaceFragment"
         android:label="fragment_hobby_place"
         tools:layout="@layout/fragment_hobby_place">
+        <argument
+            android:name="sportName"
+            app:argType="string" />
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" >
-<!--            <argument-->
-<!--                android:name="latitude"-->
-<!--                app:argType="double"-->
-<!--                android:defaultValue="0" />-->
-<!--            <argument-->
-<!--                android:name="longitude"-->
-<!--                app:argType="double"-->
-<!--                android:defaultValue="0" />-->
+            <argument
+                android:name="userLatitude"
+                app:argType="float" />
+            <argument
+                android:name="userLongitude"
+                app:argType="float" />
+            <argument
+                android:name="placeLatitude"
+                app:argType="float" />
+            <argument
+                android:name="placeLongitude"
+                app:argType="float" />
+            <argument
+                android:name="placeTitle"
+                app:argType="string" />
         </action>
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_hobbyCourseFragment"
             app:destination="@id/hobbyCourseFragment" />
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyAppliaceFragment" />
+            app:destination="@id/hobbyApplianceFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatGptFragment"
         android:name="com.example.hobbyexplore.chatgpt.ChatGptFragment"
         android:label="ChatGptFragment" >
-        <action
-            android:id="@+id/action_chatGptFragment_to_enterBudgetFragment"
-            app:destination="@id/enterBudgetFragment" />
         <argument
             android:name="typeString"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_chatGptFragment_to_hobbyApplianceFragment"
+            app:destination="@id/hobbyApplianceFragment" />
     </fragment>
     <fragment
         android:id="@+id/personalityTestFragment"
@@ -206,7 +242,7 @@
         tools:layout="@layout/fragment_enter_budget">
         <action
             android:id="@+id/action_enterBudgetFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyAppliaceFragment" />
+            app:destination="@id/hobbyApplianceFragment" />
     </fragment>
     <fragment
         android:id="@+id/applianceRecommendFragment"

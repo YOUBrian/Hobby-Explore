@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,28 +15,25 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.hobbyexplore.R
-import com.example.hobbyexplore.databinding.FragmentHobbyCourseBinding
 import com.example.hobbyexplore.databinding.FragmentHobbyPlaceBinding
-import com.example.hobbyexplore.hobbyappliance.HobbyApplianceFragmentDirections
-import com.example.hobbyexplore.hobbycategory.HobbyCategoryFragmentDirections
-import com.example.hobbyexplore.hobbycourse.HobbyCourseAdapter
-import com.example.hobbyexplore.hobbycourse.HobbyCourseFragmentDirections
-import com.example.hobbyexplore.hobbycourse.HobbyCourseViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
 class HobbyPlaceFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var latitude: Double = 0.0
-    private var longitude: Double = 0.0
+    private var userLatitude: Double = 0.0
+    private var userLongitude: Double = 0.0
+    private var placeLatitude: Double = 0.0
+    private var placeLongitude: Double = 0.0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val viewModel: HobbyPlaceViewModel = ViewModelProvider(this).get(HobbyPlaceViewModel::class.java)
+        val sportName = HobbyPlaceFragmentArgs.fromBundle(requireArguments()).sportName
         val binding = FragmentHobbyPlaceBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
+        viewModel.getPlaceData(sportName)
 
         val hobbyPlaceAdapter = HobbyPlaceAdapter(HobbyPlaceAdapter.OnClickListener {
             viewModel.navigateToMap(it)
@@ -44,6 +42,7 @@ class HobbyPlaceFragment : Fragment() {
         binding.hobbyPlaceRecyclerView.adapter = hobbyPlaceAdapter
 
         viewModel.placeList.observe(viewLifecycleOwner, Observer { places ->
+            Log.i("placeData", "Received data: $places")
             hobbyPlaceAdapter.submitList(places)
             hobbyPlaceAdapter.notifyDataSetChanged()
         })
@@ -54,22 +53,38 @@ class HobbyPlaceFragment : Fragment() {
 //        }
 
         binding.courseButton.setOnClickListener {
-            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyCourseFragment())
+            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyCourseFragment(sportName))
         }
 
         binding.applianceButton.setOnClickListener {
-            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyAppliaceFragment(-1))
+            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyAppliaceFragment(sportName, 9999))
         }
 
         viewModel.navigateToMap.observe(
             viewLifecycleOwner,
-            Observer {
-                if (null != it) {
-                    findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToMapsFragment())
+            Observer { place ->
+                if (place != null) {
+                    val placeLat = viewModel.placeLatitude.value ?: 0.0
+                    val placeLng = viewModel.placeLongitude.value ?: 0.0
+                    val placeTitle = viewModel.placeTitle.value ?: ""
+                    Log.i("placeData", "placeLat: $placeLat")
+                    Log.i("placeData", "placeLng: $placeLng")
+                    findNavController().navigate(
+                        HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToMapsFragment(
+                            userLatitude.toFloat(),
+                            userLongitude.toFloat(),
+                            placeLat.toFloat(),
+                            placeLng.toFloat(),
+                            placeTitle
+                        )
+                    )
                     viewModel.onMapNavigated()
                 }
             }
         )
+
+
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         checkLocationPermissionAndGetLocation()
 
@@ -95,8 +110,8 @@ class HobbyPlaceFragment : Fragment() {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     // 使用 location.latitude 和 location.longitude 可取得位置
-                    latitude = location?.latitude ?: 0.0
-                    longitude = location?.longitude ?: 0.0
+                    userLatitude = location?.latitude ?: 0.0
+                    userLongitude = location?.longitude ?: 0.0
                     Toast.makeText(requireContext(), "位置: ${location?.latitude}, ${location?.longitude}", Toast.LENGTH_LONG).show()
                 }
         } else {

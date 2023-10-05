@@ -15,106 +15,173 @@
         android:layout_height="match_parent"
         tools:context=".detail.DetailFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".detail.DetailFragment">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/detail_image_cardView"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="#FDF5E8"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            tools:context=".detail.DetailFragment">
 
-            <ImageView
-                android:id="@+id/detail_image"
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/detail_image_cardView"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:scaleType="center"
-                app:imageUrl="@{introduce.selectProduct.image}"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FDF5E8"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/detail_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{introduce.selectProduct.title}"
-            android:textAlignment="viewStart"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/detail_image_cardView"
-            app:layout_constraintStart_toStartOf="@+id/detail_image_cardView"
-            app:layout_constraintTop_toBottomOf="@+id/detail_image_cardView" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/detail_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{introduce.selectProduct.content}"
-            android:textAlignment="viewStart"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/detail_title"
-            app:layout_constraintStart_toStartOf="@+id/detail_title"
-            app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+                <View
+                    android:layout_width="550dp"
+                    android:layout_height="550dp"
+                    android:layout_marginEnd="-355dp"
+                    android:layout_marginTop="-350dp"
+                    android:background="@drawable/blue_gradient"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/detail_appliance"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/round_corner"
-            android:backgroundTint="@color/black"
-            android:text="@string/appliance_recommend"
-            android:textColor="@color/white"
-            android:textSize="28dp"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="@id/detail_content"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/detail_content"
-            app:layout_constraintTop_toBottomOf="@+id/detail_course" />
+                <View
+                    android:layout_width="550dp"
+                    android:layout_height="550dp"
+                    android:layout_marginStart="-364dp"
+                    android:layout_marginBottom="-350dp"
+                    android:background="@drawable/yellow_gradient"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <ImageView
+                    android:id="@+id/detail_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="fitCenter"
+                    app:imageUrl="@{introduce.selectProduct.image}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/detail_place"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/round_corner"
-            android:backgroundTint="@color/black"
-            android:text="@string/place_recommend"
-            android:textColor="@color/white"
-            android:textSize="28dp"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="@id/detail_content"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/detail_content"
-            app:layout_constraintTop_toBottomOf="@+id/detail_appliance" />
+            </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/detail_course"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/course_recommend"
-            android:textSize="28dp"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/round_corner"
-            android:backgroundTint="@color/black"
-            app:layout_constraintEnd_toEndOf="@id/detail_content"
-            app:layout_constraintStart_toStartOf="@id/detail_content"
-            app:layout_constraintTop_toBottomOf="@+id/detail_content" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/detail_content_cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FDF5E8"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_image_cardView">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <View
+                        android:layout_width="550dp"
+                        android:layout_height="550dp"
+                        android:layout_marginEnd="-400dp"
+                        android:layout_marginTop="-400dp"
+                        android:background="@drawable/blue_gradient"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:layout_width="550dp"
+                        android:layout_height="550dp"
+                        android:layout_marginStart="-400dp"
+                        android:layout_marginBottom="-400dp"
+                        android:background="@drawable/yellow_gradient"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/detail_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@{introduce.selectProduct.title}"
+                        android:textAlignment="viewStart"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/detail_content"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@{introduce.selectProduct.content}"
+                        android:textAlignment="viewStart"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="@+id/detail_title"
+                        app:layout_constraintStart_toStartOf="@+id/detail_title"
+                        app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/detail_appliance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/black"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/appliance_recommend"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/detail_place"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/detail_course"
+                app:layout_constraintTop_toTopOf="@+id/detail_course" />
+
+            <Button
+                android:id="@+id/detail_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/black"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/place_recommend"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/detail_appliance"
+                app:layout_constraintTop_toTopOf="@+id/detail_appliance" />
+
+            <Button
+                android:id="@+id/detail_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/black"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/course_recommend"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/detail_content_cardView"
+                app:layout_constraintEnd_toStartOf="@+id/detail_appliance"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_content_cardView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

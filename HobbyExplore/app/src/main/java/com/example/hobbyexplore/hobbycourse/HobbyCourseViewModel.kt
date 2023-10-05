@@ -26,11 +26,11 @@ class HobbyCourseViewModel : ViewModel() {
     val navigateToYoutube: LiveData<Course>
         get() = _navigateToYoutube
     init {
-        getCourseData()
+//        getCourseData(sportName)
     }
-    private fun getCourseData() {
+    fun getCourseData(sportName: String) {
         val docRef = db.collection("sports")
-            .document("baseball")
+            .document(sportName)
             .collection("Course")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {

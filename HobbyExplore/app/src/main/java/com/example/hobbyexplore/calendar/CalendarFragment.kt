@@ -38,13 +38,14 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 
-private lateinit var stringDateSelected: String
+
 private lateinit var databaseReference: DatabaseReference
 
 class CalendarFragment : Fragment() {
-
+    var stringDateSelected: String? = null
     private lateinit var firestore: FirebaseFirestore
     private var selectedPhotoUri: Uri? = null
     private lateinit var binding: FragmentCalendarBinding
@@ -55,9 +56,17 @@ class CalendarFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewModel: CalendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
+        val viewModel: CalendarViewModel =
+            ViewModelProvider(this).get(CalendarViewModel::class.java)
         setHasOptionsMenu(true)
         binding = FragmentCalendarBinding.inflate(inflater)
+
+        val currentDate = Calendar.getInstance()
+        val year = currentDate.get(Calendar.YEAR)
+        val month = currentDate.get(Calendar.MONTH) + 1  // Calendar.MONTH returns 0-based month
+        val day = currentDate.get(Calendar.DAY_OF_MONTH)
+        stringDateSelected = "$year/${String.format("%02d", month)}/${String.format("%02d", day)}"
+
         lineChart = binding.chart1
         lineChart2 = binding.chart2
         firestore = FirebaseFirestore.getInstance()
@@ -149,19 +158,27 @@ class CalendarFragment : Fragment() {
                 eventContent = binding.calendarInputContent.text.toString()
             )
             saveEventToFirestore(event)
-            databaseReference.child(stringDateSelected).setValue(binding.ratingTextview.text.toString())
+            stringDateSelected?.let {
+                databaseReference.child(it)
+                    .setValue(binding.ratingTextview.text.toString())
+            }
             viewModel.getCalendarData()
             delay(1000)
             setLineChartData(viewModel)
         }
     }
 
-    private fun handleDateChange(viewModel: CalendarViewModel, year: Int, month: Int, dayOfMonth: Int) {
+    private fun handleDateChange(
+        viewModel: CalendarViewModel,
+        year: Int,
+        month: Int,
+        dayOfMonth: Int
+    ) {
         val formattedMonth = String.format("%02d", month + 1)
         val formattedDay = String.format("%02d", dayOfMonth)
         stringDateSelected = "$year/$formattedMonth/$formattedDay"
 
-        viewModel.getDataForSpecificDate(stringDateSelected).observe(viewLifecycleOwner) { event ->
+        viewModel.getDataForSpecificDate(stringDateSelected!!).observe(viewLifecycleOwner) { event ->
             event?.let {
                 // 更新UI以顯示從Firestore獲取的數據
                 binding.ratingTextview.text = it.eventRating.toString()
@@ -171,6 +188,7 @@ class CalendarFragment : Fragment() {
                 binding.recordRatingButton.isEnabled = false
             } ?: run {
                 // 如果沒有數據或查詢失敗，更新UI以顯示默認值或錯誤消息
+                binding.ratingTextview.text = "未評分"
                 binding.recordRatingButton.visibility = View.VISIBLE
                 binding.recordRatingButton.isEnabled = true
                 binding.recordRatingButton.alpha = 1f
@@ -182,11 +200,18 @@ class CalendarFragment : Fragment() {
 
 
     private fun hasWritePermission(): Boolean {
-        return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestWritePermission() {
-        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            1
+        )
     }
 
     private fun setInitialValues(viewModel: CalendarViewModel) {
@@ -195,7 +220,31 @@ class CalendarFragment : Fragment() {
         setLineChartData(viewModel)
     }
 
+    class IntegerValueFormatter : ValueFormatter() {
+        override fun getFormattedValue(value: Float): String {
+            return value.toInt().toString()
+        }
+    }
     private fun setLineChartData(viewModel: CalendarViewModel) {
+
+        // 設置格式化器使數值為整數
+        val intValueFormatter = IntegerValueFormatter()
+
+        // 設置lineChart的X軸和Y軸格式
+        lineChart.xAxis.granularity = 1f
+        lineChart.xAxis.valueFormatter = intValueFormatter
+        lineChart.axisLeft.granularity = 1f
+        lineChart.axisLeft.valueFormatter = intValueFormatter
+        lineChart.axisRight.granularity = 1f
+        lineChart.axisRight.valueFormatter = intValueFormatter
+
+        // 設置lineChart2的X軸和Y軸格式
+        lineChart2.xAxis.granularity = 1f
+        lineChart2.xAxis.valueFormatter = intValueFormatter
+        lineChart2.axisLeft.granularity = 1f
+        lineChart2.axisLeft.valueFormatter = intValueFormatter
+        lineChart2.axisRight.granularity = 1f
+        lineChart2.axisRight.valueFormatter = intValueFormatter
 
         val markData = ArrayList<Entry>()
 
@@ -260,14 +309,17 @@ class CalendarFragment : Fragment() {
     /*-----------------------------------*/
 
     private fun calendarClicked(viewModel: CalendarViewModel) {
-        databaseReference.child(stringDateSelected).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.value?.let { binding.ratingTextview.text = it.toString() }
-                viewModel.getDateData()
-            }
+        stringDateSelected?.let {
+            databaseReference.child(it)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        snapshot.value?.let { binding.ratingTextview.text = it.toString() }
+                        viewModel.getDateData()
+                    }
 
-            override fun onCancelled(error: DatabaseError) {}
-        })
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -301,6 +353,7 @@ class CalendarFragment : Fragment() {
                 Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
     // Toolbar share fun
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
@@ -315,15 +368,31 @@ class CalendarFragment : Fragment() {
                     .whereEqualTo("eventDate", stringDateSelected)
                     .get()
                     .addOnSuccessListener { querySnapshot ->
-                        val event = querySnapshot.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
-                        event?.let {
-                            val contentFromFirebase = it.eventContent
-                            val imageUrlFromFirebase = it.eventImage
-                            findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToPostFragment(contentFromFirebase,imageUrlFromFirebase))
+                        val event = querySnapshot.documents.firstOrNull()
+                            ?.toObject(CalendarEvent::class.java)
+                        if (event != null) {
+                            val contentFromFirebase = event.eventContent
+                            val imageUrlFromFirebase = event.eventImage
+                            findNavController().navigate(
+                                CalendarFragmentDirections.actionCalendarFragmentToPostFragment(
+                                    contentFromFirebase,
+                                    imageUrlFromFirebase
+                                )
+                            )
+                        } else {
+                            // 沒有數據與該日期相關，可以顯示一個提示給用戶。
+                            Toast.makeText(
+                                requireContext(),
+                                "尚未有該日期的數據!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
+
+
                     }
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }

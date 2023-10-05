@@ -124,9 +124,6 @@ class MainActivity : BaseActivity() {
 
         val menuView = binding.bottomNavView.getChildAt(0) as BottomNavigationMenuView
         val itemView = menuView.getChildAt(2) as BottomNavigationItemView
-//        val bindingBadge = BadgeBottomBinding.inflate(LayoutInflater.from(this), itemView, true)
-//        bindingBadge.lifecycleOwner = this
-//        bindingBadge.viewModel = viewModel
     }
 
     private fun setupNavController() {
@@ -137,7 +134,7 @@ class MainActivity : BaseActivity() {
                 R.id.hobbyCategoryFragment -> CurrentFragmentType.CATEGORY
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
                 R.id.detailFragment -> CurrentFragmentType.HOBBY_EXPLORE
-                R.id.hobbyAppliaceFragment -> CurrentFragmentType.HOBBY_APPLIANCE
+                R.id.hobbyApplianceFragment -> CurrentFragmentType.HOBBY_APPLIANCE
                 R.id.hobbyCourseFragment -> CurrentFragmentType.HOBBY_COURSE
                 R.id.hobbyPlaceFragment -> CurrentFragmentType.HOBBY_PLACE
                 R.id.chatGptFragment -> CurrentFragmentType.RECOMMEND_HOBBY

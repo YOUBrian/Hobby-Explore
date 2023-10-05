@@ -35,7 +35,7 @@ class MbtiTestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        typeString = ""
 
         viewBinding.buttonChoice1.setOnClickListener { onChoiceButtonClick(it) }
         viewBinding.buttonChoice2.setOnClickListener { onChoiceButtonClick(it) }
@@ -64,38 +64,7 @@ class MbtiTestFragment : Fragment() {
         }
     }
 
-//    private fun onChoiceButtonClick(view: View) {
-//        Log.i("Click_Choice", "View ID: ${view.id}, R.id.button_choice1: ${R.id.button_choice1}, R.id.button_choice2: ${R.id.button_choice2}")
-//        val choiceIndex = when (view.id) {
-//            viewBinding.buttonChoice1.id -> 0
-//            viewBinding.buttonChoice2.id -> 1
-//            else -> -1
-//        }
-//        Log.i("Click_Choice", "choiceIndex: $choiceIndex")
-//        if (choiceIndex != -1) {
-//            // 用戶選擇了某個選項，您可以在這裡進行相應的處理
-//            if (currentQuestionIndex < questions.size) {
-//                val selectedChoice = questions[currentQuestionIndex].choices[choiceIndex]
-//
-//
-////                val selectedChoice = questions[currentQuestionIndex].choices[choiceIndex]
-//                val content = selectedChoice.content
-//                val score = selectedChoice.score
-//                buttonTapped(view)
-//                Log.i("Click_Choice", "selectedChoice: $selectedChoice")
-//                Log.i("Click_Choice", "content: $content")
-//                Log.i("Click_Choice", "score: $score")
-//                // 處理所選選項的內容和分數
-//                // 這裡可以添加您的邏輯
-//
-//                // 更新當前問題的索引，準備跳轉到下一題
-////            currentQuestionIndex++
-//
-//                // 顯示下一個問題
-//                showQuestion(currentQuestionIndex)
-//            }
-//        }
-//    }
+
 
     private fun onChoiceButtonClick(view: View) {
         val choiceIndex = when (view.id) {
@@ -172,6 +141,7 @@ class MbtiTestFragment : Fragment() {
     }
 
     private fun computePersonalityType(): String {
+        typeString = ""
         val iTypeScore =
             questions[0].choices[1].score +
                     questions[4].choices[0].score +

@@ -59,15 +59,15 @@ class HobbyBoardsViewModel : ViewModel() {
     fun postApplianceData(){
         val articles = FirebaseFirestore.getInstance()
             .collection("sports")
-            .document("baseball")
+            .document("tennis")
             .collection("Place")
         val document = articles.document()
         val data = hashMapOf(
-            "title" to "浮洲橋棒球場",
-            "content" to "河濱簡易型棒球場",
+            "title" to "中正河濱網球場",
+            "latitude" to 25.023411673361995,
+            "longitude" to 121.51419609998652,
             "id" to document.id,
-            "image" to "https://www.hrcm.ntpc.gov.tw/Uploads/%E6%96%BD%E6%94%BF%E5%9C%B0%E5%9C%96/%E8%A8%AD%E6%96%BD%E4%BB%8B%E7%B4%B9/%E7%90%83%E5%A0%B4/%E6%A3%92%E5%A3%98%E7%90%83%E5%A0%B4/%E6%B5%AE%E6%B4%B2%E6%A3%92%E7%90%83%E5%A0%B41.JPG",
-            "price" to "免費對外場地租借"
+            "image" to "https://pic.pimg.tw/gn0930150655/1618299056-1977311349-g.jpg",
         )
         Log.i("addData", "${data}")
         document.set(data)

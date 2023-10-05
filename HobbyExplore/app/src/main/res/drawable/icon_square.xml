@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background rectangle -->
+    <item android:drawable="@drawable/rectangle_background"/>
+
+    <!-- Your icon -->
+    <item android:drawable="@drawable/icon_blue_144"/>
+</layer-list>

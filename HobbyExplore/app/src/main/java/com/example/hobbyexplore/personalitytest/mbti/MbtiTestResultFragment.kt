@@ -1,5 +1,6 @@
 package com.example.hobbyexplore.personalitytest.mbti
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,11 @@ class MbtiTestResultFragment : Fragment() {
         binding.mbtiTestResultTw.text = matchedPersonality.name
         binding.mbtiTestResultContent.text = matchedPersonality.description
 
+        val sharedPref = activity?.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+        with(sharedPref?.edit()) {
+            this?.putString("MBTI_Result", typeString)
+            this?.apply()
+        }
 
 
         binding.systemRecommendButton.setOnClickListener {

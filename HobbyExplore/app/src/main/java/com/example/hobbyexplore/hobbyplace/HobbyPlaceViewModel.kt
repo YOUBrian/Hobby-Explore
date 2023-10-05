@@ -26,12 +26,24 @@ class HobbyPlaceViewModel : ViewModel() {
     private val _navigateToMap = MutableLiveData<Place>()
     val navigateToMap: LiveData<Place>
         get() = _navigateToMap
+
+    private val _placeLatitude = MutableLiveData<Double>()
+    val placeLatitude: LiveData<Double>
+        get() = _placeLatitude
+
+    private val _placeLongitude = MutableLiveData<Double>()
+    val placeLongitude: LiveData<Double>
+        get() = _placeLongitude
+
+    private val _placeTitle = MutableLiveData<String>()
+    val placeTitle: LiveData<String>
+        get() = _placeTitle
     init {
-        getPlaceData()
+//        getPlaceData("")
     }
-    private fun getPlaceData() {
+    fun getPlaceData(sportName: String) {
         val docRef = db.collection("sports")
-            .document("baseball")
+            .document(sportName)
             .collection("Place")
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -64,8 +76,12 @@ class HobbyPlaceViewModel : ViewModel() {
     }
 
     fun navigateToMap(place: Place) {
+        _placeLatitude.value = place.latitude
+        _placeLongitude.value = place.longitude
+        _placeTitle.value = place.title
         _navigateToMap.value = place
     }
+
     fun onMapNavigated() {
         _navigateToMap.value = null
     }

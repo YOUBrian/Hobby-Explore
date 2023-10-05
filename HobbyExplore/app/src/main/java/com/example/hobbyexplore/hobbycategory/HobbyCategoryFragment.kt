@@ -27,6 +27,7 @@ class HobbyCategoryFragment : Fragment() {
         val binding = FragmentHobbyCategoryBinding.inflate(inflater)
 
         val hobbyCategoryAdapter = HobbyCategoryAdapter(HobbyCategoryAdapter.OnClickListener {
+            Log.i("HobbyClick", "Clicked on hobby: ${it}")
             viewModel.navigateToDetail(it)
         })
 

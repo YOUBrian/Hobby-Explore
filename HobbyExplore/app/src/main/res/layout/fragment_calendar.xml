@@ -99,13 +99,12 @@
 
                 <ImageButton
                     android:id="@+id/calendar_image_button"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="#00000000"
-                    android:src="@drawable/image_gallery_64"
+                    android:src="@drawable/add_photo_48"
                     app:layout_constraintEnd_toEndOf="@+id/record_rating_Button"
-                    app:layout_constraintStart_toStartOf="@+id/record_rating_Button"
                     app:layout_constraintTop_toBottomOf="@+id/record_rating_Button" />
 
                 <!--        <Button-->

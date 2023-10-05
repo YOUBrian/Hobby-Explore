@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="introduce"
-            type="com.example.hobbyexplore.detail.DetailViewModel" />
+            type="com.example.hobbyexplore.chatgpt.ChatGptViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".detail.DetailFragment">
@@ -18,72 +20,132 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/detail_image"
-                android:layout_width="0dp"
-                android:layout_height="400dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/basketball"
+            <View
+                android:layout_width="550dp"
+                android:layout_height="550dp"
+                android:layout_marginTop="-350dp"
+                android:layout_marginEnd="-350dp"
+                android:background="@drawable/blue_gradient"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/detail_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="籃球"
-                android:textAlignment="viewStart"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/detail_image"
-                app:layout_constraintStart_toStartOf="@+id/detail_image"
-                app:layout_constraintTop_toBottomOf="@+id/detail_image" />
+            <View
+                android:id="@+id/orange_view"
+                android:layout_width="550dp"
+                android:layout_height="550dp"
+                android:layout_marginStart="-350dp"
+                android:layout_marginBottom="-350dp"
+                android:background="@drawable/yellow_gradient"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/detail_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="籃球，是一種由兩隊參與，在一個長方形籃球場進行的球類運動。 每隊出場5名隊員，可將球向任何方向傳、投、拍、滾或運，目的是將籃球投入對方球籃得分，並阻止對方獲得控球權或得分。 籃球是世界上最多人觀看的球類活動之一，從1936年起就是奧運會的正式競賽項目之一。 在三分線內投進可得兩分，若在三分線外投籃，可以得到三分。"
-                android:textAlignment="viewStart"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="@+id/detail_title"
-                app:layout_constraintStart_toStartOf="@+id/detail_title"
-                app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_animation"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="170dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/waiting" />
 
-            <Button
+            <androidx.cardview.widget.CardView
+                android:id="@+id/detail_image_cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FDF5E8"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/detail_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{introduce.introduceList.image}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/detail_content_cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FDF5E8"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_image_cardView">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/detail_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@{introduce.introduceList.title}"
+                        android:textAlignment="viewStart"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/detail_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@{introduce.introduceList.content}"
+                        android:textAlignment="viewStart"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="@+id/detail_title"
+                        app:layout_constraintStart_toStartOf="@+id/detail_title"
+                        app:layout_constraintTop_toBottomOf="@id/detail_title" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/select_button"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:layout_gravity="center"
-                android:background="@drawable/custom_button"
+                android:background="@drawable/blue_button_full"
                 android:gravity="center"
                 android:text="@string/select_this_hobby"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/change_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_content" />
+                app:layout_constraintTop_toBottomOf="@+id/detail_content_cardView" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/change_button"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:background="@drawable/custom_button"
-                android:backgroundTint="@color/black"
+                android:background="@drawable/blue_button_stroke"
                 android:gravity="center"
                 android:text="@string/change_hobby"
-                android:textColor="#FFFFFF"
+                android:textColor="#a3b2d1"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/select_button"

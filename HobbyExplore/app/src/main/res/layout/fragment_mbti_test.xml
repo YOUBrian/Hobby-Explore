@@ -6,6 +6,27 @@
     <data>
 
     </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <View
+        android:layout_width="550dp"
+        android:layout_height="550dp"
+        android:layout_marginEnd="-350dp"
+        android:layout_marginTop="-350dp"
+        android:background="@drawable/blue_gradient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="550dp"
+        android:layout_height="550dp"
+        android:layout_marginStart="-350dp"
+        android:layout_marginBottom="-350dp"
+        android:background="@drawable/yellow_gradient"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,9 +42,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:background="@drawable/custom_button"
+            android:background="@drawable/blue_button_full"
             android:text="55555555"
-            android:textSize="30dp"
+            android:textSize="24dp"
             app:layout_constraintBottom_toTopOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -36,12 +57,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-
             android:gravity="center"
             android:text="請選擇與您最符合的敘述"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="24dp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/button_choice2"
             app:layout_constraintTop_toBottomOf="@+id/button_choice1"
             tools:layout_editor_absoluteX="28dp" />
@@ -52,13 +72,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:background="@drawable/custom_button"
+            android:background="@drawable/blue_button_full"
             android:text="55555555"
-            android:textSize="30dp"
+            android:textSize="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

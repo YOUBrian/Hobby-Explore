@@ -37,7 +37,7 @@ class HobbyBoardsFragment : Fragment() {
 
         binding.layoutSwipeRefreshBoards.setOnRefreshListener {
             viewModel.refresh()
-//            viewModel.postMessageData()
+//            viewModel.postApplianceData()
         }
 //        binding.postButton.setOnClickListener {
 //            viewModel.postMessageData()
