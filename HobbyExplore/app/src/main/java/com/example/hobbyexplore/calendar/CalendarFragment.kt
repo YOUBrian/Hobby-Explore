@@ -36,6 +36,7 @@ import java.util.*
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -71,7 +72,7 @@ class CalendarFragment : Fragment() {
 
         stringDateSelected = "$year/${String.format("%02d", month)}/${String.format("%02d", day)}"
 
-        lineChart = binding.chart1
+//        lineChart = binding.chart1
         lineChart2 = binding.chart2
         firestore = FirebaseFirestore.getInstance()
         databaseReference = FirebaseDatabase.getInstance().getReference("calendarData")
@@ -236,26 +237,15 @@ class CalendarFragment : Fragment() {
         }
     }
     private fun setLineChartData(viewModel: CalendarViewModel) {
-
-
         val intValueFormatter = IntegerValueFormatter()
-
-
-        lineChart.xAxis.granularity = 1f
-        lineChart.xAxis.valueFormatter = intValueFormatter
-        lineChart.axisLeft.granularity = 1f
-        lineChart.axisLeft.valueFormatter = intValueFormatter
-        lineChart.axisRight.granularity = 1f
-        lineChart.axisRight.valueFormatter = intValueFormatter
-
 
         lineChart2.xAxis.granularity = 1f
         lineChart2.xAxis.valueFormatter = intValueFormatter
+        lineChart2.xAxis.position = XAxis.XAxisPosition.BOTTOM
         lineChart2.axisLeft.granularity = 1f
         lineChart2.axisLeft.valueFormatter = intValueFormatter
         lineChart2.axisRight.granularity = 1f
         lineChart2.axisRight.valueFormatter = intValueFormatter
-
 
         val markData = ArrayList<Entry>()
 
@@ -277,22 +267,15 @@ class CalendarFragment : Fragment() {
         markData.add(Entry(16f, 54f))
         markData.add(Entry(17f, 56f))
         markData.add(Entry(18f, 60f))
-        markData.add(Entry(19f, 66f))
-        markData.add(Entry(20f, 70f))
-        markData.add(Entry(21f, 83f))
-        markData.add(Entry(22f, 92f))
-        markData.add(Entry(23f, 94f))
-        markData.add(Entry(24f, 96f))
-
-
+        markData.add(Entry(19f, 92f))
+        markData.add(Entry(20f, 94f))
+        markData.add(Entry(21f, 96f))
 
         val entries = mutableListOf<Entry>()
 
         viewModel.dataList.value?.let { list ->
             for ((index, pair) in list.withIndex()) {
-                Log.i("LineChartData", "Index: $index, Pair: $pair")
                 entries.add(Entry(index.toFloat() + 1, pair.second.toFloat()))
-                Log.d("DEBUGGGGG", "Entries size: ${entries.size}")
             }
         }
 
@@ -306,22 +289,17 @@ class CalendarFragment : Fragment() {
 
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(lineDataSet)
-
-        val markDataSets = ArrayList<ILineDataSet>()
-        markDataSets.add(markDataSet)
+        dataSets.add(markDataSet) // 加入第二組數據
 
         val data = LineData(dataSets)
-        val markData2 = LineData(markDataSets)
 
-        lineChart.axisLeft.isEnabled = true
-        lineChart.xAxis.isEnabled = true
-
-
-        lineChart.data = data
-        lineChart.animateXY(1000, 1000)
-
-        lineChart2.data = markData2
-//            lineChart2.animateXY(3000, 3000)
+        lineChart2.axisLeft.isEnabled = true
+        lineChart2.xAxis.isEnabled = true
+        lineChart2.description.isEnabled = false
+        lineChart2.axisRight.isEnabled = false
+        lineChart2.data = data
+        lineChart2.invalidate() // 確保圖表更新
+        lineChart2.animateXY(1000, 1000)
     }
 
     /*-----------------------------------*/
