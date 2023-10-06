@@ -30,7 +30,8 @@ class CalendarViewModel : ViewModel() {
 
 
     init {
-//        getCalendarData()
+        getCalendarData(userIdFromPref = String())
+        dataList.value = mutableListOf()
 //        getDateData()
         progress.value = 50
     }
@@ -74,10 +75,10 @@ class CalendarViewModel : ViewModel() {
     fun getCalendarData(userIdFromPref: String) {
         val docRef = db.collection("calendarData")
             .whereEqualTo("eventUserId", userIdFromPref)
-            .orderBy("eventDate", Query.Direction.ASCENDING)
-
-        docRef.get()
+        docRef.orderBy("eventDate", Query.Direction.ASCENDING)
+            .get()
             .addOnSuccessListener { querySnapshot ->
+                Log.d("DEBUGGGGG", "Successfully retrieved ${querySnapshot.size()} documents.")
                 val ratings = mutableListOf<CalendarEvent>()
                 val dataListValues = dataList.value?.toMutableList() ?: mutableListOf()
                 for (document in querySnapshot) {
@@ -100,7 +101,7 @@ class CalendarViewModel : ViewModel() {
                 Log.i("dataListttttt","dataList:$dataListValues")
             }
             .addOnFailureListener { e ->
-                Log.w("READ_DATA", "Error reading data.", e)
+                Log.e("DEBUGGGGG", "Error reading data.", e)
             }
     }
 

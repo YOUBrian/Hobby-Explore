@@ -82,6 +82,7 @@ class CalendarFragment : Fragment() {
         viewModel.getCalendarData(userId.toString())
         setLineChartData(viewModel)
         viewModel.dataList.observe(viewLifecycleOwner, Observer { updatedDataList ->
+            Log.d("DEBUGGGGG", "Data List: $updatedDataList")
             setLineChartData(viewModel)
         })
 
@@ -291,6 +292,7 @@ class CalendarFragment : Fragment() {
             for ((index, pair) in list.withIndex()) {
                 Log.i("LineChartData", "Index: $index, Pair: $pair")
                 entries.add(Entry(index.toFloat() + 1, pair.second.toFloat()))
+                Log.d("DEBUGGGGG", "Entries size: ${entries.size}")
             }
         }
 
