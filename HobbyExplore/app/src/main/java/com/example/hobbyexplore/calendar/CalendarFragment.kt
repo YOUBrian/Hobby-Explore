@@ -79,7 +79,7 @@ class CalendarFragment : Fragment() {
         setUpUIObservers(viewModel)
         setUpListeners(viewModel)
         setInitialValues(viewModel)
-        viewModel.getCalendarData()
+        viewModel.getCalendarData(userId.toString())
         setLineChartData(viewModel)
         viewModel.dataList.observe(viewLifecycleOwner, Observer { updatedDataList ->
             setLineChartData(viewModel)
@@ -169,7 +169,7 @@ class CalendarFragment : Fragment() {
                 databaseReference.child(it)
                     .setValue(binding.ratingTextview.text.toString())
             }
-            viewModel.getCalendarData()
+            viewModel.getCalendarData(userId.toString())
             delay(1000)
             setLineChartData(viewModel)
         }
@@ -183,16 +183,20 @@ class CalendarFragment : Fragment() {
     ) {
         val formattedMonth = String.format("%02d", month + 1)
         val formattedDay = String.format("%02d", dayOfMonth)
+        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val userId = logInSharedPref?.getString("userId", "N/A")
         stringDateSelected = "$year/$formattedMonth/$formattedDay"
 
-        viewModel.getDataForSpecificDate(stringDateSelected!!).observe(viewLifecycleOwner) { event ->
+        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString()).observe(viewLifecycleOwner) { event ->
             event?.let {
+                binding.ratingSeekBar.progress = event.eventRating!!.toInt()
                 binding.ratingTextview.text = it.eventRating.toString()
                 Glide.with(this).load(it.eventImage).into(binding.calendarImage)
                 binding.calendarInputContent.setText(it.eventContent)
                 binding.recordRatingButton.alpha = 0.5f
                 binding.recordRatingButton.isEnabled = false
             } ?: run {
+                binding.ratingSeekBar.progress = 0
                 binding.ratingTextview.text = "未評分"
                 binding.recordRatingButton.visibility = View.VISIBLE
                 binding.recordRatingButton.isEnabled = true
@@ -220,7 +224,7 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setInitialValues(viewModel: CalendarViewModel) {
-        binding.ratingTextview.text = "50 / 100"
+        binding.ratingTextview.text = "0 / 100"
         selectedPhotoUri?.let { Glide.with(this).load(it).into(binding.calendarImage) }
         setLineChartData(viewModel)
     }
@@ -251,6 +255,7 @@ class CalendarFragment : Fragment() {
         lineChart2.axisRight.granularity = 1f
         lineChart2.axisRight.valueFormatter = intValueFormatter
 
+
         val markData = ArrayList<Entry>()
 
         markData.add(Entry(1f, 40f))
@@ -278,6 +283,8 @@ class CalendarFragment : Fragment() {
         markData.add(Entry(23f, 94f))
         markData.add(Entry(24f, 96f))
 
+
+
         val entries = mutableListOf<Entry>()
 
         viewModel.dataList.value?.let { list ->
@@ -303,6 +310,10 @@ class CalendarFragment : Fragment() {
 
         val data = LineData(dataSets)
         val markData2 = LineData(markDataSets)
+
+        lineChart.axisLeft.isEnabled = true
+        lineChart.xAxis.isEnabled = true
+
 
         lineChart.data = data
         lineChart.animateXY(1000, 1000)
@@ -369,36 +380,44 @@ class CalendarFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.calendar_share -> {
-                firestore.collection("calendarData")
-                    .whereEqualTo("eventDate", stringDateSelected)
-                    .get()
-                    .addOnSuccessListener { querySnapshot ->
-                        val event = querySnapshot.documents.firstOrNull()
-                            ?.toObject(CalendarEvent::class.java)
-                        if (event != null) {
-                            val contentFromFirebase = event.eventContent
-                            val imageUrlFromFirebase = event.eventImage
-                            findNavController().navigate(
-                                CalendarFragmentDirections.actionCalendarFragmentToPostFragment(
-                                    contentFromFirebase,
-                                    imageUrlFromFirebase
+
+                val sharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+                val userIdFromPref = sharedPref?.getString("userId", null)
+
+                if (userIdFromPref != null) {
+                    firestore.collection("calendarData")
+                        .whereEqualTo("eventUserId", userIdFromPref)
+                        .whereEqualTo("eventDate", stringDateSelected)
+                        .get()
+                        .addOnSuccessListener { querySnapshot ->
+                            val event = querySnapshot.documents.firstOrNull()
+                                ?.toObject(CalendarEvent::class.java)
+                            if (event != null) {
+                                val contentFromFirebase = event.eventContent
+                                val imageUrlFromFirebase = event.eventImage
+                                findNavController().navigate(
+                                    CalendarFragmentDirections.actionCalendarFragmentToPostFragment(
+                                        contentFromFirebase,
+                                        imageUrlFromFirebase
+                                    )
                                 )
-                            )
-                        } else {
-
-                            Toast.makeText(
-                                requireContext(),
-                                "尚未有該日期的數據!",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "尚未有該日期的數據!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
+                } else {
+                    Toast.makeText(requireContext(), "無法獲取用戶ID", Toast.LENGTH_SHORT).show()
+                }
 
-
-                    }
                 return true
             }
 
             else -> return super.onOptionsItemSelected(item)
         }
     }
+
 }

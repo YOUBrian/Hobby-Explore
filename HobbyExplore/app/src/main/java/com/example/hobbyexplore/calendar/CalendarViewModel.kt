@@ -30,7 +30,7 @@ class CalendarViewModel : ViewModel() {
 
 
     init {
-        getCalendarData()
+//        getCalendarData()
 //        getDateData()
         progress.value = 50
     }
@@ -71,10 +71,12 @@ class CalendarViewModel : ViewModel() {
 
 
     //get
-    fun getCalendarData() {
+    fun getCalendarData(userIdFromPref: String) {
         val docRef = db.collection("calendarData")
-        docRef.orderBy("eventDate", Query.Direction.ASCENDING)
-            .get()
+            .whereEqualTo("eventUserId", userIdFromPref)
+            .orderBy("eventDate", Query.Direction.ASCENDING)
+
+        docRef.get()
             .addOnSuccessListener { querySnapshot ->
                 val ratings = mutableListOf<CalendarEvent>()
                 val dataListValues = dataList.value?.toMutableList() ?: mutableListOf()
@@ -102,19 +104,25 @@ class CalendarViewModel : ViewModel() {
             }
     }
 
-    fun getDataForSpecificDate(date: String): LiveData<CalendarEvent?> {
+    fun getDataForSpecificDate(date: String, userIdFromPref: String): LiveData<CalendarEvent?> {
         val eventLiveData = MutableLiveData<CalendarEvent?>()
-        db.collection("calendarData")
-            .whereEqualTo("eventDate", date)
-            .get()
-            .addOnSuccessListener { documents ->
+        if (userIdFromPref != null) {
+            db.collection("calendarData")
+                .whereEqualTo("eventDate", date)
+                .whereEqualTo("eventUserId", userIdFromPref) // Add this line to compare userId
+                .get()
+                .addOnSuccessListener { documents ->
+                    val event = documents.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
+                    eventLiveData.postValue(event)
+                }
+                .addOnFailureListener {
+                    eventLiveData.postValue(null)
+                }
+        } else {
+            Log.e("ERROR", "UserId not found in SharedPreferences.")
+            eventLiveData.postValue(null) // Optionally, you can post a null value here to indicate an error.
+        }
 
-                val event = documents.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
-                eventLiveData.postValue(event)
-            }
-            .addOnFailureListener {
-                eventLiveData.postValue(null)
-            }
         return eventLiveData
     }
 
