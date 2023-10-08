@@ -42,6 +42,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.gms.tasks.Task
 
 
 private lateinit var databaseReference: DatabaseReference
@@ -53,6 +54,9 @@ class CalendarFragment : Fragment() {
     private lateinit var binding: FragmentCalendarBinding
     private lateinit var lineChart: LineChart
     private lateinit var lineChart2: LineChart
+    private var currentEventId: String? = null
+    private var dateObserver: Observer<CalendarEvent?>? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,24 +84,30 @@ class CalendarFragment : Fragment() {
         setUpUIObservers(viewModel)
         setUpListeners(viewModel)
         setInitialValues(viewModel)
-        viewModel.getCalendarData(userId.toString())
+
         setLineChartData(viewModel)
         viewModel.dataList.observe(viewLifecycleOwner, Observer { updatedDataList ->
             Log.d("DEBUGGGGG", "Data List: $updatedDataList")
             setLineChartData(viewModel)
         })
 
-        viewModel.ratingDate.observe(viewLifecycleOwner, Observer { events ->
+        handleDateChange(viewModel, year, month, day)
 
-            if (events.isNotEmpty()) {
-                val event = events[0]
-                binding.ratingTextview.text = event.eventRating.toString()
+//        viewModel.ratingDate.observe(viewLifecycleOwner, Observer { events ->
+//            if (events.isNotEmpty()) {
+//                val event = events[0]
+//                binding.ratingTextview.text = event.eventRating.toString()
+//            }
+//        })
 
-            }
-        })
+        viewModel.getCalendarData(userId.toString())
 
         Log.d("CalendarFragment", "ViewModel: $viewModel")
+
+
+
         return binding.root
+
     }
 
     private fun setUpUIObservers(viewModel: CalendarViewModel) {
@@ -123,22 +133,6 @@ class CalendarFragment : Fragment() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-
-//        binding.shareButton.setOnClickListener {
-//            firestore.collection("calendarData")
-//                .whereEqualTo("eventDate", stringDateSelected)
-//                .get()
-//                .addOnSuccessListener { querySnapshot ->
-//                    val event = querySnapshot.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
-//                    event?.let {
-//                        val contentFromFirebase = it.eventContent
-//                        val imageUrlFromFirebase = it.eventImage
-//                        findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToPostFragment(contentFromFirebase,imageUrlFromFirebase))
-//                    }
-//                }
-//        }
-
-
     }
 
     private fun handleImageSelection() {
@@ -158,15 +152,25 @@ class CalendarFragment : Fragment() {
             val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
             val userId = logInSharedPref?.getString("userId", "N/A")
             val imageUrl = selectedPhotoUri?.let { uploadImageToFirebase(it) } ?: ""
+
             val event = CalendarEvent(
-                eventId = UUID.randomUUID().toString(),
+                eventId = currentEventId ?: UUID.randomUUID().toString(),
                 eventDate = stringDateSelected,
                 eventRating = viewModel.progress.value,
                 eventImage = imageUrl,
                 eventContent = binding.calendarInputContent.text.toString(),
                 eventUserId = userId.toString()
             )
+
             saveEventToFirestore(event)
+                .addOnSuccessListener {
+                    currentEventId = event.eventId // 更新 currentEventId
+                    Toast.makeText(requireContext(), "Event saved!", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+
             stringDateSelected?.let {
                 databaseReference.child(it)
                     .setValue(binding.ratingTextview.text.toString())
@@ -177,27 +181,29 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun handleDateChange(
-        viewModel: CalendarViewModel,
-        year: Int,
-        month: Int,
-        dayOfMonth: Int
-    ) {
+
+
+    private fun handleDateChange(viewModel: CalendarViewModel, year: Int, month: Int, dayOfMonth: Int) {
         val formattedMonth = String.format("%02d", month + 1)
         val formattedDay = String.format("%02d", dayOfMonth)
         val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val userId = logInSharedPref?.getString("userId", "N/A")
         stringDateSelected = "$year/$formattedMonth/$formattedDay"
 
-        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString()).observe(viewLifecycleOwner) { event ->
-            event?.let {
+        dateObserver?.let {
+            viewModel.specificDateData.removeObserver(it)
+        }
+
+        dateObserver = Observer { event ->
+            if (event != null) {
+                currentEventId = event.eventId
                 binding.ratingSeekBar.progress = event.eventRating!!.toInt()
-                binding.ratingTextview.text = it.eventRating.toString()
-                Glide.with(this).load(it.eventImage).into(binding.calendarImage)
-                binding.calendarInputContent.setText(it.eventContent)
-                binding.recordRatingButton.alpha = 0.5f
-                binding.recordRatingButton.isEnabled = false
-            } ?: run {
+                binding.ratingTextview.text = event.eventRating.toString()
+                Glide.with(this).load(event.eventImage).into(binding.calendarImage)
+                binding.calendarInputContent.setText(event.eventContent)
+                binding.recordRatingButton.text = "修改"
+            } else {
+                currentEventId = null
                 binding.ratingSeekBar.progress = 0
                 binding.ratingTextview.text = "未評分"
                 binding.recordRatingButton.visibility = View.VISIBLE
@@ -207,7 +213,18 @@ class CalendarFragment : Fragment() {
                 binding.calendarImage.setImageDrawable(null)
             }
         }
+
+//        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString()).observe(viewLifecycleOwner, dateObserver!!)
+
+
+
+        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString())
+
+        viewModel.specificDateData.observe(viewLifecycleOwner, dateObserver!!)
     }
+
+
+
 
 
     private fun hasWritePermission(): Boolean {
@@ -226,10 +243,10 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setInitialValues(viewModel: CalendarViewModel) {
-        binding.ratingTextview.text = "0 / 100"
         selectedPhotoUri?.let { Glide.with(this).load(it).into(binding.calendarImage) }
         setLineChartData(viewModel)
     }
+
 
     class IntegerValueFormatter : ValueFormatter() {
         override fun getFormattedValue(value: Float): String {
@@ -338,16 +355,10 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun saveEventToFirestore(event: CalendarEvent) {
-        firestore.collection("calendarData")
+    private fun saveEventToFirestore(event: CalendarEvent): Task<Void> {
+        return firestore.collection("calendarData")
             .document(event.eventId)
             .set(event)
-            .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Event saved!", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 
     // Toolbar share fun
@@ -398,6 +409,18 @@ class CalendarFragment : Fragment() {
 
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun saveOrUpdateEventToFirestore(event: CalendarEvent) {
+        firestore.collection("calendarData")
+            .document(event.eventId)
+            .set(event)
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Event saved or updated!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
 }

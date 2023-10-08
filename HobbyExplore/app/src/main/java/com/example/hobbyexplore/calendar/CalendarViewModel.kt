@@ -12,6 +12,7 @@ import com.google.firebase.ktx.Firebase
 class CalendarViewModel : ViewModel() {
     val db = Firebase.firestore
     val _ratingDate = MutableLiveData<List<CalendarEvent>>()
+    val specificDateData: MutableLiveData<CalendarEvent?> = MutableLiveData()
 
     val ratingDate: LiveData<List<CalendarEvent>>
         get() = _ratingDate
@@ -105,8 +106,7 @@ class CalendarViewModel : ViewModel() {
             }
     }
 
-    fun getDataForSpecificDate(date: String, userIdFromPref: String): LiveData<CalendarEvent?> {
-        val eventLiveData = MutableLiveData<CalendarEvent?>()
+    fun getDataForSpecificDate(date: String, userIdFromPref: String) {
         if (userIdFromPref != null) {
             db.collection("calendarData")
                 .whereEqualTo("eventDate", date)
@@ -114,17 +114,32 @@ class CalendarViewModel : ViewModel() {
                 .get()
                 .addOnSuccessListener { documents ->
                     val event = documents.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
-                    eventLiveData.postValue(event)
+                    specificDateData.postValue(event)
                 }
                 .addOnFailureListener {
-                    eventLiveData.postValue(null)
+                    specificDateData.postValue(null)
                 }
         } else {
             Log.e("ERROR", "UserId not found in SharedPreferences.")
-            eventLiveData.postValue(null) // Optionally, you can post a null value here to indicate an error.
+            specificDateData.postValue(null)
         }
+    }
 
-        return eventLiveData
+
+    fun updateOrAddEventToFirestore(event: CalendarEvent) {
+        val docRef = db.collection("calendarData")
+            .document(event.eventId)
+
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    // 如果文檔存在，我們就更新它
+                    docRef.set(event)
+                } else {
+                    // 如果文檔不存在，我們就新增它
+                    db.collection("calendarData").document(event.eventId).set(event)
+                }
+            }
     }
 
 
