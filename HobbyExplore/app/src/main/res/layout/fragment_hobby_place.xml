@@ -17,10 +17,32 @@
             android:layout_height="match_parent"
             tools:context=".hobbycourse.HobbyPlaceFragment">
 
+            <View
+                android:layout_width="550dp"
+                android:layout_height="550dp"
+                android:layout_marginEnd="-350dp"
+                android:layout_marginTop="-350dp"
+                android:background="@drawable/blue_gradient"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="550dp"
+                android:layout_height="550dp"
+                android:layout_marginStart="-350dp"
+                android:layout_marginBottom="-350dp"
+                android:background="@drawable/yellow_gradient"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hobby_place_recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toTopOf="@+id/appliance_button"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +56,7 @@
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/round_corner"
                 android:backgroundTint="@color/black"
                 android:gravity="center"
@@ -42,6 +64,7 @@
                 android:text="@string/appliance_recommend"
                 android:textColor="@color/white"
                 android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/course_button"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +75,6 @@
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:background="@drawable/round_corner"
                 android:backgroundTint="@color/black"
                 android:gravity="center"
@@ -60,12 +82,10 @@
                 android:text="@string/course_recommend"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/appliance_button"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/appliance_button"
-                app:layout_constraintTop_toTopOf="@+id/appliance_button"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="@+id/appliance_button" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

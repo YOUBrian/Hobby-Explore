@@ -5,7 +5,7 @@
         android:id="@+id/navigation_hobbyCategory"
         android:icon="@drawable/ic_nav_category_selector"
         android:title="興趣類別"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
     <item
         android:id="@+id/navigation_calendar"
         android:icon="@drawable/ic_nav_calendar_selector"
