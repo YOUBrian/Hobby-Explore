@@ -213,6 +213,7 @@ class CalendarFragment : Fragment() {
                 binding.recordRatingButton.visibility = View.VISIBLE
                 binding.recordRatingButton.isEnabled = true
                 binding.recordRatingButton.alpha = 1f
+                binding.recordRatingButton.text = "儲存"
                 binding.calendarInputContent.text = null
                 binding.calendarImage.setImageDrawable(null)
                 binding.calendarImageCardView.visibility = View.GONE
