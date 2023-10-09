@@ -17,35 +17,17 @@
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:background="#FDF5E8"
         app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <View
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:layout_marginBottom="-200dp"
-                android:layout_marginEnd="-200dp"
-                android:background="@drawable/blue_gradient"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <View
-                android:id="@+id/orange_view"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:layout_marginStart="-190dp"
-                android:layout_marginBottom="-190dp"
-                android:background="@drawable/yellow_gradient"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+            android:layout_height="wrap_content"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/appliance_image"
@@ -62,7 +44,7 @@
                 android:id="@+id/appliance_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginTop="4dp"
                 android:text="@{appliance.title}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
@@ -76,7 +58,7 @@
                 android:id="@+id/appliance_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginTop="4dp"
                 android:text="@{appliance.price}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
@@ -90,14 +72,16 @@
                 android:id="@+id/appliance_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginTop="4dp"
                 android:text="@{appliance.content}"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="14sp"
+                android:letterSpacing="0.15"
                 app:layout_constraintEnd_toEndOf="@+id/appliance_image"
                 app:layout_constraintStart_toStartOf="@+id/appliance_image"
-                app:layout_constraintTop_toBottomOf="@+id/appliance_price" />
+                app:layout_constraintTop_toBottomOf="@+id/appliance_price"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

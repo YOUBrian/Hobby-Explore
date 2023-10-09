@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:background="#FDF5E8"
         android:layout_margin="8dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp">
+        app:cardCornerRadius="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,9 +31,10 @@
 
 
             <View
+                android:id="@+id/view"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="#fedf49"
+                android:background="#e8ecf5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,14 +44,13 @@
                 android:id="@+id/catalog_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@{introduce.title}"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:gravity="center"
                 android:hint="棒球"
-                android:paddingStart="15dp"
-                android:paddingBottom="4dp"
+                android:padding="8dp"
+                android:layout_marginStart="4dp"
+                android:text="@{introduce.title}"
+                android:textColor="#1B377E"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintStart_toStartOf="@+id/category_image"
                 app:layout_constraintTop_toBottomOf="@+id/category_image" />
 

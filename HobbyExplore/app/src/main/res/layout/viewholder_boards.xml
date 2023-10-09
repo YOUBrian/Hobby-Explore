@@ -14,8 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="4dp"
+            app:contentPadding="8dp"
+            app:cardBackgroundColor="#e8ecf5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -48,10 +50,12 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <View
+                android:id="@+id/content_view"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="#a3b2d1"
+                android:background="@drawable/white_rounded_background"
                 app:cardElevation="-4dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/boards_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,10 +65,10 @@
                 android:id="@+id/boards_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@{boards.name}"
-                android:textColor="@color/white"
+                android:textColor="#1B377E"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/boards_content"
                 app:layout_constraintTop_toTopOf="@+id/boards_content" />
@@ -74,7 +78,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/white"
+                android:textColor="#1B377E"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/boards_content"
                 app:layout_constraintStart_toStartOf="@id/boards_user"
@@ -85,12 +89,12 @@
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="-4dp"
                 android:isIndicator="true"
                 android:numStars="5"
                 android:rating="@{boards.rating}"
                 android:stepSize="1"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/boards_time"
                 app:layout_constraintTop_toBottomOf="@+id/boards_time"
                 app:mrb_progressTint="#fecb3c"
                 app:mrb_secondaryProgressTint="#ffffff" />
@@ -99,14 +103,15 @@
                 android:id="@+id/boards_user_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@{boards.content}"
-                android:textColor="@color/white"
+                android:textColor="#1B377E"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/boards_content"
                 app:layout_constraintStart_toStartOf="@+id/boards_user"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+                app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+                app:layout_constraintBottom_toBottomOf="@+id/content_view"/>
 
             <ImageView
                 android:id="@+id/boards_image"
@@ -117,10 +122,8 @@
                 app:imageUrl="@{boards.image}"
                 app:layout_constraintBottom_toBottomOf="@+id/boards_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/boards_user_content"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/boards_user_content" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

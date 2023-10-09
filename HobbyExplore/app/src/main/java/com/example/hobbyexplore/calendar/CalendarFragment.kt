@@ -117,7 +117,10 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setUpListeners(viewModel: CalendarViewModel) {
-        binding.calendarImageButton.setOnClickListener { handleImageSelection() }
+        binding.calendarImageButton.setOnClickListener {
+            handleImageSelection()
+            binding.calendarImageCardView.visibility = View.VISIBLE
+        }
         binding.recordRatingButton.setOnClickListener {
             handleRecordButtonPress(viewModel)
         }
@@ -202,6 +205,7 @@ class CalendarFragment : Fragment() {
                 Glide.with(this).load(event.eventImage).into(binding.calendarImage)
                 binding.calendarInputContent.setText(event.eventContent)
                 binding.recordRatingButton.text = "修改"
+                binding.calendarImageCardView.visibility = View.VISIBLE
             } else {
                 currentEventId = null
                 binding.ratingSeekBar.progress = 0
@@ -211,6 +215,7 @@ class CalendarFragment : Fragment() {
                 binding.recordRatingButton.alpha = 1f
                 binding.calendarInputContent.text = null
                 binding.calendarImage.setImageDrawable(null)
+                binding.calendarImageCardView.visibility = View.GONE
             }
         }
 
