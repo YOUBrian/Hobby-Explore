@@ -77,7 +77,7 @@ class PostFragment : Fragment() {
             val rating = binding.ratingBar.rating
             val category = binding.dropdownMenu.selectedItem.toString()
             it.findNavController().navigate(PostFragmentDirections.actionPostFragmentToHobbyBoardsFragment())
-            viewModel.postMessageData(content, rating, imageUri, category)
+            viewModel.postMessageData(content, rating, imageUri, category, userName!!)
             Log.i("getImageUri", "getImageUri: $imageUri")
             Log.i("getimageStringToUri", "imageStringToUri: $imageStringToUri")
             Log.i("getrating", "star: $rating")

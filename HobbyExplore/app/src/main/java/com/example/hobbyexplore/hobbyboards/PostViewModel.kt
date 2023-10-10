@@ -24,12 +24,12 @@ class PostViewModel : ViewModel() {
     fun updateUserName(name: String) {
         _userName.value = name
     }
-    fun postMessageData(content: String, rating: Float, imageUrl: String, category: String){
+    fun postMessageData(content: String, rating: Float, imageUrl: String, category: String, userName: String){
         val articles = FirebaseFirestore.getInstance()
             .collection("baseball_board")
         val document = articles.document()
         val data = hashMapOf(
-            "name" to "Brian",
+            "name" to userName,
             "content" to content,
             "id" to document.id,
             "image" to imageUrl,
