@@ -24,7 +24,7 @@ class PostViewModel : ViewModel() {
     fun updateUserName(name: String) {
         _userName.value = name
     }
-    fun postMessageData(content: String, rating: Float, imageUrl: String){
+    fun postMessageData(content: String, rating: Float, imageUrl: String, category: String){
         val articles = FirebaseFirestore.getInstance()
             .collection("baseball_board")
         val document = articles.document()
@@ -35,7 +35,8 @@ class PostViewModel : ViewModel() {
             "image" to imageUrl,
             "createdTime" to Calendar.getInstance()
                 .timeInMillis,
-            "rating" to rating
+            "rating" to rating,
+            "category" to category
         )
         Log.i("addData", "${data}")
         document.set(data)

@@ -76,7 +76,7 @@
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="-4dp"
                 android:isIndicator="false"
                 android:numStars="5"
@@ -87,6 +87,20 @@
                 app:mrb_progressTint="#fecb3c"
                 app:mrb_secondaryProgressTint="#ffffff" />
 
+            <Spinner
+                android:id="@+id/dropdown_menu"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:background="@drawable/light_blue_rounded_background"
+                android:entries="@array/dropdown_menu_items"
+                app:layout_constraintEnd_toEndOf="@+id/publish_button"
+                app:layout_constraintStart_toStartOf="@+id/publish_button"
+                app:layout_constraintTop_toBottomOf="@+id/publish_button" />
+
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/publish_button"
                 android:layout_width="wrap_content"
@@ -96,7 +110,7 @@
                 android:background="@drawable/yellow_button_full"
                 android:padding="8dp"
                 android:text="發佈"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -105,7 +119,7 @@
                 android:id="@+id/user_content_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:hint="分享您對興趣的想法"
                 android:textSize="16sp"
                 android:letterSpacing="0.15"
