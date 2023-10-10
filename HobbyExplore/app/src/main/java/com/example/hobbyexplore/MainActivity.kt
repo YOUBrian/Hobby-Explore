@@ -7,6 +7,9 @@ import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -41,8 +44,21 @@ class MainActivity : BaseActivity() {
             }
         }
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.Theme_HobbyExplore)  // replace with your app's main theme
+        setTheme(R.style.Theme_HobbyExplore)
         super.onCreate(savedInstanceState)
+
+        val scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
+        val logoImageView = ImageView(this).apply {
+            setImageResource(R.drawable.icon_144)
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        setContentView(logoImageView)
+        logoImageView.startAnimation(scaleAnimation)
+
 //        setSupportActionBar(toolbar)
         FirebaseApp.initializeApp(this)
 
@@ -77,7 +93,8 @@ class MainActivity : BaseActivity() {
                 destination.id == R.id.mbtiTestFragment ||
                 destination.id == R.id.mbtiTestResultFragment ||
                 destination.id == R.id.chatGptFragment ||
-                destination.id == R.id.budget_input) {
+                destination.id == R.id.budget_input ||
+                destination.id == R.id.googleLogInFragment) {
                 binding.bottomNavView.visibility = View.GONE
             }
             else {
