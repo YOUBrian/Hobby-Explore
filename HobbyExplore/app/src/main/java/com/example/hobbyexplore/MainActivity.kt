@@ -44,20 +44,21 @@ class MainActivity : BaseActivity() {
             }
         }
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.Theme_HobbyExplore)
+//        setTheme(R.style.Theme_HobbyExplore)
         super.onCreate(savedInstanceState)
 
-        val scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
-        val logoImageView = ImageView(this).apply {
-            setImageResource(R.drawable.icon_144)
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-        }
 
-        setContentView(logoImageView)
-        logoImageView.startAnimation(scaleAnimation)
+//        val scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
+//        val logoImageView = ImageView(this).apply {
+//            setImageResource(R.drawable.icon_144)
+//            layoutParams = ViewGroup.LayoutParams(
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT
+//            )
+//        }
+//
+//        setContentView(logoImageView)
+//        logoImageView.startAnimation(scaleAnimation)
 
 //        setSupportActionBar(toolbar)
         FirebaseApp.initializeApp(this)
