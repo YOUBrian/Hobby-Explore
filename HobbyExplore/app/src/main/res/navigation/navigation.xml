@@ -323,4 +323,8 @@
             android:id="@+id/action_googleLogInFragment_to_personalityTestFragment"
             app:destination="@id/personalityTestFragment" />
     </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.hobbyexplore.MainActivity"
+        android:label="MainActivity" />
 </navigation>
