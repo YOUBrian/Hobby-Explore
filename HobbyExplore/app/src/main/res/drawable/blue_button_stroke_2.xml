@@ -12,8 +12,8 @@
             <corners android:radius="2dp"/>
             <stroke
                 android:width="2dp"
-                android:color="#FFFFFF" />
-            <solid android:color="#FFFFFF" />
+                android:color="#a3b2d1" />
+            <solid android:color="#a3b2d1" />
         </shape>
     </item>
 </ripple>

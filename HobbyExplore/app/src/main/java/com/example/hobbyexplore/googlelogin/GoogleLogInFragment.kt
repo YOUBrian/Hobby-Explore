@@ -10,8 +10,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.hobbyexplore.R
+import com.example.hobbyexplore.databinding.FragmentGoogleLogInBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -29,8 +31,12 @@ class GoogleLogInFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val binding = FragmentGoogleLogInBinding.inflate(inflater)
+        binding.guestLoginButton.setOnClickListener{
+            it.findNavController().navigate(GoogleLogInFragmentDirections.actionGoogleLogInFragmentToPersonalityTestFragment())
+        }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_google_log_in, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
