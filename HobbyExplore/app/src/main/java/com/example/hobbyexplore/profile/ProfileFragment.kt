@@ -35,11 +35,11 @@ class ProfileFragment : Fragment() {
 
         viewModel.getUserPhoto(userImage.toString())
 
-        binding.nickname.text = "暱稱 ： $userName"
+        binding.nickname.text = "$userName"
 
         binding.selectHobby.text = selectedHobbyTitle
-        binding.mbtiResult.text = "MBTI人格 : $mbtiResult"
-        binding.selectHobby.text = "選擇的興趣 : $selectedHobbyTitle"
+        binding.mbtiResult.text = "$mbtiResult"
+        binding.selectHobby.text = "$selectedHobbyTitle"
 
         binding.mbtiButton.setOnClickListener {
             it.findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToWhetherTakeMbtiTest())

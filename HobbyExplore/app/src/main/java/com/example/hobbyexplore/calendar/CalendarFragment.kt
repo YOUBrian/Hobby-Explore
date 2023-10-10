@@ -122,6 +122,7 @@ class CalendarFragment : Fragment() {
             binding.calendarImageCardView.visibility = View.VISIBLE
         }
         binding.recordRatingButton.setOnClickListener {
+            binding.recordRatingButton.text = "修改"
             handleRecordButtonPress(viewModel)
         }
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
@@ -179,12 +180,55 @@ class CalendarFragment : Fragment() {
                     .setValue(binding.ratingTextview.text.toString())
             }
             viewModel.getCalendarData(userId.toString())
-            delay(1000)
+            delay(2000)
             setLineChartData(viewModel)
         }
     }
 
 
+
+//    private fun handleDateChange(viewModel: CalendarViewModel, year: Int, month: Int, dayOfMonth: Int) {
+//        val formattedMonth = String.format("%02d", month + 1)
+//        val formattedDay = String.format("%02d", dayOfMonth)
+//        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+//        val userId = logInSharedPref?.getString("userId", "N/A")
+//        stringDateSelected = "$year/$formattedMonth/$formattedDay"
+//
+//        dateObserver?.let {
+//            viewModel.specificDateData.removeObserver(it)
+//        }
+//
+//        dateObserver = Observer { event ->
+//            if (event != null) {
+//                currentEventId = event.eventId
+//                binding.ratingSeekBar.progress = event.eventRating!!.toInt()
+//                binding.ratingTextview.text = event.eventRating.toString()
+//                Glide.with(this).load(event.eventImage).into(binding.calendarImage)
+//                binding.calendarInputContent.setText(event.eventContent)
+//                binding.recordRatingButton.text = "修改"
+//                binding.calendarImageCardView.visibility = View.VISIBLE
+//            } else {
+//                currentEventId = null
+//                binding.ratingSeekBar.progress = 0
+//                binding.ratingTextview.text = "未評分"
+//                binding.recordRatingButton.visibility = View.VISIBLE
+//                binding.recordRatingButton.isEnabled = true
+//                binding.recordRatingButton.alpha = 1f
+//                binding.recordRatingButton.text = "儲存"
+//                binding.calendarInputContent.text = null
+//                binding.calendarImage.setImageDrawable(null)
+//                binding.calendarImageCardView.visibility = View.GONE
+//            }
+//        }
+//
+////        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString()).observe(viewLifecycleOwner, dateObserver!!)
+//
+//
+//
+//        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString())
+//
+//        viewModel.specificDateData.observe(viewLifecycleOwner, dateObserver!!)
+//    }
 
     private fun handleDateChange(viewModel: CalendarViewModel, year: Int, month: Int, dayOfMonth: Int) {
         val formattedMonth = String.format("%02d", month + 1)
@@ -202,10 +246,17 @@ class CalendarFragment : Fragment() {
                 currentEventId = event.eventId
                 binding.ratingSeekBar.progress = event.eventRating!!.toInt()
                 binding.ratingTextview.text = event.eventRating.toString()
-                Glide.with(this).load(event.eventImage).into(binding.calendarImage)
+
+                if (event.eventImage?.isNotBlank() == true) {
+                    Glide.with(this).load(event.eventImage).into(binding.calendarImage)
+                    binding.calendarImage.visibility = View.VISIBLE // 如果有圖片，設為可見
+                } else {
+                    binding.calendarImage.visibility = View.GONE // 如果沒有圖片，設為不可見
+                }
+
                 binding.calendarInputContent.setText(event.eventContent)
                 binding.recordRatingButton.text = "修改"
-                binding.calendarImageCardView.visibility = View.VISIBLE
+                binding.calendarImageCardView.visibility = if (event.eventImage?.isNotBlank() == true) View.VISIBLE else View.GONE
             } else {
                 currentEventId = null
                 binding.ratingSeekBar.progress = 0
@@ -220,14 +271,10 @@ class CalendarFragment : Fragment() {
             }
         }
 
-//        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString()).observe(viewLifecycleOwner, dateObserver!!)
-
-
-
         viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString())
-
         viewModel.specificDateData.observe(viewLifecycleOwner, dateObserver!!)
     }
+
 
 
 
