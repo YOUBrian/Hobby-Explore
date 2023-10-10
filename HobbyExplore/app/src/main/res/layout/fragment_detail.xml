@@ -112,12 +112,11 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/detail_appliance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_corner"
-                android:backgroundTint="@color/black"
+                android:background="@drawable/blue_button_full"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/appliance_recommend"
@@ -128,12 +127,11 @@
                 app:layout_constraintStart_toEndOf="@+id/detail_course"
                 app:layout_constraintTop_toTopOf="@+id/detail_course" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/detail_place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_corner"
-                android:backgroundTint="@color/black"
+                android:background="@drawable/blue_button_full"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/place_recommend"
@@ -144,14 +142,13 @@
                 app:layout_constraintStart_toEndOf="@+id/detail_appliance"
                 app:layout_constraintTop_toTopOf="@+id/detail_appliance" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/detail_course"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/round_corner"
-                android:backgroundTint="@color/black"
+                android:background="@drawable/blue_button_full"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/course_recommend"

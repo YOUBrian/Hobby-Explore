@@ -153,7 +153,7 @@
 
 
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/mbti_button"
                     style="@style/Base.Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
@@ -163,12 +163,13 @@
                     android:padding="8dp"
                     android:text="MBTI測驗"
                     android:textSize="16sp"
+                    android:textColor="@color/white"
                     app:layout_constraintEnd_toStartOf="@+id/about_app_button"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/line_2" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/about_app_button"
                     style="@style/Base.Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
@@ -177,6 +178,7 @@
                     android:padding="8dp"
                     android:text="關於趣探"
                     android:textSize="16sp"
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/mbti_button"
                     app:layout_constraintEnd_toStartOf="@+id/error_report_button"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -184,7 +186,7 @@
                     app:layout_constraintTop_toTopOf="@+id/mbti_button"
                     app:layout_constraintVertical_bias="1.0" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/error_report_button"
                     style="@style/Base.Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
@@ -193,6 +195,7 @@
                     android:padding="8dp"
                     android:text="錯誤回報"
                     android:textSize="16sp"
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/about_app_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
