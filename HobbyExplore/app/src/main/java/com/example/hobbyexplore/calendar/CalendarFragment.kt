@@ -2,6 +2,7 @@ package com.example.hobbyexplore.calendar
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -35,11 +36,13 @@ import java.util.*
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.gms.tasks.Task
 
 
 private lateinit var databaseReference: DatabaseReference
@@ -51,6 +54,9 @@ class CalendarFragment : Fragment() {
     private lateinit var binding: FragmentCalendarBinding
     private lateinit var lineChart: LineChart
     private lateinit var lineChart2: LineChart
+    private var currentEventId: String? = null
+    private var dateObserver: Observer<CalendarEvent?>? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,9 +71,12 @@ class CalendarFragment : Fragment() {
         val year = currentDate.get(Calendar.YEAR)
         val month = currentDate.get(Calendar.MONTH) + 1  // Calendar.MONTH returns 0-based month
         val day = currentDate.get(Calendar.DAY_OF_MONTH)
+        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val userId = logInSharedPref?.getString("userId", "N/A")
+
         stringDateSelected = "$year/${String.format("%02d", month)}/${String.format("%02d", day)}"
 
-        lineChart = binding.chart1
+//        lineChart = binding.chart1
         lineChart2 = binding.chart2
         firestore = FirebaseFirestore.getInstance()
         databaseReference = FirebaseDatabase.getInstance().getReference("calendarData")
@@ -75,23 +84,30 @@ class CalendarFragment : Fragment() {
         setUpUIObservers(viewModel)
         setUpListeners(viewModel)
         setInitialValues(viewModel)
-        viewModel.getCalendarData()
+
         setLineChartData(viewModel)
         viewModel.dataList.observe(viewLifecycleOwner, Observer { updatedDataList ->
+            Log.d("DEBUGGGGG", "Data List: $updatedDataList")
             setLineChartData(viewModel)
         })
 
-        viewModel.ratingDate.observe(viewLifecycleOwner, Observer { events ->
-            // 更新UI以顯示events中的數據。 例如，您可以設置一個TextView來顯示評分。
-            if (events.isNotEmpty()) {
-                val event = events[0]
-                binding.ratingTextview.text = event.eventRating.toString()
-                // ... 更新其他UI元素 ...
-            }
-        })
+        handleDateChange(viewModel, year, month, day)
+
+//        viewModel.ratingDate.observe(viewLifecycleOwner, Observer { events ->
+//            if (events.isNotEmpty()) {
+//                val event = events[0]
+//                binding.ratingTextview.text = event.eventRating.toString()
+//            }
+//        })
+
+        viewModel.getCalendarData(userId.toString())
 
         Log.d("CalendarFragment", "ViewModel: $viewModel")
+
+
+
         return binding.root
+
     }
 
     private fun setUpUIObservers(viewModel: CalendarViewModel) {
@@ -101,8 +117,12 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setUpListeners(viewModel: CalendarViewModel) {
-        binding.calendarImageButton.setOnClickListener { handleImageSelection() }
+        binding.calendarImageButton.setOnClickListener {
+            handleImageSelection()
+            binding.calendarImageCardView.visibility = View.VISIBLE
+        }
         binding.recordRatingButton.setOnClickListener {
+            binding.recordRatingButton.text = "修改"
             handleRecordButtonPress(viewModel)
         }
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
@@ -117,22 +137,6 @@ class CalendarFragment : Fragment() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-
-//        binding.shareButton.setOnClickListener {
-//            firestore.collection("calendarData")
-//                .whereEqualTo("eventDate", stringDateSelected)
-//                .get()
-//                .addOnSuccessListener { querySnapshot ->
-//                    val event = querySnapshot.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
-//                    event?.let {
-//                        val contentFromFirebase = it.eventContent
-//                        val imageUrlFromFirebase = it.eventImage
-//                        findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToPostFragment(contentFromFirebase,imageUrlFromFirebase))
-//                    }
-//                }
-//        }
-
-
     }
 
     private fun handleImageSelection() {
@@ -149,54 +153,131 @@ class CalendarFragment : Fragment() {
 
     private fun handleRecordButtonPress(viewModel: CalendarViewModel) {
         lifecycleScope.launch(Dispatchers.Main) {
+            val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+            val userId = logInSharedPref?.getString("userId", "N/A")
             val imageUrl = selectedPhotoUri?.let { uploadImageToFirebase(it) } ?: ""
+
             val event = CalendarEvent(
-                eventId = UUID.randomUUID().toString(),
+                eventId = currentEventId ?: UUID.randomUUID().toString(),
                 eventDate = stringDateSelected,
                 eventRating = viewModel.progress.value,
                 eventImage = imageUrl,
-                eventContent = binding.calendarInputContent.text.toString()
+                eventContent = binding.calendarInputContent.text.toString(),
+                eventUserId = userId.toString()
             )
+
             saveEventToFirestore(event)
+                .addOnSuccessListener {
+                    currentEventId = event.eventId // 更新 currentEventId
+                    Toast.makeText(requireContext(), "Event saved!", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+
             stringDateSelected?.let {
                 databaseReference.child(it)
                     .setValue(binding.ratingTextview.text.toString())
             }
-            viewModel.getCalendarData()
-            delay(1000)
+            viewModel.getCalendarData(userId.toString())
+            delay(2000)
             setLineChartData(viewModel)
         }
     }
 
-    private fun handleDateChange(
-        viewModel: CalendarViewModel,
-        year: Int,
-        month: Int,
-        dayOfMonth: Int
-    ) {
+
+
+//    private fun handleDateChange(viewModel: CalendarViewModel, year: Int, month: Int, dayOfMonth: Int) {
+//        val formattedMonth = String.format("%02d", month + 1)
+//        val formattedDay = String.format("%02d", dayOfMonth)
+//        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+//        val userId = logInSharedPref?.getString("userId", "N/A")
+//        stringDateSelected = "$year/$formattedMonth/$formattedDay"
+//
+//        dateObserver?.let {
+//            viewModel.specificDateData.removeObserver(it)
+//        }
+//
+//        dateObserver = Observer { event ->
+//            if (event != null) {
+//                currentEventId = event.eventId
+//                binding.ratingSeekBar.progress = event.eventRating!!.toInt()
+//                binding.ratingTextview.text = event.eventRating.toString()
+//                Glide.with(this).load(event.eventImage).into(binding.calendarImage)
+//                binding.calendarInputContent.setText(event.eventContent)
+//                binding.recordRatingButton.text = "修改"
+//                binding.calendarImageCardView.visibility = View.VISIBLE
+//            } else {
+//                currentEventId = null
+//                binding.ratingSeekBar.progress = 0
+//                binding.ratingTextview.text = "未評分"
+//                binding.recordRatingButton.visibility = View.VISIBLE
+//                binding.recordRatingButton.isEnabled = true
+//                binding.recordRatingButton.alpha = 1f
+//                binding.recordRatingButton.text = "儲存"
+//                binding.calendarInputContent.text = null
+//                binding.calendarImage.setImageDrawable(null)
+//                binding.calendarImageCardView.visibility = View.GONE
+//            }
+//        }
+//
+////        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString()).observe(viewLifecycleOwner, dateObserver!!)
+//
+//
+//
+//        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString())
+//
+//        viewModel.specificDateData.observe(viewLifecycleOwner, dateObserver!!)
+//    }
+
+    private fun handleDateChange(viewModel: CalendarViewModel, year: Int, month: Int, dayOfMonth: Int) {
         val formattedMonth = String.format("%02d", month + 1)
         val formattedDay = String.format("%02d", dayOfMonth)
+        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val userId = logInSharedPref?.getString("userId", "N/A")
         stringDateSelected = "$year/$formattedMonth/$formattedDay"
 
-        viewModel.getDataForSpecificDate(stringDateSelected!!).observe(viewLifecycleOwner) { event ->
-            event?.let {
-                // 更新UI以顯示從Firestore獲取的數據
-                binding.ratingTextview.text = it.eventRating.toString()
-                Glide.with(this).load(it.eventImage).into(binding.calendarImage)
-                binding.calendarInputContent.setText(it.eventContent)
-                binding.recordRatingButton.alpha = 0.5f
-                binding.recordRatingButton.isEnabled = false
-            } ?: run {
-                // 如果沒有數據或查詢失敗，更新UI以顯示默認值或錯誤消息
+        dateObserver?.let {
+            viewModel.specificDateData.removeObserver(it)
+        }
+
+        dateObserver = Observer { event ->
+            if (event != null) {
+                currentEventId = event.eventId
+                binding.ratingSeekBar.progress = event.eventRating!!.toInt()
+                binding.ratingTextview.text = event.eventRating.toString()
+
+                if (event.eventImage?.isNotBlank() == true) {
+                    Glide.with(this).load(event.eventImage).into(binding.calendarImage)
+                    binding.calendarImage.visibility = View.VISIBLE // 如果有圖片，設為可見
+                } else {
+                    binding.calendarImage.visibility = View.GONE // 如果沒有圖片，設為不可見
+                }
+
+                binding.calendarInputContent.setText(event.eventContent)
+                binding.recordRatingButton.text = "修改"
+                binding.calendarImageCardView.visibility = if (event.eventImage?.isNotBlank() == true) View.VISIBLE else View.GONE
+            } else {
+                currentEventId = null
+                binding.ratingSeekBar.progress = 0
                 binding.ratingTextview.text = "未評分"
                 binding.recordRatingButton.visibility = View.VISIBLE
                 binding.recordRatingButton.isEnabled = true
                 binding.recordRatingButton.alpha = 1f
+                binding.recordRatingButton.text = "儲存"
                 binding.calendarInputContent.text = null
                 binding.calendarImage.setImageDrawable(null)
+                binding.calendarImageCardView.visibility = View.GONE
             }
         }
+
+        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString())
+        viewModel.specificDateData.observe(viewLifecycleOwner, dateObserver!!)
     }
+
+
+
+
 
 
     private fun hasWritePermission(): Boolean {
@@ -215,10 +296,10 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setInitialValues(viewModel: CalendarViewModel) {
-        binding.ratingTextview.text = "50 / 100"
         selectedPhotoUri?.let { Glide.with(this).load(it).into(binding.calendarImage) }
         setLineChartData(viewModel)
     }
+
 
     class IntegerValueFormatter : ValueFormatter() {
         override fun getFormattedValue(value: Float): String {
@@ -226,21 +307,11 @@ class CalendarFragment : Fragment() {
         }
     }
     private fun setLineChartData(viewModel: CalendarViewModel) {
-
-        // 設置格式化器使數值為整數
         val intValueFormatter = IntegerValueFormatter()
 
-        // 設置lineChart的X軸和Y軸格式
-        lineChart.xAxis.granularity = 1f
-        lineChart.xAxis.valueFormatter = intValueFormatter
-        lineChart.axisLeft.granularity = 1f
-        lineChart.axisLeft.valueFormatter = intValueFormatter
-        lineChart.axisRight.granularity = 1f
-        lineChart.axisRight.valueFormatter = intValueFormatter
-
-        // 設置lineChart2的X軸和Y軸格式
         lineChart2.xAxis.granularity = 1f
         lineChart2.xAxis.valueFormatter = intValueFormatter
+        lineChart2.xAxis.position = XAxis.XAxisPosition.BOTTOM
         lineChart2.axisLeft.granularity = 1f
         lineChart2.axisLeft.valueFormatter = intValueFormatter
         lineChart2.axisRight.granularity = 1f
@@ -266,18 +337,14 @@ class CalendarFragment : Fragment() {
         markData.add(Entry(16f, 54f))
         markData.add(Entry(17f, 56f))
         markData.add(Entry(18f, 60f))
-        markData.add(Entry(19f, 66f))
-        markData.add(Entry(20f, 70f))
-        markData.add(Entry(21f, 83f))
-        markData.add(Entry(22f, 92f))
-        markData.add(Entry(23f, 94f))
-        markData.add(Entry(24f, 96f))
+        markData.add(Entry(19f, 92f))
+        markData.add(Entry(20f, 94f))
+        markData.add(Entry(21f, 96f))
 
         val entries = mutableListOf<Entry>()
 
         viewModel.dataList.value?.let { list ->
             for ((index, pair) in list.withIndex()) {
-                Log.i("LineChartData", "Index: $index, Pair: $pair")
                 entries.add(Entry(index.toFloat() + 1, pair.second.toFloat()))
             }
         }
@@ -292,18 +359,17 @@ class CalendarFragment : Fragment() {
 
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(lineDataSet)
-
-        val markDataSets = ArrayList<ILineDataSet>()
-        markDataSets.add(markDataSet)
+        dataSets.add(markDataSet) // 加入第二組數據
 
         val data = LineData(dataSets)
-        val markData2 = LineData(markDataSets)
 
-        lineChart.data = data
-        lineChart.animateXY(1000, 1000)
-
-        lineChart2.data = markData2
-//            lineChart2.animateXY(3000, 3000)
+        lineChart2.axisLeft.isEnabled = true
+        lineChart2.xAxis.isEnabled = true
+        lineChart2.description.isEnabled = false
+        lineChart2.axisRight.isEnabled = false
+        lineChart2.data = data
+        lineChart2.invalidate() // 確保圖表更新
+        lineChart2.animateXY(1000, 1000)
     }
 
     /*-----------------------------------*/
@@ -342,16 +408,10 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun saveEventToFirestore(event: CalendarEvent) {
-        firestore.collection("calendarData")
+    private fun saveEventToFirestore(event: CalendarEvent): Task<Void> {
+        return firestore.collection("calendarData")
             .document(event.eventId)
             .set(event)
-            .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Event saved!", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 
     // Toolbar share fun
@@ -364,36 +424,56 @@ class CalendarFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.calendar_share -> {
-                firestore.collection("calendarData")
-                    .whereEqualTo("eventDate", stringDateSelected)
-                    .get()
-                    .addOnSuccessListener { querySnapshot ->
-                        val event = querySnapshot.documents.firstOrNull()
-                            ?.toObject(CalendarEvent::class.java)
-                        if (event != null) {
-                            val contentFromFirebase = event.eventContent
-                            val imageUrlFromFirebase = event.eventImage
-                            findNavController().navigate(
-                                CalendarFragmentDirections.actionCalendarFragmentToPostFragment(
-                                    contentFromFirebase,
-                                    imageUrlFromFirebase
+
+                val sharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+                val userIdFromPref = sharedPref?.getString("userId", null)
+
+                if (userIdFromPref != null) {
+                    firestore.collection("calendarData")
+                        .whereEqualTo("eventUserId", userIdFromPref)
+                        .whereEqualTo("eventDate", stringDateSelected)
+                        .get()
+                        .addOnSuccessListener { querySnapshot ->
+                            val event = querySnapshot.documents.firstOrNull()
+                                ?.toObject(CalendarEvent::class.java)
+                            if (event != null) {
+                                val contentFromFirebase = event.eventContent
+                                val imageUrlFromFirebase = event.eventImage
+                                findNavController().navigate(
+                                    CalendarFragmentDirections.actionCalendarFragmentToPostFragment(
+                                        contentFromFirebase,
+                                        imageUrlFromFirebase
+                                    )
                                 )
-                            )
-                        } else {
-                            // 沒有數據與該日期相關，可以顯示一個提示給用戶。
-                            Toast.makeText(
-                                requireContext(),
-                                "尚未有該日期的數據!",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "尚未有該日期的數據!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
+                } else {
+                    Toast.makeText(requireContext(), "無法獲取用戶ID", Toast.LENGTH_SHORT).show()
+                }
 
-
-                    }
                 return true
             }
 
             else -> return super.onOptionsItemSelected(item)
         }
     }
+
+    private fun saveOrUpdateEventToFirestore(event: CalendarEvent) {
+        firestore.collection("calendarData")
+            .document(event.eventId)
+            .set(event)
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Event saved or updated!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 }

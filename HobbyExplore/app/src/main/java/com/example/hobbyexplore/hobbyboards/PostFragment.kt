@@ -1,6 +1,7 @@
 package com.example.hobbyexplore.hobbyboards
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
@@ -17,7 +18,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.hobbyexplore.databinding.FragmentPostBinding
-import com.example.hobbyexplore.timestampToDateString
 
 class PostFragment : Fragment() {
     companion object {
@@ -35,9 +35,17 @@ class PostFragment : Fragment() {
     ): View? {
         val binding = FragmentPostBinding.inflate(inflater)
         val viewModel: PostViewModel = ViewModelProvider(this).get(PostViewModel::class.java)
+        binding.user = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         val content = binding.userContentInput.text.toString()
         val imageUri =  PostFragmentArgs.fromBundle(requireArguments()).imageUri
         val imageStringToUri = Uri.parse(imageUri)
+        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val userName = logInSharedPref?.getString("displayName", "N/A")
+
+        viewModel.updateUserName(userName.toString())
+
         viewModel.uploadPhoto.value = imageUri
         viewModel.uploadPhoto.observe(viewLifecycleOwner, Observer { newImageUri ->
 
@@ -67,8 +75,9 @@ class PostFragment : Fragment() {
         binding.publishButton.setOnClickListener {
             val content = binding.userContentInput.text.toString()
             val rating = binding.ratingBar.rating
+            val category = binding.dropdownMenu.selectedItem.toString()
             it.findNavController().navigate(PostFragmentDirections.actionPostFragmentToHobbyBoardsFragment())
-            viewModel.postMessageData(content, rating, imageUri)
+            viewModel.postMessageData(content, rating, imageUri, category, userName!!)
             Log.i("getImageUri", "getImageUri: $imageUri")
             Log.i("getimageStringToUri", "imageStringToUri: $imageStringToUri")
             Log.i("getrating", "star: $rating")

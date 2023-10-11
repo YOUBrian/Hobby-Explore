@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="photo"
+            type="com.example.hobbyexplore.profile.ProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +24,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
+            android:id="@+id/view3"
             android:layout_width="550dp"
             android:layout_height="550dp"
             android:layout_marginStart="-350dp"
@@ -33,7 +36,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/profile_content_cardView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp"
             android:layout_margin="16dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="8dp"
@@ -46,88 +49,160 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="130dp"
+                    android:background="@drawable/circle_background_2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="555"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView"
+                    app:layout_constraintStart_toStartOf="@+id/imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+                <TextView
+                    android:id="@+id/mbti_result_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="暱稱 : Brian"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
-                    app:layout_constraintTop_toTopOf="@+id/imageView" />
+                    android:text="MBTI性格 : "
+                    android:textColor="#a3b2d1"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/nickname" />
 
                 <TextView
                     android:id="@+id/mbti_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="MBTI性格：ESTP"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="@+id/imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                    android:text="ESTP"
+                    android:textColor="#1B377E"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mbti_result_title" />
+
+                <View
+                    android:id="@+id/line_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="#a3b2d1"
+                    app:layout_constraintTop_toBottomOf="@+id/mbti_result"
+                    tools:layout_editor_absoluteX="25dp" />
+
+                <TextView
+                    android:id="@+id/select_hobby_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="選擇的興趣 ： "
+                    android:textColor="#a3b2d1"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@+id/mbti_result"
+                    app:layout_constraintTop_toBottomOf="@+id/line_1" />
 
                 <TextView
                     android:id="@+id/select_hobby"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="選擇的興趣：棒球"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="@+id/imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/mbti_result" />
+                    android:text="棒球"
+                    android:textColor="#1B377E"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/select_hobby_title"
+                    app:layout_constraintTop_toBottomOf="@+id/select_hobby_title" />
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                <View
+                    android:id="@+id/line_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="#a3b2d1"
+                    app:layout_constraintTop_toBottomOf="@+id/select_hobby"
+                    tools:layout_editor_absoluteX="25dp" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_marginTop="16dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                    app:imageUrl="@{photo.userPhotoUrl}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/user_photo" />
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/mbti_button"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/blue_button_full"
+                    android:padding="8dp"
+                    android:text="MBTI測驗"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toStartOf="@+id/about_app_button"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line_2" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/about_app_button"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blue_button_full"
+                    android:padding="8dp"
+                    android:text="關於趣探"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/mbti_button"
+                    app:layout_constraintEnd_toStartOf="@+id/error_report_button"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/mbti_button"
+                    app:layout_constraintTop_toTopOf="@+id/mbti_button"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/error_report_button"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blue_button_full"
+                    android:padding="8dp"
+                    android:text="錯誤回報"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/about_app_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/about_app_button"
+                    app:layout_constraintTop_toTopOf="@+id/about_app_button" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
-
-        <Button
-            android:id="@+id/mbti_button"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/blue_button_full"
-            android:text="MBTI測驗"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/about_app_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_content_cardView" />
-
-        <Button
-            android:id="@+id/error_report_button"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blue_button_full"
-            android:text="錯誤回報"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/about_app_button"
-            app:layout_constraintTop_toTopOf="@+id/about_app_button" />
-
-        <Button
-            android:id="@+id/about_app_button"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blue_button_full"
-            android:text="關於趣探"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/error_report_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/mbti_button"
-            app:layout_constraintTop_toTopOf="@+id/mbti_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

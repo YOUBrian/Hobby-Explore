@@ -12,6 +12,7 @@ import com.google.firebase.ktx.Firebase
 class CalendarViewModel : ViewModel() {
     val db = Firebase.firestore
     val _ratingDate = MutableLiveData<List<CalendarEvent>>()
+    val specificDateData: MutableLiveData<CalendarEvent?> = MutableLiveData()
 
     val ratingDate: LiveData<List<CalendarEvent>>
         get() = _ratingDate
@@ -30,7 +31,8 @@ class CalendarViewModel : ViewModel() {
 
 
     init {
-        getCalendarData()
+        getCalendarData(userIdFromPref = String())
+        dataList.value = mutableListOf()
 //        getDateData()
         progress.value = 50
     }
@@ -71,11 +73,13 @@ class CalendarViewModel : ViewModel() {
 
 
     //get
-    fun getCalendarData() {
+    fun getCalendarData(userIdFromPref: String) {
         val docRef = db.collection("calendarData")
+            .whereEqualTo("eventUserId", userIdFromPref)
         docRef.orderBy("eventDate", Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener { querySnapshot ->
+                Log.d("DEBUGGGGG", "Successfully retrieved ${querySnapshot.size()} documents.")
                 val ratings = mutableListOf<CalendarEvent>()
                 val dataListValues = dataList.value?.toMutableList() ?: mutableListOf()
                 for (document in querySnapshot) {
@@ -98,24 +102,44 @@ class CalendarViewModel : ViewModel() {
                 Log.i("dataListttttt","dataList:$dataListValues")
             }
             .addOnFailureListener { e ->
-                Log.w("READ_DATA", "Error reading data.", e)
+                Log.e("DEBUGGGGG", "Error reading data.", e)
             }
     }
 
-    fun getDataForSpecificDate(date: String): LiveData<CalendarEvent?> {
-        val eventLiveData = MutableLiveData<CalendarEvent?>()
-        db.collection("calendarData")
-            .whereEqualTo("eventDate", date)
-            .get()
-            .addOnSuccessListener { documents ->
-                // 假設只有一個文檔對應於指定的日期
-                val event = documents.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
-                eventLiveData.postValue(event)
+    fun getDataForSpecificDate(date: String, userIdFromPref: String) {
+        if (userIdFromPref != null) {
+            db.collection("calendarData")
+                .whereEqualTo("eventDate", date)
+                .whereEqualTo("eventUserId", userIdFromPref) // Add this line to compare userId
+                .get()
+                .addOnSuccessListener { documents ->
+                    val event = documents.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
+                    specificDateData.postValue(event)
+                }
+                .addOnFailureListener {
+                    specificDateData.postValue(null)
+                }
+        } else {
+            Log.e("ERROR", "UserId not found in SharedPreferences.")
+            specificDateData.postValue(null)
+        }
+    }
+
+
+    fun updateOrAddEventToFirestore(event: CalendarEvent) {
+        val docRef = db.collection("calendarData")
+            .document(event.eventId)
+
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    // 如果文檔存在，我們就更新它
+                    docRef.set(event)
+                } else {
+                    // 如果文檔不存在，我們就新增它
+                    db.collection("calendarData").document(event.eventId).set(event)
+                }
             }
-            .addOnFailureListener {
-                eventLiveData.postValue(null)
-            }
-        return eventLiveData
     }
 
 
