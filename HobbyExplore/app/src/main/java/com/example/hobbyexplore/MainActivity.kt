@@ -1,11 +1,211 @@
 package com.example.hobbyexplore
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import androidx.activity.viewModels
+import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
+import com.example.hobbyexplore.databinding.ActivityMainBinding
+import com.example.hobbyexplore.ext.getVmFactory
+import com.example.hobbyexplore.util.CurrentFragmentType
+import com.example.hobbyexplore.util.Logger
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.firebase.FirebaseApp
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+//import com.google.firebase.FirebaseApp
+
+class MainActivity : BaseActivity() {
+
+    val viewModel by viewModels<MainViewModel> { getVmFactory() }
+
+    private lateinit var binding: ActivityMainBinding
+
+    // get the height of status bar from system
+    private val statusBarHeight: Int
+        get() {
+            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+            return when {
+                resourceId > 0 -> resources.getDimensionPixelSize(resourceId)
+                else -> 0
+            }
+        }
     override fun onCreate(savedInstanceState: Bundle?) {
+//        setTheme(R.style.Theme_HobbyExplore)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+
+//        val scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
+//        val logoImageView = ImageView(this).apply {
+//            setImageResource(R.drawable.icon_144)
+//            layoutParams = ViewGroup.LayoutParams(
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT
+//            )
+//        }
+//
+//        setContentView(logoImageView)
+//        logoImageView.startAnimation(scaleAnimation)
+
+//        setSupportActionBar(toolbar)
+        FirebaseApp.initializeApp(this)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        viewModel.navigateToProfileByBottomNav.observe(
+            this,
+            Observer {
+                it?.let {
+                    binding.bottomNavView.selectedItemId = R.id.navigation_profile
+                    viewModel.onProfileNavigated()
+                }
+            }
+        )
+
+        val navController = findNavController(R.id.nav_host_fragment)
+
+//        dataSource.getAllOrders().observe(this){
+//            navView.getOrCreateBadge(R.id.navigation_cart_menu).number = it.size
+//        }
+
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.personalityTestFragment ||
+                destination.id == R.id.whetherTakeMbtiTest ||
+                destination.id == R.id.mbtiTestFragment ||
+                destination.id == R.id.mbtiTestResultFragment ||
+                destination.id == R.id.chatGptFragment ||
+                destination.id == R.id.budget_input ||
+                destination.id == R.id.googleLogInFragment) {
+                binding.bottomNavView.visibility = View.GONE
+            }
+            else {
+                binding.bottomNavView.visibility = View.VISIBLE
+            }
+        }
+        setupToolbar()
+        setupBottomNav()
+        setupNavController()
+    }
+
+    private fun setupBottomNav() {
+
+        binding.bottomNavView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_hobbyCategory -> {
+                    findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToHobbyCategoryFragment())
+                    return@setOnItemSelectedListener true
+                }
+                R.id.navigation_calendar -> {
+
+                    findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToCalendarFragment("",""))
+                    return@setOnItemSelectedListener true
+                }
+                R.id.navigation_hobbyBoards -> {
+
+                    findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToHobbyBoardsFragment())
+                    return@setOnItemSelectedListener true
+                }
+
+                R.id.navigation_profile -> {
+
+                    findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToProfileFragment())
+                    return@setOnItemSelectedListener true
+                }
+                R.id.personalityTestFragment -> {
+                    binding.bottomNavView.visibility = View.GONE
+                    return@setOnItemSelectedListener true
+                }
+            }
+
+            false
+        }
+
+        val menuView = binding.bottomNavView.getChildAt(0) as BottomNavigationMenuView
+        val itemView = menuView.getChildAt(2) as BottomNavigationItemView
+    }
+
+    private fun setupNavController() {
+        findNavController(R.id.nav_host_fragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
+            viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
+                R.id.calendarFragment -> CurrentFragmentType.CALENDAR
+                R.id.hobbyBoardsFragment -> CurrentFragmentType.BOARDS
+                R.id.hobbyCategoryFragment -> CurrentFragmentType.CATEGORY
+                R.id.profileFragment -> CurrentFragmentType.PROFILE
+                R.id.detailFragment -> CurrentFragmentType.HOBBY_EXPLORE
+                R.id.hobbyApplianceFragment -> CurrentFragmentType.HOBBY_APPLIANCE
+                R.id.hobbyCourseFragment -> CurrentFragmentType.HOBBY_COURSE
+                R.id.hobbyPlaceFragment -> CurrentFragmentType.HOBBY_PLACE
+                R.id.chatGptFragment -> CurrentFragmentType.RECOMMEND_HOBBY
+                R.id.applianceRecommendFragment -> CurrentFragmentType.RECOMMEND_APPLIANCE
+                R.id.courseRecommendFragment -> CurrentFragmentType.RECOMMEND_COURSE
+                R.id.placeRecommendFragment -> CurrentFragmentType.RECOMMEND_PLACE
+                else -> CurrentFragmentType.HOBBY_EXPLORE
+            }
+        }
+    }
+
+    private fun setupToolbar() {
+
+        binding.toolbar.setPadding(0, statusBarHeight, 0, 0)
+
+        launch {
+
+            val dpi = resources.displayMetrics.densityDpi.toFloat()
+            val dpiMultiple = dpi / DisplayMetrics.DENSITY_DEFAULT
+
+            val cutoutHeight = getCutoutHeight()
+
+            Logger.i("====== ${Build.MODEL} ======")
+            Logger.i("$dpi dpi (${dpiMultiple}x)")
+            Logger.i("statusBarHeight: ${statusBarHeight}px/${statusBarHeight / dpiMultiple}dp")
+
+            when {
+                cutoutHeight > 0 -> {
+                    Logger.i("cutoutHeight: ${cutoutHeight}px/${cutoutHeight / dpiMultiple}dp")
+
+                    val oriStatusBarHeight =
+                        resources.getDimensionPixelSize(R.dimen.height_status_bar_origin)
+
+                    binding.toolbar.setPadding(0, oriStatusBarHeight, 0, 0)
+                    val layoutParams = Toolbar.LayoutParams(
+                        Toolbar.LayoutParams.WRAP_CONTENT,
+                        Toolbar.LayoutParams.WRAP_CONTENT
+                    )
+                    layoutParams.gravity = Gravity.CENTER
+
+                    when (Build.MODEL) {
+                        "Pixel 5" -> {
+                            Logger.i("Build.MODEL is ${Build.MODEL}")
+                        }
+
+                        else -> {
+                            layoutParams.topMargin = statusBarHeight - oriStatusBarHeight
+                        }
+                    }
+                    binding.textToolbarTitle.layoutParams = layoutParams
+                }
+            }
+            Logger.i("====== ${Build.MODEL} ======")
+        }
     }
 }

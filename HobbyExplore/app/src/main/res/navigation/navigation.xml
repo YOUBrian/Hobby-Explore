@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/googleLogInFragment">
+
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.example.hobbyexplore.hobbyplace.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps">
+        <argument
+            android:name="userLatitude"
+            app:argType="float" />
+        <argument
+            android:name="userLongitude"
+            app:argType="float" />
+        <argument
+            android:name="placeLatitude"
+            app:argType="float" />
+        <argument
+            android:name="placeLongitude"
+            app:argType="float" />
+        <argument
+            android:name="placeTitle"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/hobbyCategoryFragment"
+        android:name="com.example.hobbyexplore.hobbycategory.HobbyCategoryFragment"
+        android:label="fragment_hobby_category"
+        tools:layout="@layout/fragment_hobby_category">
+        <action
+            android:id="@+id/action_hobbyCategoryFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.hobbyexplore.calendar.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <argument
+            android:name="content"
+            app:argType="string" />
+        <argument
+            android:name="imageUrl"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.hobbyexplore.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_whetherTakeMbtiTest"
+            app:destination="@id/whetherTakeMbtiTest" />
+    </fragment>
+    <fragment
+        android:id="@+id/hobbyBoardsFragment"
+        android:name="com.example.hobbyexplore.hobbyboards.HobbyBoardsFragment"
+        android:label="fragment_hobby_boards"
+        tools:layout="@layout/fragment_hobby_boards" >
+        <action
+            android:id="@+id/action_hobbyBoardsFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+    </fragment>
+    <action
+        android:id="@+id/navigate_to_calendar_fragment"
+        app:destination="@id/calendarFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/navigate_to_hobbyBoards_fragment"
+        app:destination="@id/hobbyBoardsFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/navigate_to_hobbyCategory_fragment"
+        app:destination="@id/hobbyCategoryFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/navigate_to_profile_fragment"
+        app:destination="@id/profileFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/youTubePlayerFragment"
+        android:name="YouTubePlayerFragment"
+        android:label="YouTubePlayerFragment">
+        <argument
+            android:name="course"
+            app:argType="com.example.hobbyexplore.data.Course" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.hobbyexplore.detail.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="selectProduct"
+            app:argType="com.example.hobbyexplore.data.Introduce" />
+        <action
+            android:id="@+id/action_detailFragment_to_hobbyPlaceFragment"
+            app:destination="@id/hobbyPlaceFragment" >
+        <argument
+            android:name="sportName"
+            app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_detailFragment_to_hobbyCourseFragment"
+            app:destination="@id/hobbyCourseFragment" >
+        <argument
+            android:name="sportName"
+            app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_detailFragment_to_hobbyAppliaceFragment"
+            app:destination="@id/hobbyApplianceFragment" >
+            <argument
+                android:name="sportName"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/hobbyApplianceFragment"
+        android:name="com.example.hobbyexplore.hobbyappliance.HobbyApplianceFragment"
+        android:label="fragment_hobby_appliace"
+        tools:layout="@layout/fragment_hobby_appliance">
+        <argument
+            android:name="sportName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_hobbyAppliaceFragment_to_hobbyCourseFragment"
+            app:destination="@id/hobbyCourseFragment" />
+        <action
+            android:id="@+id/action_hobbyAppliaceFragment_to_hobbyPlaceFragment"
+            app:destination="@id/hobbyPlaceFragment" />
+        <argument
+            android:name="budgetToInt"
+            app:argType="integer"/>
+    </fragment>
+    <fragment
+        android:id="@+id/hobbyCourseFragment"
+        android:name="com.example.hobbyexplore.hobbycourse.HobbyCourseFragment"
+        android:label="fragment_hobby_course"
+        tools:layout="@layout/fragment_hobby_course">
+        <argument
+            android:name="sportName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_hobbyCourseFragment_to_youTubePlayerFragment"
+            app:destination="@id/youTubePlayerFragment" />
+        <action
+            android:id="@+id/action_hobbyCourseFragment_to_hobbyPlaceFragment"
+            app:destination="@id/hobbyPlaceFragment" />
+        <action
+            android:id="@+id/action_hobbyCourseFragment_to_hobbyAppliaceFragment"
+            app:destination="@id/hobbyApplianceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/hobbyPlaceFragment"
+        android:name="com.example.hobbyexplore.hobbyplace.HobbyPlaceFragment"
+        android:label="fragment_hobby_place"
+        tools:layout="@layout/fragment_hobby_place">
+        <argument
+            android:name="sportName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" >
+            <argument
+                android:name="userLatitude"
+                app:argType="float" />
+            <argument
+                android:name="userLongitude"
+                app:argType="float" />
+            <argument
+                android:name="placeLatitude"
+                app:argType="float" />
+            <argument
+                android:name="placeLongitude"
+                app:argType="float" />
+            <argument
+                android:name="placeTitle"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_hobbyPlaceFragment_to_hobbyCourseFragment"
+            app:destination="@id/hobbyCourseFragment" />
+        <action
+            android:id="@+id/action_hobbyPlaceFragment_to_hobbyAppliaceFragment"
+            app:destination="@id/hobbyApplianceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatGptFragment"
+        android:name="com.example.hobbyexplore.chatgpt.ChatGptFragment"
+        android:label="ChatGptFragment" >
+        <argument
+            android:name="typeString"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_chatGptFragment_to_hobbyApplianceFragment"
+            app:destination="@id/hobbyApplianceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/personalityTestFragment"
+        android:name="com.example.hobbyexplore.personalitytest.PersonalityTestFragment"
+        android:label="fragment_personality_test"
+        tools:layout="@layout/fragment_personality_test">
+        <action
+            android:id="@+id/action_personalityTestFragment_to_whetherTakeMbtiTest"
+            app:destination="@id/whetherTakeMbtiTest" />
+        <action
+            android:id="@+id/action_personalityTestFragment_to_hobbyCategoryFragment"
+            app:destination="@id/hobbyCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/whetherTakeMbtiTest"
+        android:name="com.example.hobbyexplore.personalitytest.WhetherTakeMbtiTest"
+        android:label="WhetherTakeMbtiTest">
+        <action
+            android:id="@+id/action_whetherTakeMbtiTest_to_mbtiTestFragment"
+            app:destination="@id/mbtiTestFragment" />
+        <action
+            android:id="@+id/action_whetherTakeMbtiTest_to_chatGptFragment"
+            app:destination="@id/chatGptFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/enterBudgetFragment"
+        android:name="com.example.hobbyexplore.personalitytest.EnterBudgetFragment"
+        android:label="fragment_enter_budget"
+        tools:layout="@layout/fragment_enter_budget">
+        <action
+            android:id="@+id/action_enterBudgetFragment_to_hobbyAppliaceFragment"
+            app:destination="@id/hobbyApplianceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/applianceRecommendFragment"
+        android:name="com.example.hobbyexplore.personalitytest.ApplianceRecommendFragment"
+        android:label="fragment_appliance_recommend"
+        tools:layout="@layout/fragment_appliance_recommend">
+        <action
+            android:id="@+id/action_applianceRecommendFragment_to_courseRecommendFragment"
+            app:destination="@id/courseRecommendFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseRecommendFragment"
+        android:name="com.example.hobbyexplore.personalitytest.CourseRecommendFragment"
+        android:label="fragment_course_recommend"
+        tools:layout="@layout/fragment_course_recommend">
+        <action
+            android:id="@+id/action_courseRecommendFragment_to_placeRecommendFragment"
+            app:destination="@id/placeRecommendFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeRecommendFragment"
+        android:name="com.example.hobbyexplore.personalitytest.PlaceRecommendFragment"
+        android:label="fragment_place_recommend"
+        tools:layout="@layout/fragment_place_recommend" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.hobbyexplore.hobbyboards.CameraFragment"
+        android:label="PostFragment" >
+        <action
+            android:id="@+id/action_cameraFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mbtiTestFragment"
+        android:name="com.example.hobbyexplore.personalitytest.mbti.MbtiTestFragment"
+        android:label="MbtiTestFragment" >
+        <action
+            android:id="@+id/action_mbtiTestFragment_to_mbtiTestResultFragment"
+            app:destination="@id/mbtiTestResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mbtiTestResultFragment"
+        android:name="com.example.hobbyexplore.personalitytest.mbti.MbtiTestResultFragment"
+        android:label="fragment_mbti_test_result"
+        tools:layout="@layout/fragment_mbti_test_result" >
+        <argument
+            android:name="typeString"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_mbtiTestResultFragment_to_chatGptFragment"
+            app:destination="@id/chatGptFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="com.example.hobbyexplore.hobbyboards.PostFragment"
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post" >
+        <action
+            android:id="@+id/action_postFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_hobbyBoardsFragment"
+            app:destination="@id/hobbyBoardsFragment" />
+        <argument
+            android:name="content"
+            app:argType="string" />
+        <argument
+            android:name="imageUri"
+            app:argType="string"/>
+    </fragment>
+    <fragment
+        android:id="@+id/googleLogInFragment"
+        android:name="com.example.hobbyexplore.googlelogin.GoogleLogInFragment"
+        android:label="fragment_google_log_in"
+        tools:layout="@layout/fragment_google_log_in" >
+        <action
+            android:id="@+id/action_googleLogInFragment_to_personalityTestFragment"
+            app:destination="@id/personalityTestFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.hobbyexplore.MainActivity"
+        android:label="MainActivity" />
+</navigation>

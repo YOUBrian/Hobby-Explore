@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="appliance"
+            type="com.example.hobbyexplore.data.Appliance" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/appliance_image_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="#FDF5E8"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/appliance_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
+                app:imageUrl="@{appliance.image}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/appliance_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@{appliance.title}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/appliance_image"
+                app:layout_constraintStart_toStartOf="@+id/appliance_image"
+                app:layout_constraintTop_toBottomOf="@+id/appliance_image" />
+
+            <TextView
+                android:id="@+id/appliance_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@{appliance.price}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/appliance_image"
+                app:layout_constraintStart_toStartOf="@+id/appliance_image"
+                app:layout_constraintTop_toBottomOf="@+id/appliance_title" />
+
+            <TextView
+                android:id="@+id/appliance_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@{appliance.content}"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:letterSpacing="0.15"
+                app:layout_constraintEnd_toEndOf="@+id/appliance_image"
+                app:layout_constraintStart_toStartOf="@+id/appliance_image"
+                app:layout_constraintTop_toBottomOf="@+id/appliance_price"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
