@@ -5,7 +5,7 @@ enum class CurrentFragmentType(val value: String) {
     CALENDAR("學習紀錄"),
     BOARDS("興趣版"),
     CATEGORY("興趣類別"),
-    PROFILE("個人資料"),
+    PROFILE("個人頁面"),
     HOBBY_APPLIANCE("興趣用品"),
     HOBBY_COURSE("興趣課程"),
     HOBBY_PLACE("興趣場地"),
