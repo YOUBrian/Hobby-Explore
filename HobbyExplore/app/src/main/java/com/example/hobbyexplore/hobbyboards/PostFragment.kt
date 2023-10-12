@@ -106,7 +106,7 @@ class PostFragment : Fragment() {
 //            Log.i("getrating", "star: $rating")
 //            viewModel.postMessageData(content.toString(),rating.toFloat(),imageUrl.toString())
         }
-        
+
         val postContent = postSharedPref?.getString("postContent", "")
         val args = PostFragmentArgs.fromBundle(requireArguments())
         val contentFromArgs = args.content

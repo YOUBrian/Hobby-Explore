@@ -69,7 +69,7 @@ class CalendarFragment : Fragment() {
 
         val currentDate = Calendar.getInstance()
         val year = currentDate.get(Calendar.YEAR)
-        val month = currentDate.get(Calendar.MONTH) + 1  // Calendar.MONTH returns 0-based month
+        val month = currentDate.get(Calendar.MONTH)  // Calendar.MONTH returns 0-based month
         val day = currentDate.get(Calendar.DAY_OF_MONTH)
         val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val userId = logInSharedPref?.getString("userId", "N/A")
