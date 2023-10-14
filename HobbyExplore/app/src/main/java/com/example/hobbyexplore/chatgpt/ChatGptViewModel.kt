@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import java.io.IOException
 import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -26,6 +27,11 @@ class ChatGptViewModel : ViewModel() {
     private val allSports = listOf("baseball", "basketball", "tennis", "badminton", "table_tennis", "volleyball")
     // Copy of all sports to be modified during random selection
     private var availableSports = mutableListOf<String>().apply { addAll(allSports) }
+
+
+    private val _errorLiveData = MutableLiveData<String>()
+    val errorLiveData: LiveData<String>
+        get() = _errorLiveData
 
 
     val db = Firebase.firestore
@@ -62,42 +68,26 @@ class ChatGptViewModel : ViewModel() {
             max_tokens = 100
         )
 
-        val sportRecommendation = getRandomSport() // Get the sport recommendation here.
-
         viewModelScope.launch {
             try {
                 val response = ApiClient.apiService.getCompletions(completionRequest)
-                handleApiResponse(response, sportRecommendation)
-            } catch (e: SocketTimeoutException) {
-                addResponse("Timeout :  $e")
+                handleApiResponse(response)
+            } catch (e: Exception) { // Catch all exceptions, including SocketTimeoutException, IOException, etc.
+                Log.e("API_CALL", "Error: $e")
+
+                // When there's an error, randomly select a sport and continue the process
+                val randomSport = getRandomSportWithoutRepetition()
+                addResponse("We encountered an issue. However, based on our analysis, we recommend trying out $randomSport.")
+                getHobbyData(randomSport)
             }
         }
     }
 
 
-
-    //
-//    private suspend fun handleApiResponse(response: Response<CompletionResponse>, sportRecommendation: String) {
-//        withContext(Dispatchers.Main) {
-//            if (response.isSuccessful) {
-//                addResponse(sportRecommendation)
-//                // 現在，我們用sportRecommendation調用getHobbyData
-//                getHobbyData(sportRecommendation)
-//                Log.i("sportResponse", "sportResponse:$sportRecommendation")
-//                Log.i("sportResponse", "addResponse:${addResponse(sportRecommendation)}")
-//            } else {
-//                val statusCode = response.code()
-//                val errorBodyStr = response.errorBody()?.string()
-//                Log.e("API_ERROR", "StatusCode: $statusCode, ErrorBody: $errorBodyStr")
-//                addResponse("Failed to get response ${response.errorBody()}")
-//            }
-//        }
-//    }
-
-    private suspend fun handleApiResponse(response: Response<CompletionResponse>, sportRecommendation: String) {
+    private suspend fun handleApiResponse(response: Response<CompletionResponse>) {
         withContext(Dispatchers.Main) {
             if (response.isSuccessful) {
-                // Remove the sportRecommendation from the availableSports list
+                val sportRecommendation = getRandomSport()
                 availableSports.remove(sportRecommendation)
                 getHobbyData(sportRecommendation)
             } else {
@@ -112,6 +102,7 @@ class ChatGptViewModel : ViewModel() {
             }
         }
     }
+
 
 
 
