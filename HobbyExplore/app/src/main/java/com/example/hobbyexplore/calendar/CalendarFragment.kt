@@ -176,7 +176,7 @@ class CalendarFragment : Fragment() {
             }
             viewModel.getCalendarData(userId.toString())
             delay(2000)
-            setLineChartData(viewModel)
+//            setLineChartData(viewModel)
         }
     }
 
