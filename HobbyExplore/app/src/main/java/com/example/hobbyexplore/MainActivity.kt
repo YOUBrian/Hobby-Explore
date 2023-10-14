@@ -1,5 +1,7 @@
 package com.example.hobbyexplore
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -44,21 +47,16 @@ class MainActivity : BaseActivity() {
             }
         }
     override fun onCreate(savedInstanceState: Bundle?) {
-//        setTheme(R.style.Theme_HobbyExplore)
+
         super.onCreate(savedInstanceState)
-
-
-//        val scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
-//        val logoImageView = ImageView(this).apply {
-//            setImageResource(R.drawable.icon_144)
-//            layoutParams = ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT
-//            )
-//        }
-//
-//        setContentView(logoImageView)
-//        logoImageView.startAnimation(scaleAnimation)
+        if (!isNetworkConnected(this)) {
+            AlertDialog.Builder(this)
+                .setTitle("No Internet Connection")
+                .setMessage("Please check your internet connection and try again.")
+                .setPositiveButton("Exit") { _, _ -> finish() }
+                .setCancelable(false)
+                .show()
+        }
 
 //        setSupportActionBar(toolbar)
         FirebaseApp.initializeApp(this)
@@ -208,4 +206,10 @@ class MainActivity : BaseActivity() {
             Logger.i("====== ${Build.MODEL} ======")
         }
     }
+    fun isNetworkConnected(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+
 }
