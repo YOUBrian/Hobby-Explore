@@ -2,6 +2,7 @@ package com.example.hobbyexplore.hobbyboards
 
 import android.Manifest
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,6 +22,11 @@ import com.bumptech.glide.Glide
 import com.example.hobbyexplore.databinding.FragmentPostBinding
 
 class PostFragment : Fragment() {
+
+    private var _binding: FragmentPostBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    val binding get() = _binding!!
+
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
@@ -33,16 +40,26 @@ class PostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentPostBinding.inflate(inflater)
+        _binding = FragmentPostBinding.inflate(inflater, container, false)
         val viewModel: PostViewModel = ViewModelProvider(this).get(PostViewModel::class.java)
         binding.user = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val content = binding.userContentInput.text.toString()
+//        val content = binding.userContentInput.text.toString()
         val imageUri =  PostFragmentArgs.fromBundle(requireArguments()).imageUri
         val imageStringToUri = Uri.parse(imageUri)
         val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val userName = logInSharedPref?.getString("displayName", "N/A")
+        val postSharedPref = activity?.getSharedPreferences("postMessageData", Context.MODE_PRIVATE)
+
+        /*------------Write post data when callback---------------*/
+        binding.ratingBar.rating = postSharedPref?.getString("postRating", "5")?.toFloat()!!
+        binding.userContentInput.setText(postSharedPref?.getString("postContent", ""))
+        val category = postSharedPref?.getString("postCategory", "")
+        val position = (binding.categoryMenu.adapter as ArrayAdapter<String>).getPosition(category)
+        binding.categoryMenu.setSelection(position)
+        /*------------Write post data when callback---------------*/
+
 
         viewModel.updateUserName(userName.toString())
 
@@ -68,19 +85,21 @@ class PostFragment : Fragment() {
             // Save data to ViewModel before navigating
             viewModel.userContent.value = binding.userContentInput.text.toString()
             viewModel.userRating.value = binding.ratingBar.rating
-
+            savePostMessageToPreferences()
             it.findNavController().navigate(PostFragmentDirections.actionPostFragmentToCameraFragment())
         }
 
         binding.publishButton.setOnClickListener {
             val content = binding.userContentInput.text.toString()
             val rating = binding.ratingBar.rating
-            val category = binding.dropdownMenu.selectedItem.toString()
+            val category = binding.categoryMenu.selectedItem.toString()
             it.findNavController().navigate(PostFragmentDirections.actionPostFragmentToHobbyBoardsFragment())
             viewModel.postMessageData(content, rating, imageUri, category, userName!!)
             Log.i("getImageUri", "getImageUri: $imageUri")
             Log.i("getimageStringToUri", "imageStringToUri: $imageStringToUri")
             Log.i("getrating", "star: $rating")
+
+            clearPostMessagePreferences()
         }
 
         binding.ratingBar.setOnRatingBarChangeListener{ _, rating, _ ->
@@ -88,11 +107,17 @@ class PostFragment : Fragment() {
 //            viewModel.postMessageData(content.toString(),rating.toFloat(),imageUrl.toString())
         }
 
+        val postContent = postSharedPref?.getString("postContent", "")
         val args = PostFragmentArgs.fromBundle(requireArguments())
         val contentFromArgs = args.content
         val imageUrlFromArgs = args.imageUri
 
-        binding.userContentInput.setText(contentFromArgs)
+        if (contentFromArgs != null && contentFromArgs.isNotEmpty()) {
+            binding.userContentInput.setText(contentFromArgs)
+        } else if (!postContent.isNullOrEmpty()) {
+            binding.userContentInput.setText(postContent)
+        }
+
         Glide.with(this).load(imageUrlFromArgs).into(binding.postImage)
 
 
@@ -130,5 +155,28 @@ class PostFragment : Fragment() {
     }
     private fun showPermissionDeniedMessage() {
         Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getPreferences(): SharedPreferences {
+        return requireActivity().getSharedPreferences("postMessageData", Context.MODE_PRIVATE)
+    }
+
+    private fun savePostMessageToPreferences(){
+        val preferencesEditor = getPreferences().edit()
+        preferencesEditor.putString("postRating", binding.ratingBar.rating.toString())
+        preferencesEditor.putString("postContent", binding.userContentInput.text.toString())
+        preferencesEditor.putString("postCategory", binding.categoryMenu.selectedItem.toString())
+        preferencesEditor.apply()
+    }
+
+    private fun clearPostMessagePreferences() {
+        val preferencesEditor = getPreferences().edit()
+        preferencesEditor.clear()
+        preferencesEditor.apply()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

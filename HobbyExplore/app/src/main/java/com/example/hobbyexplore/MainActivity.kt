@@ -1,16 +1,24 @@
 package com.example.hobbyexplore
 
+import android.content.Context
+import android.graphics.Rect
+import android.net.ConnectivityManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -44,21 +52,16 @@ class MainActivity : BaseActivity() {
             }
         }
     override fun onCreate(savedInstanceState: Bundle?) {
-//        setTheme(R.style.Theme_HobbyExplore)
+
         super.onCreate(savedInstanceState)
-
-
-//        val scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
-//        val logoImageView = ImageView(this).apply {
-//            setImageResource(R.drawable.icon_144)
-//            layoutParams = ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT
-//            )
-//        }
-//
-//        setContentView(logoImageView)
-//        logoImageView.startAnimation(scaleAnimation)
+        if (!isNetworkConnected(this)) {
+            AlertDialog.Builder(this)
+                .setTitle("沒有網路連線")
+                .setMessage("請檢查您的網路連線並重試.")
+                .setPositiveButton("離開") { _, _ -> finish() }
+                .setCancelable(false)
+                .show()
+        }
 
 //        setSupportActionBar(toolbar)
         FirebaseApp.initializeApp(this)
@@ -207,5 +210,41 @@ class MainActivity : BaseActivity() {
             }
             Logger.i("====== ${Build.MODEL} ======")
         }
+    }
+    fun isNetworkConnected(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    v.clearFocus()
+                    v.isCursorVisible = false
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
+                } else {
+                    v.isCursorVisible = true
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
+    override fun onBackPressed() {
+        val v = currentFocus
+        if (v is EditText) {
+            v.isCursorVisible = false
+            v.clearFocus()
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(v.windowToken, 0)
+        }
+        super.onBackPressed()
+        Log.d("MyActivity", "onBackPressed Called!")
     }
 }

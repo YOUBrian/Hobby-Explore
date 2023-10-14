@@ -73,7 +73,7 @@ class ChatGptFragment : Fragment() {
 
         binding.selectButton.setOnClickListener {
             currentIntroduce?.let { introduce ->
-                // 存储introduce.title到Shared Preferences
+
                 val sharedPref = activity?.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
                 with(sharedPref?.edit()) {
                     this?.putString("Selected_Hobby_Title", introduce.title)

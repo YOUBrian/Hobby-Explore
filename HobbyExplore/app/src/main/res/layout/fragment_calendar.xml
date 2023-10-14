@@ -125,7 +125,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:hint="為你的學習紀錄留下感想"
-                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="@+id/rating_seekBar"
@@ -177,20 +176,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/calendar_image_cardView">
 
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/relativeLayout1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="500dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent">-->
-
-<!--                <com.github.mikephil.charting.charts.LineChart-->
-<!--                    android:id="@+id/chart1"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent" />-->
-
-<!--            </RelativeLayout>-->
             <RelativeLayout
                 android:id="@+id/relativeLayout2"
                 android:layout_width="wrap_content"

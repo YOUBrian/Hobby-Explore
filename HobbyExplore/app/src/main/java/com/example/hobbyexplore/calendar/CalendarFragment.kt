@@ -14,6 +14,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -43,6 +44,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.gms.tasks.Task
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 private lateinit var databaseReference: DatabaseReference
@@ -69,7 +71,7 @@ class CalendarFragment : Fragment() {
 
         val currentDate = Calendar.getInstance()
         val year = currentDate.get(Calendar.YEAR)
-        val month = currentDate.get(Calendar.MONTH) + 1  // Calendar.MONTH returns 0-based month
+        val month = currentDate.get(Calendar.MONTH)  // Calendar.MONTH returns 0-based month
         val day = currentDate.get(Calendar.DAY_OF_MONTH)
         val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val userId = logInSharedPref?.getString("userId", "N/A")
@@ -93,13 +95,6 @@ class CalendarFragment : Fragment() {
 
         handleDateChange(viewModel, year, month, day)
 
-//        viewModel.ratingDate.observe(viewLifecycleOwner, Observer { events ->
-//            if (events.isNotEmpty()) {
-//                val event = events[0]
-//                binding.ratingTextview.text = event.eventRating.toString()
-//            }
-//        })
-
         viewModel.getCalendarData(userId.toString())
 
         Log.d("CalendarFragment", "ViewModel: $viewModel")
@@ -117,6 +112,8 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setUpListeners(viewModel: CalendarViewModel) {
+
+
         binding.calendarImageButton.setOnClickListener {
             handleImageSelection()
             binding.calendarImageCardView.visibility = View.VISIBLE
@@ -124,6 +121,7 @@ class CalendarFragment : Fragment() {
         binding.recordRatingButton.setOnClickListener {
             binding.recordRatingButton.text = "修改"
             handleRecordButtonPress(viewModel)
+
         }
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             handleDateChange(viewModel, year, month, dayOfMonth)
@@ -168,7 +166,7 @@ class CalendarFragment : Fragment() {
 
             saveEventToFirestore(event)
                 .addOnSuccessListener {
-                    currentEventId = event.eventId // 更新 currentEventId
+                    currentEventId = event.eventId // update currentEventId
                     Toast.makeText(requireContext(), "Event saved!", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener {
@@ -181,54 +179,9 @@ class CalendarFragment : Fragment() {
             }
             viewModel.getCalendarData(userId.toString())
             delay(2000)
-            setLineChartData(viewModel)
+//            setLineChartData(viewModel)
         }
     }
-
-
-
-//    private fun handleDateChange(viewModel: CalendarViewModel, year: Int, month: Int, dayOfMonth: Int) {
-//        val formattedMonth = String.format("%02d", month + 1)
-//        val formattedDay = String.format("%02d", dayOfMonth)
-//        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-//        val userId = logInSharedPref?.getString("userId", "N/A")
-//        stringDateSelected = "$year/$formattedMonth/$formattedDay"
-//
-//        dateObserver?.let {
-//            viewModel.specificDateData.removeObserver(it)
-//        }
-//
-//        dateObserver = Observer { event ->
-//            if (event != null) {
-//                currentEventId = event.eventId
-//                binding.ratingSeekBar.progress = event.eventRating!!.toInt()
-//                binding.ratingTextview.text = event.eventRating.toString()
-//                Glide.with(this).load(event.eventImage).into(binding.calendarImage)
-//                binding.calendarInputContent.setText(event.eventContent)
-//                binding.recordRatingButton.text = "修改"
-//                binding.calendarImageCardView.visibility = View.VISIBLE
-//            } else {
-//                currentEventId = null
-//                binding.ratingSeekBar.progress = 0
-//                binding.ratingTextview.text = "未評分"
-//                binding.recordRatingButton.visibility = View.VISIBLE
-//                binding.recordRatingButton.isEnabled = true
-//                binding.recordRatingButton.alpha = 1f
-//                binding.recordRatingButton.text = "儲存"
-//                binding.calendarInputContent.text = null
-//                binding.calendarImage.setImageDrawable(null)
-//                binding.calendarImageCardView.visibility = View.GONE
-//            }
-//        }
-//
-////        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString()).observe(viewLifecycleOwner, dateObserver!!)
-//
-//
-//
-//        viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString())
-//
-//        viewModel.specificDateData.observe(viewLifecycleOwner, dateObserver!!)
-//    }
 
     private fun handleDateChange(viewModel: CalendarViewModel, year: Int, month: Int, dayOfMonth: Int) {
         val formattedMonth = String.format("%02d", month + 1)
@@ -317,29 +270,29 @@ class CalendarFragment : Fragment() {
         lineChart2.axisRight.granularity = 1f
         lineChart2.axisRight.valueFormatter = intValueFormatter
 
-        val markData = ArrayList<Entry>()
+        val mockData = ArrayList<Entry>()
 
-        markData.add(Entry(1f, 40f))
-        markData.add(Entry(2f, 45f))
-        markData.add(Entry(3f, 60f))
-        markData.add(Entry(4f, 54f))
-        markData.add(Entry(5f, 66f))
-        markData.add(Entry(6f, 70f))
-        markData.add(Entry(7f, 77f))
-        markData.add(Entry(8f, 83f))
-        markData.add(Entry(9f, 88f))
-        markData.add(Entry(10f, 65f))
-        markData.add(Entry(11f, 53f))
-        markData.add(Entry(12f, 55f))
-        markData.add(Entry(13f, 57f))
-        markData.add(Entry(14f, 58f))
-        markData.add(Entry(15f, 63f))
-        markData.add(Entry(16f, 54f))
-        markData.add(Entry(17f, 56f))
-        markData.add(Entry(18f, 60f))
-        markData.add(Entry(19f, 92f))
-        markData.add(Entry(20f, 94f))
-        markData.add(Entry(21f, 96f))
+        mockData.add(Entry(1f, 40f))
+        mockData.add(Entry(2f, 45f))
+        mockData.add(Entry(3f, 60f))
+        mockData.add(Entry(4f, 54f))
+        mockData.add(Entry(5f, 66f))
+        mockData.add(Entry(6f, 70f))
+        mockData.add(Entry(7f, 77f))
+        mockData.add(Entry(8f, 83f))
+        mockData.add(Entry(9f, 88f))
+        mockData.add(Entry(10f, 65f))
+        mockData.add(Entry(11f, 53f))
+        mockData.add(Entry(12f, 55f))
+        mockData.add(Entry(13f, 57f))
+        mockData.add(Entry(14f, 58f))
+        mockData.add(Entry(15f, 63f))
+        mockData.add(Entry(16f, 54f))
+        mockData.add(Entry(17f, 56f))
+        mockData.add(Entry(18f, 60f))
+        mockData.add(Entry(19f, 92f))
+        mockData.add(Entry(20f, 94f))
+        mockData.add(Entry(21f, 96f))
 
         val entries = mutableListOf<Entry>()
 
@@ -353,13 +306,13 @@ class CalendarFragment : Fragment() {
         lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
         lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.orange)
 
-        val markDataSet = LineDataSet(markData, "平均學習曲線")
+        val markDataSet = LineDataSet(mockData, "學員平均學習曲線")
         markDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
         markDataSet.color = ContextCompat.getColor(requireContext(), R.color.black)
 
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(lineDataSet)
-        dataSets.add(markDataSet) // 加入第二組數據
+        dataSets.add(markDataSet) //
 
         val data = LineData(dataSets)
 
@@ -368,7 +321,7 @@ class CalendarFragment : Fragment() {
         lineChart2.description.isEnabled = false
         lineChart2.axisRight.isEnabled = false
         lineChart2.data = data
-        lineChart2.invalidate() // 確保圖表更新
+        lineChart2.invalidate() //
         lineChart2.animateXY(1000, 1000)
     }
 
@@ -391,9 +344,14 @@ class CalendarFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
             selectedPhotoUri = data?.data
-            selectedPhotoUri?.let { Glide.with(this).load(it).into(binding.calendarImage) }
+            selectedPhotoUri?.let {
+                Glide.with(this).load(it).into(binding.calendarImage)
+                binding.calendarImage.visibility = View.VISIBLE
+                binding.calendarImageCardView.visibility = View.VISIBLE
+            }
         }
     }
+
 
     private suspend fun uploadImageToFirebase(selectedPhotoUri: Uri): String {
         val storageReference = FirebaseStorage.getInstance().reference
@@ -445,6 +403,11 @@ class CalendarFragment : Fragment() {
                                         imageUrlFromFirebase
                                     )
                                 )
+
+                                val bottomNavigation = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavView)
+                                bottomNavigation.menu.findItem(R.id.navigation_hobbyBoards).isChecked = true
+
+
                             } else {
                                 Toast.makeText(
                                     requireContext(),

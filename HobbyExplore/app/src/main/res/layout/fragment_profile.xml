@@ -143,14 +143,13 @@
                     android:id="@+id/imageView"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="16dp"
-                android:scaleType="centerCrop"
-                android:layout_gravity="center"
+                    android:scaleType="centerCrop"
                     app:imageUrl="@{photo.userPhotoUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -162,40 +161,58 @@
                     android:background="@drawable/blue_button_full"
                     android:padding="8dp"
                     android:text="MBTI測驗"
-                    android:textSize="16sp"
                     android:textColor="@color/white"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@+id/about_app_button"
                     app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/view2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/line_2" />
+
+                <!--                <androidx.appcompat.widget.AppCompatButton-->
+                <!--                    android:id="@+id/error_report_button"-->
+                <!--                    style="@style/Base.Widget.AppCompat.Button.Borderless"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:background="@drawable/blue_button_full"-->
+                <!--                    android:padding="8dp"-->
+                <!--                    android:text="錯誤回報"-->
+                <!--                    android:textSize="16sp"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@+id/about_app_button"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintHorizontal_bias="0.5"-->
+                <!--                    app:layout_constraintStart_toEndOf="@+id/about_app_button"-->
+                <!--                    app:layout_constraintTop_toTopOf="@+id/about_app_button" />-->
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/about_app_button"
                     style="@style/Base.Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     android:background="@drawable/blue_button_full"
                     android:padding="8dp"
                     android:text="關於趣探"
-                    android:textSize="16sp"
                     android:textColor="@color/white"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/mbti_button"
-                    app:layout_constraintEnd_toStartOf="@+id/error_report_button"
+                    app:layout_constraintEnd_toStartOf="@+id/login_logout_button"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/mbti_button"
                     app:layout_constraintTop_toTopOf="@+id/mbti_button"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/error_report_button"
+                    android:id="@+id/login_logout_button"
                     style="@style/Base.Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/blue_button_full"
                     android:padding="8dp"
-                    android:text="錯誤回報"
-                    android:textSize="16sp"
+                    android:text=""
                     android:textColor="@color/white"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/about_app_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"

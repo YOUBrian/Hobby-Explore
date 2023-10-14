@@ -28,4 +28,6 @@
         <item>桌球</item>
         <item>網球</item>
     </string-array>
+    <string name="default_web_client_id">YOUR_CLIENT_ID.apps.googleusercontent.com</string>
+
 </resources>

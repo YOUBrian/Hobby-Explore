@@ -79,32 +79,34 @@ class CalendarViewModel : ViewModel() {
         docRef.orderBy("eventDate", Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener { querySnapshot ->
-                Log.d("DEBUGGGGG", "Successfully retrieved ${querySnapshot.size()} documents.")
                 val ratings = mutableListOf<CalendarEvent>()
                 val dataListValues = dataList.value?.toMutableList() ?: mutableListOf()
+
                 for (document in querySnapshot) {
                     val rating = document.toObject(CalendarEvent::class.java)
                     val eventDate = document.getString("eventDate") ?: ""
                     val eventRating = document.getLong("eventRating")?.toInt() ?: 0
-                    Log.i("FirebaseData", "Event Date: $eventDate, Event Rating: $eventRating")
+
+                    val existingPair = dataListValues.find { it.first == eventDate }
+                    if (existingPair != null) {
+                        dataListValues[dataListValues.indexOf(existingPair)] = Pair(eventDate, eventRating)
+                    } else {
+                        dataListValues.add(Pair(eventDate, eventRating))
+                    }
+
                     if (rating != null) {
-                        val pair = Pair(eventDate, eventRating)
-                        if (!dataListValues.contains(pair)) {
-                            ratings.add(rating)
-                            Log.i("getCalendarData", "rating: $rating")
-                            dataListValues.add(pair)
-                        }
+                        ratings.add(rating)
                     }
                 }
                 _ratingDate.postValue(ratings)
                 dataListValues.sortBy { it.first }
                 dataList.postValue(dataListValues.toList())
-                Log.i("dataListttttt","dataList:$dataListValues")
             }
             .addOnFailureListener { e ->
                 Log.e("DEBUGGGGG", "Error reading data.", e)
             }
     }
+
 
     fun getDataForSpecificDate(date: String, userIdFromPref: String) {
         if (userIdFromPref != null) {
