@@ -14,6 +14,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -111,6 +112,8 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setUpListeners(viewModel: CalendarViewModel) {
+
+
         binding.calendarImageButton.setOnClickListener {
             handleImageSelection()
             binding.calendarImageCardView.visibility = View.VISIBLE
@@ -303,7 +306,7 @@ class CalendarFragment : Fragment() {
         lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
         lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.orange)
 
-        val markDataSet = LineDataSet(mockData, "平均學習曲線")
+        val markDataSet = LineDataSet(mockData, "學員平均學習曲線")
         markDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
         markDataSet.color = ContextCompat.getColor(requireContext(), R.color.black)
 
@@ -341,9 +344,14 @@ class CalendarFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
             selectedPhotoUri = data?.data
-            selectedPhotoUri?.let { Glide.with(this).load(it).into(binding.calendarImage) }
+            selectedPhotoUri?.let {
+                Glide.with(this).load(it).into(binding.calendarImage)
+                binding.calendarImage.visibility = View.VISIBLE
+                binding.calendarImageCardView.visibility = View.VISIBLE
+            }
         }
     }
+
 
     private suspend fun uploadImageToFirebase(selectedPhotoUri: Uri): String {
         val storageReference = FirebaseStorage.getInstance().reference
