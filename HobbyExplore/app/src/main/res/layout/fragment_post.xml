@@ -117,12 +117,16 @@
 
             <EditText
                 android:id="@+id/user_content_input"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="16dp"
                 android:hint="分享您對興趣的想法"
-                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.5"
                 android:letterSpacing="0.15"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/ratingBar"
                 app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 

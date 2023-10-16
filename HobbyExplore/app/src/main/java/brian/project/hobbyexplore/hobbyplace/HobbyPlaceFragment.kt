@@ -112,11 +112,11 @@ class HobbyPlaceFragment : Fragment() {
                     // 使用 location.latitude 和 location.longitude 可取得位置
                     userLatitude = location?.latitude ?: 0.0
                     userLongitude = location?.longitude ?: 0.0
-                    Toast.makeText(requireContext(), "位置: ${location?.latitude}, ${location?.longitude}", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(requireContext(), "位置: ${location?.latitude}, ${location?.longitude}", Toast.LENGTH_LONG).show()
                 }
         } else {
             // Handle case where permission is not granted
-            Toast.makeText(requireContext(), "定位權限未被授予", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "未授權定位權限", Toast.LENGTH_SHORT).show()
         }
     }
 

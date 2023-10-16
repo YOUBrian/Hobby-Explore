@@ -18,8 +18,8 @@ android {
         applicationId "brian.project.hobbyexplore"
         minSdk 24
         targetSdk 33
-        versionCode 1000000
-        versionName "1.0.0"
+        versionCode 1000001
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -58,6 +58,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.6'
     }
+
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'

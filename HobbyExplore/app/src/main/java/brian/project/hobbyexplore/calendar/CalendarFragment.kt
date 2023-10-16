@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -73,7 +74,8 @@ class CalendarFragment : Fragment() {
         val year = currentDate.get(Calendar.YEAR)
         val month = currentDate.get(Calendar.MONTH)  // Calendar.MONTH returns 0-based month
         val day = currentDate.get(Calendar.DAY_OF_MONTH)
-        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val logInSharedPref =
+            activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val userId = logInSharedPref?.getString("userId", "N/A")
 
         stringDateSelected = "$year/${String.format("%02d", month)}/${String.format("%02d", day)}"
@@ -107,7 +109,9 @@ class CalendarFragment : Fragment() {
 
     private fun setUpUIObservers(viewModel: CalendarViewModel) {
         viewModel.uploadPhoto.observe(viewLifecycleOwner, Observer { newImageUri ->
-            Glide.with(this).load(newImageUri).into(binding.calendarImage)
+            if (isAdded()) {
+                Glide.with(this).load(newImageUri).into(binding.calendarImage)
+            }
         })
     }
 
@@ -151,7 +155,8 @@ class CalendarFragment : Fragment() {
 
     private fun handleRecordButtonPress(viewModel: CalendarViewModel) {
         lifecycleScope.launch(Dispatchers.Main) {
-            val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+            val logInSharedPref =
+                activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
             val userId = logInSharedPref?.getString("userId", "N/A")
             val imageUrl = selectedPhotoUri?.let { uploadImageToFirebase(it) } ?: ""
 
@@ -167,10 +172,15 @@ class CalendarFragment : Fragment() {
             saveEventToFirestore(event)
                 .addOnSuccessListener {
                     currentEventId = event.eventId // update currentEventId
-                    Toast.makeText(requireContext(), "Event saved!", Toast.LENGTH_SHORT).show()
+                    if (isAdded) {
+                        Toast.makeText(requireContext(), "Event saved!", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 .addOnFailureListener {
-                    Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+                    if (isAdded) {
+                        Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
 
             stringDateSelected?.let {
@@ -183,10 +193,16 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun handleDateChange(viewModel: CalendarViewModel, year: Int, month: Int, dayOfMonth: Int) {
+    private fun handleDateChange(
+        viewModel: CalendarViewModel,
+        year: Int,
+        month: Int,
+        dayOfMonth: Int
+    ) {
         val formattedMonth = String.format("%02d", month + 1)
         val formattedDay = String.format("%02d", dayOfMonth)
-        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val logInSharedPref =
+            activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val userId = logInSharedPref?.getString("userId", "N/A")
         stringDateSelected = "$year/$formattedMonth/$formattedDay"
 
@@ -195,42 +211,41 @@ class CalendarFragment : Fragment() {
         }
 
         dateObserver = Observer { event ->
-            if (event != null) {
-                currentEventId = event.eventId
-                binding.ratingSeekBar.progress = event.eventRating!!.toInt()
-                binding.ratingTextview.text = event.eventRating.toString()
+            if (isAdded()) {
+                if (event != null) {
+                    currentEventId = event.eventId
+                    binding.ratingSeekBar.progress = event.eventRating!!.toInt()
+                    binding.ratingTextview.text = event.eventRating.toString()
 
-                if (event.eventImage?.isNotBlank() == true) {
-                    Glide.with(this).load(event.eventImage).into(binding.calendarImage)
-                    binding.calendarImage.visibility = View.VISIBLE // 如果有圖片，設為可見
+                    if (event.eventImage?.isNotBlank() == true) {
+                        Glide.with(this).load(event.eventImage).into(binding.calendarImage)
+                        binding.calendarImage.visibility = View.VISIBLE
+                    } else {
+                        binding.calendarImage.visibility = View.GONE
+                    }
+
+                    binding.calendarInputContent.setText(event.eventContent)
+                    binding.recordRatingButton.text = "修改"
+                    binding.calendarImageCardView.visibility =
+                        if (event.eventImage?.isNotBlank() == true) View.VISIBLE else View.GONE
                 } else {
-                    binding.calendarImage.visibility = View.GONE // 如果沒有圖片，設為不可見
+                    currentEventId = null
+                    binding.ratingSeekBar.progress = 0
+                    binding.ratingTextview.text = "未評分"
+                    binding.recordRatingButton.visibility = View.VISIBLE
+                    binding.recordRatingButton.isEnabled = true
+                    binding.recordRatingButton.alpha = 1f
+                    binding.recordRatingButton.text = "儲存"
+                    binding.calendarInputContent.text = null
+                    binding.calendarImage.setImageDrawable(null)
+                    binding.calendarImageCardView.visibility = View.GONE
                 }
-
-                binding.calendarInputContent.setText(event.eventContent)
-                binding.recordRatingButton.text = "修改"
-                binding.calendarImageCardView.visibility = if (event.eventImage?.isNotBlank() == true) View.VISIBLE else View.GONE
-            } else {
-                currentEventId = null
-                binding.ratingSeekBar.progress = 0
-                binding.ratingTextview.text = "未評分"
-                binding.recordRatingButton.visibility = View.VISIBLE
-                binding.recordRatingButton.isEnabled = true
-                binding.recordRatingButton.alpha = 1f
-                binding.recordRatingButton.text = "儲存"
-                binding.calendarInputContent.text = null
-                binding.calendarImage.setImageDrawable(null)
-                binding.calendarImageCardView.visibility = View.GONE
             }
         }
 
         viewModel.getDataForSpecificDate(stringDateSelected!!, userId.toString())
         viewModel.specificDateData.observe(viewLifecycleOwner, dateObserver!!)
     }
-
-
-
-
 
 
     private fun hasWritePermission(): Boolean {
@@ -259,6 +274,7 @@ class CalendarFragment : Fragment() {
             return value.toInt().toString()
         }
     }
+
     private fun setLineChartData(viewModel: CalendarViewModel) {
         val intValueFormatter = IntegerValueFormatter()
 
@@ -305,17 +321,26 @@ class CalendarFragment : Fragment() {
         val lineDataSet = LineDataSet(entries, "我的學習評分曲線")
         lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
         lineDataSet.color = ContextCompat.getColor(requireContext(), R.color.orange)
+        lineDataSet.setCircleColor(Color.RED)
+        lineDataSet.valueFormatter = intValueFormatter
+        lineDataSet.setValueTextSize(8f)
 
         val markDataSet = LineDataSet(mockData, "學員平均學習曲線")
         markDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
         markDataSet.color = ContextCompat.getColor(requireContext(), R.color.black)
+        markDataSet.setCircleColor(Color.DKGRAY)
+        markDataSet.valueFormatter = intValueFormatter
+        markDataSet.setValueTextSize(8f)
+
 
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(lineDataSet)
-        dataSets.add(markDataSet) //
+        dataSets.add(markDataSet)
+
 
         val data = LineData(dataSets)
 
+        lineChart2.setExtraOffsets(0f, 0f, 0f, 8f)
         lineChart2.axisLeft.isEnabled = true
         lineChart2.xAxis.isEnabled = true
         lineChart2.description.isEnabled = false
@@ -383,7 +408,8 @@ class CalendarFragment : Fragment() {
         when (item.itemId) {
             R.id.calendar_share -> {
 
-                val sharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+                val sharedPref =
+                    activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
                 val userIdFromPref = sharedPref?.getString("userId", null)
 
                 if (userIdFromPref != null) {
@@ -404,8 +430,10 @@ class CalendarFragment : Fragment() {
                                     )
                                 )
 
-                                val bottomNavigation = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavView)
-                                bottomNavigation.menu.findItem(R.id.navigation_hobbyBoards).isChecked = true
+                                val bottomNavigation =
+                                    requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavView)
+                                bottomNavigation.menu.findItem(R.id.navigation_hobbyBoards).isChecked =
+                                    true
 
 
                             } else {
@@ -432,7 +460,8 @@ class CalendarFragment : Fragment() {
             .document(event.eventId)
             .set(event)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Event saved or updated!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Event saved or updated!", Toast.LENGTH_SHORT)
+                    .show()
             }
             .addOnFailureListener {
                 Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()

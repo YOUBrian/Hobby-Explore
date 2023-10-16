@@ -107,28 +107,23 @@
                     app:layout_constraintEnd_toEndOf="@+id/record_rating_Button"
                     app:layout_constraintTop_toBottomOf="@+id/record_rating_Button" />
 
-                <!--        <Button-->
-                <!--            android:id="@+id/share_Button"-->
-                <!--            android:layout_width="wrap_content"-->
-                <!--            android:layout_height="50dp"-->
-                <!--            android:backgroundTint="#a3b2d1"-->
-                <!--            android:padding="4dp"-->
-                <!--            android:text="SHARE"-->
-                <!--            android:textColor="@color/white"-->
-                <!--            android:textSize="20sp"-->
-                <!--            app:layout_constraintEnd_toEndOf="@+id/record_rating_Button"-->
-                <!--            app:layout_constraintTop_toBottomOf="@+id/calendar_image_button" />-->
-
                 <EditText
                     android:id="@+id/calendar_input_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="為你的學習紀錄留下感想"
+                    android:letterSpacing="0.15"
+                    android:lineSpacingMultiplier="1.5"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    app:layout_constraintStart_toStartOf="@+id/rating_seekBar"
-                    app:layout_constraintTop_toBottomOf="@+id/calendar_image_button" />
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/calendar_image_button"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
