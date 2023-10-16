@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/googleLogInFragment">
-
+    app:startDestination="@+id/googleLogInFragment">
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="com.example.hobbyexplore.hobbyplace.MapsFragment"
+        android:name="brian.project.hobbyexplore.hobbyplace.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps">
         <argument
@@ -28,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/hobbyCategoryFragment"
-        android:name="com.example.hobbyexplore.hobbycategory.HobbyCategoryFragment"
+        android:name="brian.project.hobbyexplore.hobbycategory.HobbyCategoryFragment"
         android:label="fragment_hobby_category"
         tools:layout="@layout/fragment_hobby_category">
         <action
@@ -37,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.example.hobbyexplore.calendar.CalendarFragment"
+        android:name="brian.project.hobbyexplore.calendar.CalendarFragment"
         android:label="fragment_calendar"
         tools:layout="@layout/fragment_calendar" >
         <action
@@ -52,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.hobbyexplore.profile.ProfileFragment"
+        android:name="brian.project.hobbyexplore.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -61,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/hobbyBoardsFragment"
-        android:name="com.example.hobbyexplore.hobbyboards.HobbyBoardsFragment"
+        android:name="brian.project.hobbyexplore.hobbyboards.HobbyBoardsFragment"
         android:label="fragment_hobby_boards"
         tools:layout="@layout/fragment_hobby_boards" >
         <action
@@ -97,16 +96,16 @@
         android:label="YouTubePlayerFragment">
         <argument
             android:name="course"
-            app:argType="com.example.hobbyexplore.data.Course" />
+            app:argType="brian.project.hobbyexplore.data.Course" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.hobbyexplore.detail.DetailFragment"
+        android:name="brian.project.hobbyexplore.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail">
         <argument
             android:name="selectProduct"
-            app:argType="com.example.hobbyexplore.data.Introduce" />
+            app:argType="brian.project.hobbyexplore.data.Introduce" />
         <action
             android:id="@+id/action_detailFragment_to_hobbyPlaceFragment"
             app:destination="@id/hobbyPlaceFragment" >
@@ -133,7 +132,7 @@
     </fragment>
     <fragment
         android:id="@+id/hobbyApplianceFragment"
-        android:name="com.example.hobbyexplore.hobbyappliance.HobbyApplianceFragment"
+        android:name="brian.project.hobbyexplore.hobbyappliance.HobbyApplianceFragment"
         android:label="fragment_hobby_appliace"
         tools:layout="@layout/fragment_hobby_appliance">
         <argument
@@ -151,7 +150,7 @@
     </fragment>
     <fragment
         android:id="@+id/hobbyCourseFragment"
-        android:name="com.example.hobbyexplore.hobbycourse.HobbyCourseFragment"
+        android:name="brian.project.hobbyexplore.hobbycourse.HobbyCourseFragment"
         android:label="fragment_hobby_course"
         tools:layout="@layout/fragment_hobby_course">
         <argument
@@ -169,7 +168,7 @@
     </fragment>
     <fragment
         android:id="@+id/hobbyPlaceFragment"
-        android:name="com.example.hobbyexplore.hobbyplace.HobbyPlaceFragment"
+        android:name="brian.project.hobbyexplore.hobbyplace.HobbyPlaceFragment"
         android:label="fragment_hobby_place"
         tools:layout="@layout/fragment_hobby_place">
         <argument
@@ -203,7 +202,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatGptFragment"
-        android:name="com.example.hobbyexplore.chatgpt.ChatGptFragment"
+        android:name="brian.project.hobbyexplore.chatgpt.ChatGptFragment"
         android:label="ChatGptFragment" >
         <argument
             android:name="typeString"
@@ -214,7 +213,7 @@
     </fragment>
     <fragment
         android:id="@+id/personalityTestFragment"
-        android:name="com.example.hobbyexplore.personalitytest.PersonalityTestFragment"
+        android:name="brian.project.hobbyexplore.personalitytest.PersonalityTestFragment"
         android:label="fragment_personality_test"
         tools:layout="@layout/fragment_personality_test">
         <action
@@ -226,7 +225,7 @@
     </fragment>
     <fragment
         android:id="@+id/whetherTakeMbtiTest"
-        android:name="com.example.hobbyexplore.personalitytest.WhetherTakeMbtiTest"
+        android:name="brian.project.hobbyexplore.personalitytest.WhetherTakeMbtiTest"
         android:label="WhetherTakeMbtiTest">
         <action
             android:id="@+id/action_whetherTakeMbtiTest_to_mbtiTestFragment"
@@ -237,7 +236,7 @@
     </fragment>
     <fragment
         android:id="@+id/enterBudgetFragment"
-        android:name="com.example.hobbyexplore.personalitytest.EnterBudgetFragment"
+        android:name="brian.project.hobbyexplore.personalitytest.EnterBudgetFragment"
         android:label="fragment_enter_budget"
         tools:layout="@layout/fragment_enter_budget">
         <action
@@ -246,7 +245,7 @@
     </fragment>
     <fragment
         android:id="@+id/applianceRecommendFragment"
-        android:name="com.example.hobbyexplore.personalitytest.ApplianceRecommendFragment"
+        android:name="brian.project.hobbyexplore.personalitytest.ApplianceRecommendFragment"
         android:label="fragment_appliance_recommend"
         tools:layout="@layout/fragment_appliance_recommend">
         <action
@@ -255,7 +254,7 @@
     </fragment>
     <fragment
         android:id="@+id/courseRecommendFragment"
-        android:name="com.example.hobbyexplore.personalitytest.CourseRecommendFragment"
+        android:name="brian.project.hobbyexplore.personalitytest.CourseRecommendFragment"
         android:label="fragment_course_recommend"
         tools:layout="@layout/fragment_course_recommend">
         <action
@@ -264,12 +263,12 @@
     </fragment>
     <fragment
         android:id="@+id/placeRecommendFragment"
-        android:name="com.example.hobbyexplore.personalitytest.PlaceRecommendFragment"
+        android:name="brian.project.hobbyexplore.personalitytest.PlaceRecommendFragment"
         android:label="fragment_place_recommend"
         tools:layout="@layout/fragment_place_recommend" />
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.example.hobbyexplore.hobbyboards.CameraFragment"
+        android:name="brian.project.hobbyexplore.hobbyboards.CameraFragment"
         android:label="PostFragment" >
         <action
             android:id="@+id/action_cameraFragment_to_postFragment"
@@ -277,7 +276,7 @@
     </fragment>
     <fragment
         android:id="@+id/mbtiTestFragment"
-        android:name="com.example.hobbyexplore.personalitytest.mbti.MbtiTestFragment"
+        android:name="brian.project.hobbyexplore.personalitytest.mbti.MbtiTestFragment"
         android:label="MbtiTestFragment" >
         <action
             android:id="@+id/action_mbtiTestFragment_to_mbtiTestResultFragment"
@@ -285,7 +284,7 @@
     </fragment>
     <fragment
         android:id="@+id/mbtiTestResultFragment"
-        android:name="com.example.hobbyexplore.personalitytest.mbti.MbtiTestResultFragment"
+        android:name="brian.project.hobbyexplore.personalitytest.mbti.MbtiTestResultFragment"
         android:label="fragment_mbti_test_result"
         tools:layout="@layout/fragment_mbti_test_result" >
         <argument
@@ -298,7 +297,7 @@
     </fragment>
     <fragment
         android:id="@+id/postFragment"
-        android:name="com.example.hobbyexplore.hobbyboards.PostFragment"
+        android:name="brian.project.hobbyexplore.hobbyboards.PostFragment"
         android:label="fragment_post"
         tools:layout="@layout/fragment_post" >
         <action
@@ -316,15 +315,15 @@
     </fragment>
     <fragment
         android:id="@+id/googleLogInFragment"
-        android:name="com.example.hobbyexplore.googlelogin.GoogleLogInFragment"
+        android:name="brian.project.hobbyexplore.googlelogin.GoogleLogInFragment"
         android:label="fragment_google_log_in"
-        tools:layout="@layout/fragment_google_log_in" >
+        tools:layout="@layout/fragment_google_log_in">
         <action
             android:id="@+id/action_googleLogInFragment_to_personalityTestFragment"
             app:destination="@id/personalityTestFragment" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
-        android:name="com.example.hobbyexplore.MainActivity"
+        android:name="brian.project.hobbyexplore.MainActivity"
         android:label="MainActivity" />
 </navigation>

@@ -7,7 +7,7 @@
 
         <variable
             name="appliance"
-            type="com.example.hobbyexplore.data.Appliance" />
+            type="brian.project.hobbyexplore.data.Appliance" />
     </data>
 
     <androidx.cardview.widget.CardView

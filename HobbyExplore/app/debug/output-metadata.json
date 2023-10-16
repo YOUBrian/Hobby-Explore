@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.hobbyexplore",
+  "applicationId": "brian.project.hobbyexplore",
   "variantName": "debug",
   "elements": [
     {

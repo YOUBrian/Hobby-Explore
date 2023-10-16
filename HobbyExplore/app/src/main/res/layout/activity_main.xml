@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.example.hobbyexplore.util.CurrentFragmentType"/>
+        <import type="brian.project.hobbyexplore.util.CurrentFragmentType"/>
         <import type="android.view.View"/>
-        <variable name="viewModel" type="com.example.hobbyexplore.MainViewModel"/>
+        <variable name="viewModel" type="brian.project.hobbyexplore.MainViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

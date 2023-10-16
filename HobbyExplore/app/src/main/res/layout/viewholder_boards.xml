@@ -6,7 +6,7 @@
     <data>
         <variable
             name="boards"
-            type="com.example.hobbyexplore.data.Message" />
+            type="brian.project.hobbyexplore.data.Message" />
     </data>
 
         <androidx.cardview.widget.CardView

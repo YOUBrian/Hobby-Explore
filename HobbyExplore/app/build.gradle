@@ -11,14 +11,14 @@ plugins {
 }
 
 android {
-    namespace 'com.example.hobbyexplore'
+    namespace 'brian.project.hobbyexplore'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.hobbyexplore"
+        applicationId "brian.project.hobbyexplore"
         minSdk 24
         targetSdk 33
-        versionCode 1001000
+        versionCode 1000000
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
