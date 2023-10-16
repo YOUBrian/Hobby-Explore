@@ -47,15 +47,21 @@ class CameraFragment : Fragment() {
         Log.i("getPhotoURI", "uploadTask: ${imageRef.putFile(selectedPhotoUri)}")
         uploadTask.addOnSuccessListener {
 
+            // Hide the Lottie animation before navigating to postFragment
+            viewBinding.selectImageLoading.visibility = View.GONE
+            viewBinding.selectImageLoading.pauseAnimation()
 
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 val downloadUrl = uri.toString()
-
                 Log.i("getPhotoURI", "selectedPhotoUri: $selectedPhotoUri")
                 Log.i("getPhotoURI", "downloadUrl: $downloadUrl")
                 findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToPostFragment("",downloadUrl))
             }
         }.addOnFailureListener {
+
+            // Hide the Lottie animation if the upload fails
+            viewBinding.selectImageLoading.visibility = View.GONE
+            viewBinding.selectImageLoading.pauseAnimation()
 
             Log.e("uploadImageToFirebase", "Upload failed", it)
         }
@@ -113,8 +119,13 @@ class CameraFragment : Fragment() {
         if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
             // 获取选中图片的 URI
             val selectedPhotoUri = data?.data
+
+            // Show the Lottie animation now that an image has been selected
+            viewBinding.selectImageLoading.visibility = View.VISIBLE
+            viewBinding.selectImageLoading.playAnimation()
+
             if (selectedPhotoUri != null) {
-                // 执行上传图片到 Firebase Storage 的逻辑
+
                 uploadImageToFirebase(selectedPhotoUri)
             }
         }

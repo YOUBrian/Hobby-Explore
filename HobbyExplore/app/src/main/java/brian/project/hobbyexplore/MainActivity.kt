@@ -68,6 +68,8 @@ class MainActivity : BaseActivity() {
         navController = navHostFragment?.navController ?: return
 
 
+
+
         //check internet
         if (!isNetworkConnected(this)) {
             showNetworkErrorDialog()
@@ -101,6 +103,7 @@ class MainActivity : BaseActivity() {
         })
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            // For BottomNav visibility
             if (destination.id in listOf(
                     R.id.personalityTestFragment,
                     R.id.whetherTakeMbtiTest,
@@ -115,7 +118,26 @@ class MainActivity : BaseActivity() {
             } else {
                 binding.bottomNavView.visibility = View.VISIBLE
             }
+
+            // For toolbar back button visibility
+            when (destination.id) {
+                R.id.hobbyCategoryFragment,
+                R.id.calendarFragment,
+                R.id.hobbyBoardsFragment,
+                R.id.profileFragment,
+                R.id.googleLogInFragment -> {
+                    // Hide back button
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
+                else -> {
+                    // Show back button for other fragments
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    // Set the custom back button
+                    supportActionBar?.setHomeAsUpIndicator(R.drawable.main_back_icon)
+                }
+            }
         }
+
 
         setupToolbar()
         setupBottomNav()
@@ -196,7 +218,7 @@ class MainActivity : BaseActivity() {
 
         binding.toolbar.setPadding(0, statusBarHeight, 0, 0)
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.main_back_icon)
+//        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.main_back_icon)
         launch {
 
             val dpi = resources.displayMetrics.densityDpi.toFloat()
