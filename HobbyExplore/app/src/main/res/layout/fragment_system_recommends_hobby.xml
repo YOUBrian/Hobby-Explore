@@ -7,7 +7,7 @@
 
         <variable
             name="introduce"
-            type="com.example.hobbyexplore.chatgpt.ChatGptViewModel" />
+            type="brian.project.hobbyexplore.chatgpt.ChatGptViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

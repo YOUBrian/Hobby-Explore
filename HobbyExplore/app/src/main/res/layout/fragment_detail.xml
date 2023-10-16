@@ -7,7 +7,7 @@
 
         <variable
             name="introduce"
-            type="com.example.hobbyexplore.detail.DetailViewModel" />
+            type="brian.project.hobbyexplore.detail.DetailViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
