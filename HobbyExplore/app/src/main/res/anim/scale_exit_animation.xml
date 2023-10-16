@@ -14,8 +14,8 @@
 
     <!-- Fade-in effect -->
     <alpha
-        android:duration="1000"
-        android:fromAlpha="0.5"
-        android:toAlpha="1" />
+        android:duration="500"
+        android:fromAlpha="0.3"
+        android:toAlpha="0" />
 
 </set>

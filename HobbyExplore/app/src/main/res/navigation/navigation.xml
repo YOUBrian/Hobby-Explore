@@ -218,10 +218,12 @@
         tools:layout="@layout/fragment_personality_test">
         <action
             android:id="@+id/action_personalityTestFragment_to_whetherTakeMbtiTest"
-            app:destination="@id/whetherTakeMbtiTest" />
+            app:destination="@id/whetherTakeMbtiTest"
+            app:enterAnim="@anim/scale_animation" />
         <action
             android:id="@+id/action_personalityTestFragment_to_hobbyCategoryFragment"
-            app:destination="@id/hobbyCategoryFragment" />
+            app:destination="@id/hobbyCategoryFragment"
+            app:enterAnim="@anim/slide_in_right" />
     </fragment>
     <fragment
         android:id="@+id/whetherTakeMbtiTest"
@@ -320,7 +322,8 @@
         tools:layout="@layout/fragment_google_log_in">
         <action
             android:id="@+id/action_googleLogInFragment_to_personalityTestFragment"
-            app:destination="@id/personalityTestFragment" />
+            app:destination="@id/personalityTestFragment"
+            app:exitAnim="@anim/scale_exit_animation" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
