@@ -1,6 +1,8 @@
 package brian.project.hobbyexplore.calendar
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -123,7 +125,7 @@ class CalendarFragment : Fragment() {
             binding.calendarImageCardView.visibility = View.VISIBLE
         }
         binding.recordRatingButton.setOnClickListener {
-            binding.recordRatingButton.text = "修改"
+            binding.recordRatingButton.text = "確認修改"
             handleRecordButtonPress(viewModel)
 
         }
@@ -155,8 +157,7 @@ class CalendarFragment : Fragment() {
 
     private fun handleRecordButtonPress(viewModel: CalendarViewModel) {
         lifecycleScope.launch(Dispatchers.Main) {
-            val logInSharedPref =
-                activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+            val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
             val userId = logInSharedPref?.getString("userId", "N/A")
             val imageUrl = selectedPhotoUri?.let { uploadImageToFirebase(it) } ?: ""
 
@@ -168,12 +169,14 @@ class CalendarFragment : Fragment() {
                 eventContent = binding.calendarInputContent.text.toString(),
                 eventUserId = userId.toString()
             )
-
             saveEventToFirestore(event)
                 .addOnSuccessListener {
                     currentEventId = event.eventId // update currentEventId
                     if (isAdded) {
-                        Toast.makeText(requireContext(), "Event saved!", Toast.LENGTH_SHORT).show()
+                        // Start the Lottie animation on success
+                        playSuccessAnimation()
+
+//                        Toast.makeText(requireContext(), "Event saved!", Toast.LENGTH_SHORT).show()
                     }
                 }
                 .addOnFailureListener {
@@ -182,16 +185,17 @@ class CalendarFragment : Fragment() {
                             .show()
                     }
                 }
-
             stringDateSelected?.let {
                 databaseReference.child(it)
                     .setValue(binding.ratingTextview.text.toString())
             }
             viewModel.getCalendarData(userId.toString())
             delay(2000)
-//            setLineChartData(viewModel)
+            // setLineChartData(viewModel)
         }
     }
+
+
 
     private fun handleDateChange(
         viewModel: CalendarViewModel,
@@ -225,7 +229,7 @@ class CalendarFragment : Fragment() {
                     }
 
                     binding.calendarInputContent.setText(event.eventContent)
-                    binding.recordRatingButton.text = "修改"
+                    binding.recordRatingButton.text = "確認修改"
                     binding.calendarImageCardView.visibility =
                         if (event.eventImage?.isNotBlank() == true) View.VISIBLE else View.GONE
                 } else {
@@ -235,7 +239,7 @@ class CalendarFragment : Fragment() {
                     binding.recordRatingButton.visibility = View.VISIBLE
                     binding.recordRatingButton.isEnabled = true
                     binding.recordRatingButton.alpha = 1f
-                    binding.recordRatingButton.text = "儲存"
+                    binding.recordRatingButton.text = "儲存紀錄"
                     binding.calendarInputContent.text = null
                     binding.calendarImage.setImageDrawable(null)
                     binding.calendarImageCardView.visibility = View.GONE
@@ -466,6 +470,19 @@ class CalendarFragment : Fragment() {
             .addOnFailureListener {
                 Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun playSuccessAnimation() {
+        val animationView = binding.success
+        animationView.visibility = View.VISIBLE
+        animationView.playAnimation()
+
+        animationView.addAnimatorListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+                animationView.visibility = View.GONE
+            }
+        })
     }
 
 }

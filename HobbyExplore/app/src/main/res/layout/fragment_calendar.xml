@@ -13,11 +13,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".calendar.CalendarFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         tools:context=".calendar.CalendarFragment">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/success"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="8dp"
+            app:lottie_autoPlay="false"
+            app:lottie_loop="false"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/success" />
 
         <CalendarView
             android:id="@+id/calendarView"
@@ -60,14 +75,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/calendar_content" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/record_rating_Button"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginEnd="8dp"
-                    android:backgroundTint="#a3b2d1"
+                    android:background="@drawable/blue_button_full"
                     android:padding="4dp"
-                    android:text="RECORD"
+                    android:text="儲存紀錄"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/calendar_input_rating"

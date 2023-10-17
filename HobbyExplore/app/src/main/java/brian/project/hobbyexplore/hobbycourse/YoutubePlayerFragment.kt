@@ -28,7 +28,7 @@ class YouTubePlayerFragment : Fragment() {
         binding.youtubePlayerView.addYouTubePlayerListener(object: AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 youTubePlayer.loadVideo(videoId, 0F)
-                youTubePlayer.pause()
+//                youTubePlayer.pause()
             }
         })
         return binding.root
