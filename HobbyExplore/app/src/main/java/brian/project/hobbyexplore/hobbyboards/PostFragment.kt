@@ -49,7 +49,7 @@ class PostFragment : Fragment() {
         val imageUri =  PostFragmentArgs.fromBundle(requireArguments()).imageUri
         val imageStringToUri = Uri.parse(imageUri)
         val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        val userName = logInSharedPref?.getString("displayName", "N/A")
+        val userName = logInSharedPref?.getString("displayName", "趣探朋友")
         val postSharedPref = activity?.getSharedPreferences("postMessageData", Context.MODE_PRIVATE)
 
         /*------------Write post data when callback---------------*/

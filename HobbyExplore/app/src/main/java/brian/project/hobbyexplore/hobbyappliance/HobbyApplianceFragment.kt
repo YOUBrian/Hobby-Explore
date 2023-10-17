@@ -53,20 +53,6 @@ class HobbyApplianceFragment : Fragment() {
             it.findNavController().navigate(HobbyApplianceFragmentDirections.actionHobbyAppliaceFragmentToHobbyPlaceFragment(sportName))
         }
 
-//        binding.button.setOnClickListener {
-//            it.findNavController().navigate(HobbyCategoryFragmentDirections.actionHobbyCategoryFragmentToYouTubePlayerFragment())
-//            Log.i("abcde","aaaaaa")
-//        }
-
-//        viewModel.navigateToDetail.observe(
-//            viewLifecycleOwner,
-//            Observer {
-//                if (null != it) {
-//                    this.findNavController().navigate(HobbyCategoryFragmentDirections.actionHobbyCategoryFragmentToDetailFragment(it))
-//                    viewModel.onDetailNavigated()
-//                }
-//            }
-//        )
         return binding.root
     }
 }

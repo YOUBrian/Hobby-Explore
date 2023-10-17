@@ -117,7 +117,7 @@ class CameraFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
-            // 获取选中图片的 URI
+
             val selectedPhotoUri = data?.data
 
             // Show the Lottie animation now that an image has been selected
@@ -170,7 +170,7 @@ class CameraFragment : Fragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val msg = "Photo capture succeeded: ${output.savedUri}"
+                    val msg = "相片已儲存"
                     Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
                 }

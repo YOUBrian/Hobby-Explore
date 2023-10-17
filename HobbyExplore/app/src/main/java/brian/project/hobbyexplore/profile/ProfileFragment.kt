@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import brian.project.hobbyexplore.R
 import brian.project.hobbyexplore.databinding.FragmentProfileBinding
 import brian.project.hobbyexplore.googlelogin.GoogleSignInHelper
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 
 class ProfileFragment : Fragment() {
@@ -33,12 +34,12 @@ class ProfileFragment : Fragment() {
         binding.photo = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val mbtiResult = sharedPref?.getString("MBTI_Result", "N/A")
-        val selectedHobbyTitle = sharedPref?.getString("Selected_Hobby_Title", "N/A")
+        val mbtiResult = sharedPref?.getString("MBTI_Result", "未測驗")
+        val selectedHobbyTitle = sharedPref?.getString("Selected_Hobby_Title", "未選擇")
 
         val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        val userImage = logInSharedPref?.getString("photoUrl", "")
-        val userName = logInSharedPref?.getString("displayName", "N/A")
+        val userImage = logInSharedPref?.getString("photoUrl", "https://firebasestorage.googleapis.com/v0/b/hobby-explore.appspot.com/o/images%2Fuser%20(2).png?alt=media&token=d7986b56-0d57-44cb-bd8e-1dfce4e45d19&_gl=1*10s2fv6*_ga*MjA2MTUwOTE5LjE2OTI1OTUxNzY.*_ga_CW55HF8NVT*MTY5NzUwNzkzMy4xNDguMS4xNjk3NTA5MDM4LjUyLjAuMA..")
+        val userName = logInSharedPref?.getString("displayName", "趣探朋友")
 
         viewModel.getUserPhoto(userImage.toString())
         binding.nickname.text = "$userName"
@@ -75,6 +76,11 @@ class ProfileFragment : Fragment() {
             }
         })
 
+        viewModel.userPhotoUrl.observe(viewLifecycleOwner, Observer { url ->
+
+            Glide.with(this).load(url).into(binding.imageView)
+        })
+
         return binding.root
     }
 
@@ -84,7 +90,7 @@ class ProfileFragment : Fragment() {
         if (requestCode == GoogleSignInHelper.RC_SIGN_IN) {
             signInHelper.handleSignInResult(data,
                 onSuccess = { account ->
-                    // 当登入成功后，存储账号信息到SharedPreference中
+                    // save data SharedPreference
                     saveLoginInfoToSharedPreference(account)
 
                     viewModel.setLoggedIn(true)
@@ -115,11 +121,22 @@ class ProfileFragment : Fragment() {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
+            // 當使用者已登入
             binding.nickname.text = account.displayName
             viewModel.getUserPhoto(account.photoUrl.toString())
         } else {
-            binding.nickname.text = "預設名稱"
+            // 當使用者登出
+            binding.nickname.text = "趣探朋友"
+
+            // 從SharedPreferences拿取預設值
+            val defaultUserImage = "https://firebasestorage.googleapis.com/v0/b/hobby-explore.appspot.com/o/images%2Fuser%20(2).png?alt=media&token=d7986b56-0d57-44cb-bd8e-1dfce4e45d19&_gl=1*10s2fv6*_ga*MjA2MTUwOTE5LjE2OTI1OTUxNzY.*_ga_CW55HF8NVT*MTY5NzUwNzkzMy4xNDguMS4xNjk3NTA5MDM8LjUyLjAuMA.."
+            viewModel.getUserPhoto(defaultUserImage)
+
+            binding.selectHobby.text = "未選擇"
+            binding.mbtiResult.text = "未測驗"
+
             viewModel.resetValues()
         }
     }
+
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@+id/googleLogInFragment">
+    app:startDestination="@id/googleLogInFragment">
     <fragment
         android:id="@+id/mapsFragment"
         android:name="brian.project.hobbyexplore.hobbyplace.MapsFragment"
@@ -108,7 +108,11 @@
             app:argType="brian.project.hobbyexplore.data.Introduce" />
         <action
             android:id="@+id/action_detailFragment_to_hobbyPlaceFragment"
-            app:destination="@id/hobbyPlaceFragment" >
+            app:destination="@id/hobbyPlaceFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out">
         <argument
             android:name="sportName"
             app:argType="string" />
@@ -116,7 +120,11 @@
 
         <action
             android:id="@+id/action_detailFragment_to_hobbyCourseFragment"
-            app:destination="@id/hobbyCourseFragment" >
+            app:destination="@id/hobbyCourseFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out">
         <argument
             android:name="sportName"
             app:argType="string" />
@@ -124,7 +132,11 @@
 
         <action
             android:id="@+id/action_detailFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyApplianceFragment" >
+            app:destination="@id/hobbyApplianceFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out">
             <argument
                 android:name="sportName"
                 app:argType="string" />
@@ -140,10 +152,18 @@
             app:argType="string" />
         <action
             android:id="@+id/action_hobbyAppliaceFragment_to_hobbyCourseFragment"
-            app:destination="@id/hobbyCourseFragment" />
+            app:destination="@id/hobbyCourseFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
         <action
             android:id="@+id/action_hobbyAppliaceFragment_to_hobbyPlaceFragment"
-            app:destination="@id/hobbyPlaceFragment" />
+            app:destination="@id/hobbyPlaceFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
         <argument
             android:name="budgetToInt"
             app:argType="integer"/>
@@ -158,13 +178,25 @@
             app:argType="string" />
         <action
             android:id="@+id/action_hobbyCourseFragment_to_youTubePlayerFragment"
-            app:destination="@id/youTubePlayerFragment" />
+            app:destination="@id/youTubePlayerFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
         <action
             android:id="@+id/action_hobbyCourseFragment_to_hobbyPlaceFragment"
-            app:destination="@id/hobbyPlaceFragment" />
+            app:destination="@id/hobbyPlaceFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
         <action
             android:id="@+id/action_hobbyCourseFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyApplianceFragment" />
+            app:destination="@id/hobbyApplianceFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/hobbyPlaceFragment"
@@ -176,7 +208,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
-            app:destination="@id/mapsFragment" >
+            app:destination="@id/mapsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out">
             <argument
                 android:name="userLatitude"
                 app:argType="float" />
@@ -195,10 +231,18 @@
         </action>
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_hobbyCourseFragment"
-            app:destination="@id/hobbyCourseFragment" />
+            app:destination="@id/hobbyCourseFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_hobbyAppliaceFragment"
-            app:destination="@id/hobbyApplianceFragment" />
+            app:destination="@id/hobbyApplianceFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/chatGptFragment"
@@ -222,8 +266,7 @@
             app:enterAnim="@anim/scale_animation" />
         <action
             android:id="@+id/action_personalityTestFragment_to_hobbyCategoryFragment"
-            app:destination="@id/hobbyCategoryFragment"
-            app:enterAnim="@anim/slide_in_right" />
+            app:destination="@id/hobbyCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/whetherTakeMbtiTest"
