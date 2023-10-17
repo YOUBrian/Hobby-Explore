@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import brian.project.hobbyexplore.data.Message
 import brian.project.hobbyexplore.databinding.ViewholderBoardsBinding
+import brian.project.hobbyexplore.R
 
 class HobbyBoardsAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<Message, HobbyBoardsAdapter.BoardsViewHolder>(DiffCallback()) {
@@ -22,7 +23,17 @@ class HobbyBoardsAdapter(private val onClickListener: OnClickListener) :
 
         fun bind(messageData: Message) {
             binding.boards = messageData
+            updateIcon()
             binding.executePendingBindings()
+        }
+
+        // Update the icon based on image visibility
+        private fun updateIcon() {
+            if (binding.boardsImage.visibility == View.VISIBLE) {
+                binding.downIcon.setImageResource(R.drawable.baseline_up_36)
+            } else {
+                binding.downIcon.setImageResource(R.drawable.baseline_down_36)
+            }
         }
 
         // Toggle visibility of the boards_image using TransitionManager
@@ -30,6 +41,7 @@ class HobbyBoardsAdapter(private val onClickListener: OnClickListener) :
             val isImageVisible = binding.boardsImage.visibility == View.VISIBLE
             TransitionManager.beginDelayedTransition(binding.root as ViewGroup)
             binding.boardsImage.visibility = if (isImageVisible) View.GONE else View.VISIBLE
+            updateIcon() // Update the icon after toggling image visibility
         }
     }
 
