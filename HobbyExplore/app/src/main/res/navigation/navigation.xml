@@ -32,7 +32,11 @@
         tools:layout="@layout/fragment_hobby_category">
         <action
             android:id="@+id/action_hobbyCategoryFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
@@ -41,7 +45,11 @@
         tools:layout="@layout/fragment_calendar" >
         <action
             android:id="@+id/action_calendarFragment_to_postFragment"
-            app:destination="@id/postFragment" />
+            app:destination="@id/postFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <argument
             android:name="content"
             app:argType="string" />
@@ -56,7 +64,11 @@
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_profileFragment_to_whetherTakeMbtiTest"
-            app:destination="@id/whetherTakeMbtiTest" />
+            app:destination="@id/whetherTakeMbtiTest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/hobbyBoardsFragment"
@@ -65,7 +77,11 @@
         tools:layout="@layout/fragment_hobby_boards" >
         <action
             android:id="@+id/action_hobbyBoardsFragment_to_postFragment"
-            app:destination="@id/postFragment" />
+            app:destination="@id/postFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <action
         android:id="@+id/navigate_to_calendar_fragment"
@@ -109,10 +125,10 @@
         <action
             android:id="@+id/action_detailFragment_to_hobbyPlaceFragment"
             app:destination="@id/hobbyPlaceFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out">
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
         <argument
             android:name="sportName"
             app:argType="string" />
@@ -121,10 +137,10 @@
         <action
             android:id="@+id/action_detailFragment_to_hobbyCourseFragment"
             app:destination="@id/hobbyCourseFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out">
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
         <argument
             android:name="sportName"
             app:argType="string" />
@@ -133,10 +149,10 @@
         <action
             android:id="@+id/action_detailFragment_to_hobbyAppliaceFragment"
             app:destination="@id/hobbyApplianceFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out">
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
             <argument
                 android:name="sportName"
                 app:argType="string" />
@@ -153,17 +169,17 @@
         <action
             android:id="@+id/action_hobbyAppliaceFragment_to_hobbyCourseFragment"
             app:destination="@id/hobbyCourseFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"/>
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_hobbyAppliaceFragment_to_hobbyPlaceFragment"
             app:destination="@id/hobbyPlaceFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"/>
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <argument
             android:name="budgetToInt"
             app:argType="integer"/>
@@ -179,24 +195,25 @@
         <action
             android:id="@+id/action_hobbyCourseFragment_to_youTubePlayerFragment"
             app:destination="@id/youTubePlayerFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"/>
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_hobbyCourseFragment_to_hobbyPlaceFragment"
             app:destination="@id/hobbyPlaceFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"/>
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_hobbyCourseFragment_to_hobbyAppliaceFragment"
             app:destination="@id/hobbyApplianceFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"/>
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
     </fragment>
     <fragment
         android:id="@+id/hobbyPlaceFragment"
@@ -209,10 +226,10 @@
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_mapsFragment"
             app:destination="@id/mapsFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out">
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
             <argument
                 android:name="userLatitude"
                 app:argType="float" />
@@ -232,17 +249,17 @@
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_hobbyCourseFragment"
             app:destination="@id/hobbyCourseFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"/>
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_hobbyPlaceFragment_to_hobbyAppliaceFragment"
             app:destination="@id/hobbyApplianceFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"/>
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/chatGptFragment"
@@ -253,7 +270,11 @@
             app:argType="string"/>
         <action
             android:id="@+id/action_chatGptFragment_to_hobbyApplianceFragment"
-            app:destination="@id/hobbyApplianceFragment" />
+            app:destination="@id/hobbyApplianceFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/personalityTestFragment"
@@ -263,10 +284,17 @@
         <action
             android:id="@+id/action_personalityTestFragment_to_whetherTakeMbtiTest"
             app:destination="@id/whetherTakeMbtiTest"
-            app:enterAnim="@anim/scale_animation" />
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_personalityTestFragment_to_hobbyCategoryFragment"
-            app:destination="@id/hobbyCategoryFragment" />
+            app:destination="@id/hobbyCategoryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/whetherTakeMbtiTest"
@@ -274,10 +302,18 @@
         android:label="WhetherTakeMbtiTest">
         <action
             android:id="@+id/action_whetherTakeMbtiTest_to_mbtiTestFragment"
-            app:destination="@id/mbtiTestFragment" />
+            app:destination="@id/mbtiTestFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
         <action
             android:id="@+id/action_whetherTakeMbtiTest_to_chatGptFragment"
-            app:destination="@id/chatGptFragment" />
+            app:destination="@id/chatGptFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/enterBudgetFragment"
@@ -325,7 +361,11 @@
         android:label="MbtiTestFragment" >
         <action
             android:id="@+id/action_mbtiTestFragment_to_mbtiTestResultFragment"
-            app:destination="@id/mbtiTestResultFragment" />
+            app:destination="@id/mbtiTestResultFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/mbtiTestResultFragment"
@@ -337,7 +377,11 @@
             app:argType="string"/>
         <action
             android:id="@+id/action_mbtiTestResultFragment_to_chatGptFragment"
-            app:destination="@id/chatGptFragment" />
+            app:destination="@id/chatGptFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
 
     </fragment>
     <fragment
@@ -347,10 +391,18 @@
         tools:layout="@layout/fragment_post" >
         <action
             android:id="@+id/action_postFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
+            app:destination="@id/cameraFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_postFragment_to_hobbyBoardsFragment"
-            app:destination="@id/hobbyBoardsFragment" />
+            app:destination="@id/hobbyBoardsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <argument
             android:name="content"
             app:argType="string" />
@@ -366,7 +418,10 @@
         <action
             android:id="@+id/action_googleLogInFragment_to_personalityTestFragment"
             app:destination="@id/personalityTestFragment"
-            app:exitAnim="@anim/scale_exit_animation" />
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"

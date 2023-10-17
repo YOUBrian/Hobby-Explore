@@ -42,7 +42,7 @@ class HobbyApplianceFragment : Fragment() {
 
         viewModel.applianceList.observe(viewLifecycleOwner, Observer { appliances->
             hobbyApplianceAdapter.submitList(appliances)
-            hobbyApplianceAdapter.notifyDataSetChanged()
+            // hobbyApplianceAdapter.notifyDataSetChanged()
         })
 
         binding.courseButton.setOnClickListener {

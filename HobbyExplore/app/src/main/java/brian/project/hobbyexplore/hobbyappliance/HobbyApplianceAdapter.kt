@@ -51,7 +51,8 @@ class DiffCallback : DiffUtil.ItemCallback<Appliance>() {
         oldItem: Appliance,
         newItem: Appliance
     ): Boolean {
-        return oldItem == newItem
+
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(
@@ -60,6 +61,4 @@ class DiffCallback : DiffUtil.ItemCallback<Appliance>() {
     ): Boolean {
         return oldItem == newItem
     }
-
-
 }
