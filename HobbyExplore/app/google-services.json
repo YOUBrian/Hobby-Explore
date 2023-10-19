@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:968388796985:android:e61cef6a9c17e387e4e3e8",
+        "mobilesdk_app_id": "1:968388796985:android:b48bdeff07d2f94ae4e3e8",
         "android_client_info": {
-          "package_name": "com.example.hobbyexplore"
+          "package_name": "brian.project.hobbyexplore"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "968388796985-64193sbgitn89qt6gikuv7epn0f17o12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD6WqeN8Q66_IPLbyxnq7J2v8q-Jpppm-U"
@@ -20,7 +25,41 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968388796985-64193sbgitn89qt6gikuv7epn0f17o12.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968388796985:android:e61cef6a9c17e387e4e3e8",
+        "android_client_info": {
+          "package_name": "com.example.hobbyexplore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968388796985-64193sbgitn89qt6gikuv7epn0f17o12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6WqeN8Q66_IPLbyxnq7J2v8q-Jpppm-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968388796985-64193sbgitn89qt6gikuv7epn0f17o12.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

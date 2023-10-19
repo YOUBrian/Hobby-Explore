@@ -7,7 +7,7 @@
 
         <variable
             name="appliance"
-            type="com.example.hobbyexplore.data.Appliance" />
+            type="brian.project.hobbyexplore.data.Appliance" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -64,6 +64,8 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                android:lineSpacingMultiplier="1.5"
+                android:letterSpacing="0.15"
                 app:layout_constraintEnd_toEndOf="@+id/appliance_image"
                 app:layout_constraintStart_toStartOf="@+id/appliance_image"
                 app:layout_constraintTop_toBottomOf="@+id/appliance_title" />
@@ -77,6 +79,7 @@
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="14sp"
+                android:lineSpacingMultiplier="1.5"
                 android:letterSpacing="0.15"
                 app:layout_constraintEnd_toEndOf="@+id/appliance_image"
                 app:layout_constraintStart_toStartOf="@+id/appliance_image"

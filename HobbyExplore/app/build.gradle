@@ -11,15 +11,15 @@ plugins {
 }
 
 android {
-    namespace 'com.example.hobbyexplore'
+    namespace 'brian.project.hobbyexplore'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.hobbyexplore"
+        applicationId "brian.project.hobbyexplore"
         minSdk 24
         targetSdk 33
-        versionCode 3
-        versionName "1.2.0"
+        versionCode 1000001
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -27,7 +27,7 @@ android {
     buildTypes {
         release {
             buildConfigField("Boolean", "LOGGER_VISIABLE", "false")
-
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -58,6 +58,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.6'
     }
+
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'

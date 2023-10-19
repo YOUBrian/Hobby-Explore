@@ -50,5 +50,18 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent=".50" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/select_image_loading"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="false"
+            app:lottie_loop="false"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/select_image" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

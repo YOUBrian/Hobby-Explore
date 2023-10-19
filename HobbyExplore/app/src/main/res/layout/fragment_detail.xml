@@ -7,7 +7,7 @@
 
         <variable
             name="introduce"
-            type="com.example.hobbyexplore.detail.DetailViewModel" />
+            type="brian.project.hobbyexplore.detail.DetailViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -103,6 +103,7 @@
                         android:text="@{introduce.selectProduct.content}"
                         android:textAlignment="viewStart"
                         android:textSize="14sp"
+                        android:lineSpacingMultiplier="1.5"
                         android:letterSpacing="0.15"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/detail_title"
