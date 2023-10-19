@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hobby Explore</string>
+    <string name="app_name">趣探</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="course_recommend">教學影片</string>
