@@ -1,78 +1,160 @@
 package brian.project.hobbyexplore.calendar
 
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import brian.project.hobbyexplore.data.CalendarEvent
+import com.github.mikephil.charting.data.Entry
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
 class CalendarViewModel : ViewModel() {
-    val db = Firebase.firestore
-    val _ratingDate = MutableLiveData<List<CalendarEvent>>()
+
+    // Variables and references
+    private val db = Firebase.firestore
+    private val storageReference = FirebaseStorage.getInstance().reference
+    private val firestore = FirebaseFirestore.getInstance()
+
+    // LiveData and MutableLiveData
+    private val _ratingDate = MutableLiveData<List<CalendarEvent>>()
+    val ratingDate: LiveData<List<CalendarEvent>> get() = _ratingDate
+
     val specificDateData: MutableLiveData<CalendarEvent?> = MutableLiveData()
 
-    val ratingDate: LiveData<List<CalendarEvent>>
-        get() = _ratingDate
+    val uploadStatus: MutableLiveData<String> = MutableLiveData()
 
     private val _progress = MutableLiveData<Int>()
     val progress: MutableLiveData<Int>
-    get() = _progress
+        get() = _progress
 
     val dataList: MutableLiveData<List<Pair<String, Int>>> = MutableLiveData()
 
-
-
     private val _uploadPhoto = MutableLiveData<String>()
-    val uploadPhoto: MutableLiveData<String>
-        get() = _uploadPhoto
+    val uploadPhoto: LiveData<String> get() = _uploadPhoto
+
+    val eventSaveStatus: MutableLiveData<Status> = MutableLiveData()
 
 
+    val selectedPhotoUri = MutableLiveData<Uri?>()
+
+    val eventForDate = MutableLiveData<CalendarEvent?>()
+
+    var stringDateSelected: String? = null
+
+    var isNewPhotoSelected = false
+
+    // Initialization
     init {
         getCalendarData(userIdFromPref = String())
         dataList.value = mutableListOf()
-//        getDateData()
         progress.value = 50
     }
 
-//    fun setProgress(progressValue: Int) {
-//        _progress.value = progressValue
-//        Log.i("ratingValue", "progress.value:${_progress.value}")
-//    }
-
-    //snapshot
-    fun getDateData() {
-        val docRef = db.collection("calendarData")
-        docRef.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w("READ_DATA", "Listen failed.", e)
-                return@addSnapshotListener
+    fun fetchEventForDate(userId: String, date: String) {
+        firestore.collection("calendarData")
+            .whereEqualTo("eventUserId", userId)
+            .whereEqualTo("eventDate", date)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val event = querySnapshot.documents.firstOrNull()
+                    ?.toObject(CalendarEvent::class.java)
+                eventForDate.value = event
             }
-            try {
-                val ratings = mutableListOf<CalendarEvent>()
-                for (document in snapshot?.documents.orEmpty()) {
-                    Log.i("getDateData", "$snapshot")
-                    Log.i("getDateData", "$document")
-                    val rating = document.toObject(CalendarEvent::class.java)
-                    if (rating != null) {
-                        ratings.add(rating)
-                        Log.i("getDateData", "$rating")
-                    }
-                }
+            .addOnFailureListener {
 
-                _ratingDate.postValue(ratings)
-                Log.i("GetRating", "$ratings")
-            } catch (e: Exception) {
-                println("error: ${e.message}")
+            }
+    }
+
+    fun handleSelectedPhoto(data: Intent?) {
+        selectedPhotoUri.value = data?.data
+        isNewPhotoSelected = true
+    }
+
+    fun getFormattedDataList(): List<Entry> {
+        val entries = mutableListOf<Entry>()
+        dataList.value?.let { list ->
+            for ((index, pair) in list.withIndex()) {
+                entries.add(Entry(index.toFloat() + 1, pair.second.toFloat()))
             }
         }
+        return entries
+    }
 
+    fun handleDateChange(year: Int, month: Int, dayOfMonth: Int, userId: String) {
+        val formattedMonth = String.format("%02d", month + 1)
+        val formattedDay = String.format("%02d", dayOfMonth)
+        stringDateSelected = "$year/$formattedMonth/$formattedDay"
+
+        getDataForSpecificDate(stringDateSelected!!, userId)
+    }
+
+    fun handleRecordButtonPress(
+        stringDateSelected: String,
+        progress: Int,
+        content: String,
+        userId: String
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            val imageUrl = if (isNewPhotoSelected && selectedPhotoUri.value != null) {
+                isNewPhotoSelected = false
+                uploadImageToFirebase(selectedPhotoUri.value!!)
+            } else {
+                specificDateData.value?.eventImage ?: ""
+            }
+
+            val eventIdToUse = specificDateData.value?.eventId ?: UUID.randomUUID().toString()
+
+            val event = CalendarEvent(
+                eventId = eventIdToUse,
+                eventDate = stringDateSelected,
+                eventRating = progress,
+                eventImage = imageUrl,
+                eventContent = content,
+                eventUserId = userId
+            )
+
+            saveEventToFirestore(event)
+                .addOnSuccessListener {
+                    specificDateData.postValue(event)
+                    eventSaveStatus.postValue(Status.SUCCESS)
+                }
+                .addOnFailureListener {
+                    eventSaveStatus.postValue(Status.FAILURE)
+                }
+        }
     }
 
 
-    //get
+
+
+
+
+
+
+    fun generateMockData(): List<Entry> {
+        val yValues = listOf(
+            40f, 45f, 60f, 54f, 66f, 70f, 77f, 83f, 88f, 65f,
+            53f, 55f, 57f, 58f, 63f, 54f, 56f, 60f, 92f, 94f, 96f
+        )
+
+        return yValues.mapIndexed { index, yValue ->
+            Entry(index.toFloat() + 1, yValue)
+        }
+    }
+
     fun getCalendarData(userIdFromPref: String) {
         val docRef = db.collection("calendarData")
             .whereEqualTo("eventUserId", userIdFromPref)
@@ -89,7 +171,8 @@ class CalendarViewModel : ViewModel() {
 
                     val existingPair = dataListValues.find { it.first == eventDate }
                     if (existingPair != null) {
-                        dataListValues[dataListValues.indexOf(existingPair)] = Pair(eventDate, eventRating)
+                        dataListValues[dataListValues.indexOf(existingPair)] =
+                            Pair(eventDate, eventRating)
                     } else {
                         dataListValues.add(Pair(eventDate, eventRating))
                     }
@@ -103,19 +186,51 @@ class CalendarViewModel : ViewModel() {
                 dataList.postValue(dataListValues.toList())
             }
             .addOnFailureListener { e ->
-                Log.e("DEBUGGGGG", "Error reading data.", e)
+                Log.e("DEBUG", "Error reading data.", e)
             }
     }
 
+    fun updateOrAddEventToFirestore(event: CalendarEvent) {
+        val docRef = db.collection("calendarData")
+            .document(event.eventId)
 
-    fun getDataForSpecificDate(date: String, userIdFromPref: String) {
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    docRef.set(event)
+                } else {
+                    db.collection("calendarData").document(event.eventId).set(event)
+                }
+            }
+    }
+
+    private suspend fun uploadImageToFirebase(selectedPhotoUri: Uri): String {
+        val imageRef = storageReference.child("images/${UUID.randomUUID()}.jpg")
+        return try {
+            imageRef.putFile(selectedPhotoUri).await()
+            imageRef.downloadUrl.await().toString()
+        } catch (e: Exception) {
+            Log.e("uploadImageToFirebase", "Upload failed", e)
+            uploadStatus.postValue("Upload failed: ${e.message}")
+            ""
+        }
+    }
+
+    private fun saveEventToFirestore(event: CalendarEvent): Task<Void> {
+        return firestore.collection("calendarData")
+            .document(event.eventId)
+            .set(event)
+    }
+
+    private fun getDataForSpecificDate(date: String, userIdFromPref: String) {
         if (userIdFromPref != null) {
             db.collection("calendarData")
                 .whereEqualTo("eventDate", date)
                 .whereEqualTo("eventUserId", userIdFromPref) // Add this line to compare userId
                 .get()
                 .addOnSuccessListener { documents ->
-                    val event = documents.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
+                    val event =
+                        documents.documents.firstOrNull()?.toObject(CalendarEvent::class.java)
                     specificDateData.postValue(event)
                 }
                 .addOnFailureListener {
@@ -126,25 +241,7 @@ class CalendarViewModel : ViewModel() {
             specificDateData.postValue(null)
         }
     }
-
-
-    fun updateOrAddEventToFirestore(event: CalendarEvent) {
-        val docRef = db.collection("calendarData")
-            .document(event.eventId)
-
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    // 如果文檔存在，我們就更新它
-                    docRef.set(event)
-                } else {
-                    // 如果文檔不存在，我們就新增它
-                    db.collection("calendarData").document(event.eventId).set(event)
-                }
-            }
-    }
-
-
-
-
+}
+enum class Status {
+    SUCCESS, FAILURE
 }

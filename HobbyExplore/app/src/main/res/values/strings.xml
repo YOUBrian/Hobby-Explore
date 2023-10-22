@@ -29,5 +29,14 @@
         <item>網球</item>
     </string-array>
     <string name="default_web_client_id">YOUR_CLIENT_ID.apps.googleusercontent.com</string>
+    <string name="confirm_edit">確認修改</string>
+    <string name="progress_text">%1$d / 100</string>
+    <string name="unrated">未評分</string>
+    <string name="save_record">儲存紀錄</string>
+    <string name="my_learning_score_curve">我的學習評分曲線</string>
+    <string name="average_learning_curve">學員平均學習曲線</string>
+    <string name="no_data_for_date">尚未有該日期的數據!</string>
+    <string name="cannot_get_user_id">無法獲取用戶ID</string>
+
 
 </resources>
