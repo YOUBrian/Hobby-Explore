@@ -25,9 +25,10 @@ class HobbyBoardsFragment : Fragment() {
         setHasOptionsMenu(true)
         val binding = FragmentHobbyBoardsBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
-        val viewModel: HobbyBoardsViewModel = ViewModelProvider(this).get(HobbyBoardsViewModel::class.java)
+        val viewModel: HobbyBoardsViewModel =
+            ViewModelProvider(this).get(HobbyBoardsViewModel::class.java)
         viewModel.refresh()
-        val hobbyBoardsAdapter = HobbyBoardsAdapter(HobbyBoardsAdapter.OnClickListener{})
+        val hobbyBoardsAdapter = HobbyBoardsAdapter(HobbyBoardsAdapter.OnClickListener {})
 
 
         binding.hobbyBoardsRecyclerView.adapter = hobbyBoardsAdapter
@@ -58,6 +59,7 @@ class HobbyBoardsFragment : Fragment() {
 
         return binding.root
     }
+
     // Toolbar share fun
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
@@ -68,9 +70,15 @@ class HobbyBoardsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.boards_post -> {
-                findNavController().navigate(HobbyBoardsFragmentDirections.actionHobbyBoardsFragmentToPostFragment("",""))
+                findNavController().navigate(
+                    HobbyBoardsFragmentDirections.actionHobbyBoardsFragmentToPostFragment(
+                        "",
+                        ""
+                    )
+                )
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }

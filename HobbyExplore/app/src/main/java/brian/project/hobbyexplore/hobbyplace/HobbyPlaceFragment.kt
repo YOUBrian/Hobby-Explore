@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import brian.project.hobbyexplore.R
 import brian.project.hobbyexplore.databinding.FragmentHobbyPlaceBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -29,7 +30,8 @@ class HobbyPlaceFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewModel: HobbyPlaceViewModel = ViewModelProvider(this).get(HobbyPlaceViewModel::class.java)
+        val viewModel: HobbyPlaceViewModel =
+            ViewModelProvider(this).get(HobbyPlaceViewModel::class.java)
         val sportName = HobbyPlaceFragmentArgs.fromBundle(requireArguments()).sportName
         val binding = FragmentHobbyPlaceBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -53,11 +55,18 @@ class HobbyPlaceFragment : Fragment() {
 //        }
 
         binding.courseButton.setOnClickListener {
-            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyCourseFragment(sportName))
+            it.findNavController().navigate(
+                HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyCourseFragment(sportName)
+            )
         }
 
         binding.applianceButton.setOnClickListener {
-            it.findNavController().navigate(HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyAppliaceFragment(sportName, 9999))
+            it.findNavController().navigate(
+                HobbyPlaceFragmentDirections.actionHobbyPlaceFragmentToHobbyAppliaceFragment(
+                    sportName,
+                    9999
+                )
+            )
         }
 
         viewModel.navigateToMap.observe(
@@ -83,8 +92,6 @@ class HobbyPlaceFragment : Fragment() {
             }
         )
 
-
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         checkLocationPermissionAndGetLocation()
 
@@ -92,42 +99,51 @@ class HobbyPlaceFragment : Fragment() {
     }
 
     private fun checkLocationPermissionAndGetLocation() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
             != PackageManager.PERMISSION_GRANTED
         ) {
-            // 請求定位權限
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_REQUEST_CODE
+            )
         } else {
-            // 已有權限，取得位置
             getLocation()
         }
     }
 
     private fun getLocation() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
             == PackageManager.PERMISSION_GRANTED
         ) {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
-                    // 使用 location.latitude 和 location.longitude 可取得位置
                     userLatitude = location?.latitude ?: 0.0
                     userLongitude = location?.longitude ?: 0.0
-//                    Toast.makeText(requireContext(), "位置: ${location?.latitude}, ${location?.longitude}", Toast.LENGTH_LONG).show()
                 }
         } else {
             // Handle case where permission is not granted
-            Toast.makeText(requireContext(), "未授權定位權限", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.Unauthorized_location_permission), Toast.LENGTH_SHORT).show()
         }
     }
 
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             LOCATION_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLocation()
                 } else {
-                    Toast.makeText(requireContext(), "定位權限被拒絕", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show()
                 }
             }
         }

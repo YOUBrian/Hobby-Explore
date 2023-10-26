@@ -1,7 +1,5 @@
 package brian.project.hobbyexplore.data
 
-import java.text.SimpleDateFormat
-
 data class CalendarEvent(
     val eventId: String,
     val eventDate: String?,
@@ -9,7 +7,6 @@ data class CalendarEvent(
     val eventImage: String,
     val eventContent: String,
     val eventUserId: String
-)
-{
- constructor():this("","",0, "", "", "")
+) {
+    constructor() : this("", "", 0, "", "", "")
 }

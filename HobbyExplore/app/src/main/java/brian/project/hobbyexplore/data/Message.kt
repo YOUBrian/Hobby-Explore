@@ -12,7 +12,6 @@ data class Message(
     val image: String,
     val rating: Int,
     val category: String
-): Parcelable
-{
-    constructor() : this( "", "", "", 0L, "",0, "")
+) : Parcelable {
+    constructor() : this("", "", "", 0L, "", 0, "")
 }

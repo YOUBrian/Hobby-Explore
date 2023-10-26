@@ -30,7 +30,7 @@ class MapsFragment : Fragment() {
         val placeLocation = LatLng(placeLatitude, placeLongitude)
         val zoomLevel = 18f
         val userMarker = BitmapDescriptorFactory.fromResource(R.drawable.location_blue)
-        googleMap.addMarker(MarkerOptions().position(userLocation).title("您的位置").icon(userMarker))
+        googleMap.addMarker(MarkerOptions().position(userLocation).title(getString(R.string.your_location)).icon(userMarker))
         googleMap.addMarker(MarkerOptions().position(placeLocation).title(placeTitle).icon(userMarker))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placeLocation, zoomLevel))
     }

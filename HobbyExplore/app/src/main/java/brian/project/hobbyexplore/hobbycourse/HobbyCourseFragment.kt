@@ -30,7 +30,8 @@ class HobbyCourseFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewModel: HobbyCourseViewModel = ViewModelProvider(this).get(HobbyCourseViewModel::class.java)
+        val viewModel: HobbyCourseViewModel =
+            ViewModelProvider(this).get(HobbyCourseViewModel::class.java)
         val sportName = HobbyCourseFragmentArgs.fromBundle(requireArguments()).sportName
         val binding = FragmentHobbyCourseBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -48,18 +49,31 @@ class HobbyCourseFragment : Fragment() {
         })
 
         binding.placeButton.setOnClickListener {
-            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyPlaceFragment(sportName))
+            it.findNavController().navigate(
+                HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyPlaceFragment(
+                    sportName
+                )
+            )
         }
 
         binding.applianceButton.setOnClickListener {
-            it.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyAppliaceFragment(sportName,9999))
+            it.findNavController().navigate(
+                HobbyCourseFragmentDirections.actionHobbyCourseFragmentToHobbyAppliaceFragment(
+                    sportName,
+                    9999
+                )
+            )
         }
 
         viewModel.navigateToYoutube.observe(
             viewLifecycleOwner,
             Observer {
                 if (null != it) {
-                    this.findNavController().navigate(HobbyCourseFragmentDirections.actionHobbyCourseFragmentToYouTubePlayerFragment(it))
+                    this.findNavController().navigate(
+                        HobbyCourseFragmentDirections.actionHobbyCourseFragmentToYouTubePlayerFragment(
+                            it
+                        )
+                    )
                     viewModel.onYoutubeNavigated()
                 }
             }

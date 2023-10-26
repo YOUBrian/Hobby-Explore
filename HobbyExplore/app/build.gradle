@@ -175,8 +175,13 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
 
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
-    testImplementation "androidx.arch.core:core-testing:2.0.0"
-    testImplementation 'org.mockito:mockito-core:3.10.0'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation 'org.mockito:mockito-core:3.11.2'
+    testImplementation "org.mockito:mockito-inline:3.11.2"
+    androidTestImplementation "androidx.fragment:fragment-testing:1.5.5"
+
+
+    testImplementation "org.robolectric:robolectric:4.10.3"
 
     androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
     androidTestImplementation 'androidx.test:runner:1.4.0'
@@ -185,6 +190,8 @@ dependencies {
     androidTestImplementation 'org.mockito:mockito-android:3.10.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+
     // add these dependencies to use Generative AI
 
 //    implementation("com.google.cloud:gapic-google-cloud-ai-generativelanguage-v1beta2-java:0.0.0-SNAPSHOT")

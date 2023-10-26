@@ -38,9 +38,11 @@ class HobbyPlaceViewModel : ViewModel() {
     private val _placeTitle = MutableLiveData<String>()
     val placeTitle: LiveData<String>
         get() = _placeTitle
-    init {
+
+//    init {
 //        getPlaceData("")
-    }
+//    }
+
     fun getPlaceData(sportName: String) {
         val docRef = db.collection("sports")
             .document(sportName)
@@ -50,7 +52,6 @@ class HobbyPlaceViewModel : ViewModel() {
                 Log.w("READ_DATA", "Listen failed.", e)
                 return@addSnapshotListener
             } else if (snapshot != null && !snapshot.metadata.hasPendingWrites()) {
-//            Log.i("getdata", "document:${snapshot?.data}")
                 try {
                     val placeData = mutableListOf<Place>()
 
@@ -63,7 +64,6 @@ class HobbyPlaceViewModel : ViewModel() {
                             placeData.add(place)
                         }
                     }
-
 
                     _placeList.postValue(placeData)
                     Log.i("getApplianceData", "introduceData:$placeData")

@@ -26,8 +26,9 @@ class GoogleLogInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentGoogleLogInBinding.inflate(inflater)
-        binding.guestLoginButton.setOnClickListener{
-            it.findNavController().navigate(GoogleLogInFragmentDirections.actionGoogleLogInFragmentToPersonalityTestFragment())
+        binding.guestLoginButton.setOnClickListener {
+            it.findNavController()
+                .navigate(GoogleLogInFragmentDirections.actionGoogleLogInFragmentToPersonalityTestFragment())
         }
         return binding.root
     }
@@ -77,7 +78,10 @@ class GoogleLogInFragment : Fragment() {
         preferencesEditor.putString("familyName", account.familyName)
         preferencesEditor.putString("givenName", account.givenName)
         preferencesEditor.putString("photoUrl", account.photoUrl?.toString())
-        Log.i("aasdgfdsds", "${account.id}, ${account.idToken}, ${account.email}, ${account.displayName}, ${account.familyName}, ${account.givenName}, ${account.photoUrl}")
+        Log.i(
+            "aasdgfdsds",
+            "${account.id}, ${account.idToken}, ${account.email}, ${account.displayName}, ${account.familyName}, ${account.givenName}, ${account.photoUrl}"
+        )
         preferencesEditor.apply()
     }
 }

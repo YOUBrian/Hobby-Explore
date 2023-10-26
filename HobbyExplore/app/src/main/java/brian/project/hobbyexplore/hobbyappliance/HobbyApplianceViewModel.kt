@@ -21,9 +21,10 @@ class HobbyApplianceViewModel : ViewModel() {
     val refreshStatus: LiveData<Boolean>
         get() = _refreshStatus
 
-    init {
+//    init {
 //        getApplianceData("")
-    }
+//    }
+
     fun getApplianceData(sportName: String) {
         val docRef = db.collection("sports")
             .document(sportName)
@@ -33,26 +34,23 @@ class HobbyApplianceViewModel : ViewModel() {
                 Log.w("READ_DATA", "Listen failed.", e)
                 return@addSnapshotListener
             } else if (snapshot != null && !snapshot.metadata.hasPendingWrites()) {
-//            Log.i("getdata", "document:${snapshot?.data}")
-            try {
-                val applianceData = mutableListOf<Appliance>()
+                try {
+                    val applianceData = mutableListOf<Appliance>()
 
-                for (document in snapshot) {
-                    Log.i("getApplianceData", "document:${document.data}")
-                    Log.i("getApplianceData", "snapshot:$snapshot")
-                    val appliance = document.toObject(Appliance::class.java)
-                    Log.i("getApplianceData", "introduce:$appliance")
-                    if (appliance != null) {
-                        applianceData.add(appliance)
+                    for (document in snapshot) {
+                        Log.i("getApplianceData", "document:${document.data}")
+                        Log.i("getApplianceData", "snapshot:$snapshot")
+                        val appliance = document.toObject(Appliance::class.java)
+                        Log.i("getApplianceData", "introduce:$appliance")
+                        if (appliance != null) {
+                            applianceData.add(appliance)
+                        }
                     }
+                    _applianceList.postValue(applianceData)
+                    Log.i("getApplianceData", "introduceData:$applianceData")
+                } catch (e: Exception) {
+                    println("error: ${e.message}")
                 }
-
-
-                _applianceList.postValue(applianceData)
-                Log.i("getApplianceData", "introduceData:$applianceData")
-            } catch (e: Exception) {
-                println("error: ${e.message}")
-            }
             }
             _refreshStatus.value = false
         }

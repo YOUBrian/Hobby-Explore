@@ -15,15 +15,21 @@ class GoogleSignInHelper(private val context: Context) {
         const val RC_SIGN_IN = 9001
     }
 
-    private val googleSignInOptions: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestEmail()
-        .build()
+    private val googleSignInOptions: GoogleSignInOptions =
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
 
-    private val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
+    private val googleSignInClient: GoogleSignInClient =
+        GoogleSignIn.getClient(context, googleSignInOptions)
 
     fun getSignInIntent(): Intent = googleSignInClient.signInIntent
 
-    fun handleSignInResult(data: Intent?, onSuccess: (GoogleSignInAccount) -> Unit, onFailure: (Exception) -> Unit) {
+    fun handleSignInResult(
+        data: Intent?,
+        onSuccess: (GoogleSignInAccount) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
         try {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)
@@ -40,7 +46,8 @@ class GoogleSignInHelper(private val context: Context) {
         }
     }
 
-    fun getLastSignedInAccount(): GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(context)
+    fun getLastSignedInAccount(): GoogleSignInAccount? =
+        GoogleSignIn.getLastSignedInAccount(context)
 
     fun getCurrentUser(): GoogleSignInAccount? {
         return GoogleSignIn.getLastSignedInAccount(context)

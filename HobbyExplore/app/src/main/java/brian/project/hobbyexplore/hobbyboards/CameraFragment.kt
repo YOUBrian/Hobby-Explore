@@ -1,4 +1,5 @@
 package brian.project.hobbyexplore.hobbyboards
+
 import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
@@ -23,6 +24,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import brian.project.hobbyexplore.R
 import brian.project.hobbyexplore.databinding.FragmentCameraBinding
 import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
@@ -36,7 +38,6 @@ class CameraFragment : Fragment() {
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
     private var videoCapture: VideoCapture? = null
-
 
 
     private fun uploadImageToFirebase(selectedPhotoUri: Uri) {
@@ -55,7 +56,12 @@ class CameraFragment : Fragment() {
                 val downloadUrl = uri.toString()
                 Log.i("getPhotoURI", "selectedPhotoUri: $selectedPhotoUri")
                 Log.i("getPhotoURI", "downloadUrl: $downloadUrl")
-                findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToPostFragment("",downloadUrl))
+                findNavController().navigate(
+                    CameraFragmentDirections.actionCameraFragmentToPostFragment(
+                        "",
+                        downloadUrl
+                    )
+                )
             }
         }.addOnFailureListener {
 
@@ -93,23 +99,25 @@ class CameraFragment : Fragment() {
         // Set up the listeners for take photo and video capture buttons
         viewBinding.shutterButton.setOnClickListener { takePhoto() }
         viewBinding.selectPhotoButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this.requireContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            if (ContextCompat.checkSelfPermission(
+                    this.requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 val intent = Intent()
                 intent.setType("image/*")
                 intent.action = Intent.ACTION_PICK
                 startActivityForResult(intent, 10)
             } else {
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),1)
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    1
+                )
             }
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-
-
-
-
-
 
 
     }
@@ -154,9 +162,11 @@ class CameraFragment : Fragment() {
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(requireContext().contentResolver,
+            .Builder(
+                requireContext().contentResolver,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues)
+                contentValues
+            )
             .build()
 
         // Set up image capture listener, which is triggered after photo has
@@ -170,7 +180,7 @@ class CameraFragment : Fragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val msg = "相片已儲存"
+                    val msg = getString(R.string.photo_saved)
                     Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
                 }
@@ -205,15 +215,15 @@ class CameraFragment : Fragment() {
 
                 // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture)
+                    this, cameraSelector, preview, imageCapture
+                )
 
-            } catch(exc: Exception) {
+            } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
 
         }, ContextCompat.getMainExecutor(requireContext()))
     }
-
 
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -242,6 +252,7 @@ class CameraFragment : Fragment() {
                 }
             }.toTypedArray()
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -257,9 +268,9 @@ class CameraFragment : Fragment() {
     }
 
     private fun showPermissionDeniedMessage() {
-        Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT)
+            .show()
     }
-
 
 
 }

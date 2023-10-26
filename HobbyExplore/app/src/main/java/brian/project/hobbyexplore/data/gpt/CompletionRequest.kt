@@ -5,5 +5,4 @@ data class CompletionRequest(
     val prompt: String,
     val max_tokens: Int,
     val temperature: Float = 0f,
-
-    )
+)
