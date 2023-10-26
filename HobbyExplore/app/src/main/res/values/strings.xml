@@ -37,6 +37,9 @@
     <string name="average_learning_curve">學員平均學習曲線</string>
     <string name="no_data_for_date">尚未有該日期的數據!</string>
     <string name="cannot_get_user_id">無法獲取用戶ID</string>
-
+    <string name="photo_saved">相片已儲存</string>
+    <string name="Unauthorized_location_permission">未授權定位權限</string>
+    <string name="location_permission_denied">定位權限被拒絕</string>
+    <string name="your_location">你的位置</string>
 
 </resources>

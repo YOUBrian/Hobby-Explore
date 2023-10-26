@@ -42,7 +42,8 @@ class CalendarViewModel : ViewModel() {
     val dataList: MutableLiveData<List<Pair<String, Int>>> = MutableLiveData()
 
     private val _uploadPhoto = MutableLiveData<String>()
-    val uploadPhoto: LiveData<String> get() = _uploadPhoto
+    val uploadPhoto: MutableLiveData<String>
+        get() = _uploadPhoto
 
     val eventSaveStatus: MutableLiveData<Status> = MutableLiveData()
 
@@ -73,7 +74,6 @@ class CalendarViewModel : ViewModel() {
                 eventForDate.value = event
             }
             .addOnFailureListener {
-
             }
     }
 
@@ -137,13 +137,6 @@ class CalendarViewModel : ViewModel() {
         }
     }
 
-
-
-
-
-
-
-
     fun generateMockData(): List<Entry> {
         val yValues = listOf(
             40f, 45f, 60f, 54f, 66f, 70f, 77f, 83f, 88f, 65f,
@@ -190,20 +183,6 @@ class CalendarViewModel : ViewModel() {
             }
     }
 
-    fun updateOrAddEventToFirestore(event: CalendarEvent) {
-        val docRef = db.collection("calendarData")
-            .document(event.eventId)
-
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    docRef.set(event)
-                } else {
-                    db.collection("calendarData").document(event.eventId).set(event)
-                }
-            }
-    }
-
     private suspend fun uploadImageToFirebase(selectedPhotoUri: Uri): String {
         val imageRef = storageReference.child("images/${UUID.randomUUID()}.jpg")
         return try {
@@ -242,6 +221,7 @@ class CalendarViewModel : ViewModel() {
         }
     }
 }
+
 enum class Status {
     SUCCESS, FAILURE
 }

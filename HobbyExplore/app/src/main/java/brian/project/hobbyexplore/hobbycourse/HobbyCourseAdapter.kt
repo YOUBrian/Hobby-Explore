@@ -11,7 +11,8 @@ import brian.project.hobbyexplore.databinding.ViewholderApplianceBinding
 import brian.project.hobbyexplore.databinding.ViewholderCourseBinding
 import brian.project.hobbyexplore.hobbyappliance.HobbyApplianceAdapter
 
-class HobbyCourseAdapter (private val onClickListener: OnClickListener) : ListAdapter<Course, HobbyCourseAdapter.CourseViewHolder>(DiffCallback()) {
+class HobbyCourseAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<Course, HobbyCourseAdapter.CourseViewHolder>(DiffCallback()) {
 
     class OnClickListener(val clickListener: (introduce: Course) -> Unit) {
         fun onClick(introduce: Course) = clickListener(introduce)

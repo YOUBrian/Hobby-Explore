@@ -26,7 +26,8 @@ class HobbyApplianceFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewModel: HobbyApplianceViewModel = ViewModelProvider(this).get(HobbyApplianceViewModel::class.java)
+        val viewModel: HobbyApplianceViewModel =
+            ViewModelProvider(this).get(HobbyApplianceViewModel::class.java)
         val sportName = HobbyApplianceFragmentArgs.fromBundle(requireArguments()).sportName
         val binding = FragmentHobbyApplianceBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -40,17 +41,25 @@ class HobbyApplianceFragment : Fragment() {
 
         binding.hobbyApplianceRecyclerView.adapter = hobbyApplianceAdapter
 
-        viewModel.applianceList.observe(viewLifecycleOwner, Observer { appliances->
+        viewModel.applianceList.observe(viewLifecycleOwner, Observer { appliances ->
             hobbyApplianceAdapter.submitList(appliances)
-            // hobbyApplianceAdapter.notifyDataSetChanged()
+//             hobbyApplianceAdapter.notifyDataSetChanged()
         })
 
         binding.courseButton.setOnClickListener {
-            it.findNavController().navigate(HobbyApplianceFragmentDirections.actionHobbyAppliaceFragmentToHobbyCourseFragment(sportName))
+            it.findNavController().navigate(
+                HobbyApplianceFragmentDirections.actionHobbyAppliaceFragmentToHobbyCourseFragment(
+                    sportName
+                )
+            )
         }
 
         binding.placeButton.setOnClickListener {
-            it.findNavController().navigate(HobbyApplianceFragmentDirections.actionHobbyAppliaceFragmentToHobbyPlaceFragment(sportName))
+            it.findNavController().navigate(
+                HobbyApplianceFragmentDirections.actionHobbyAppliaceFragmentToHobbyPlaceFragment(
+                    sportName
+                )
+            )
         }
 
         return binding.root

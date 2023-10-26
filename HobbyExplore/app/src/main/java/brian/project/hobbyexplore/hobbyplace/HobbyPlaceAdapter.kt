@@ -10,7 +10,8 @@ import brian.project.hobbyexplore.databinding.ViewholderCourseBinding
 import brian.project.hobbyexplore.databinding.ViewholderPlaceBinding
 import brian.project.hobbyexplore.hobbycourse.HobbyCourseAdapter
 
-class HobbyPlaceAdapter (private val onClickListener: OnClickListener) : ListAdapter<Place, HobbyPlaceAdapter.PlaceViewHolder>(DiffCallback()) {
+class HobbyPlaceAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<Place, HobbyPlaceAdapter.PlaceViewHolder>(DiffCallback()) {
 
     class OnClickListener(val clickListener: (introduce: Place) -> Unit) {
         fun onClick(introduce: Place) = clickListener(introduce)
@@ -59,6 +60,4 @@ class DiffCallback : DiffUtil.ItemCallback<Place>() {
     ): Boolean {
         return oldItem == newItem
     }
-
-
 }

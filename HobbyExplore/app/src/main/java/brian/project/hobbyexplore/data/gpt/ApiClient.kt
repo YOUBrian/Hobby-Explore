@@ -11,14 +11,11 @@ object ApiClient {
     private val httpClient = OkHttpClient.Builder()
         .build()
 
-
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(httpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-
-    val apiService : OpenAiApi = retrofit.create(OpenAiApi::class.java)
-
+    val apiService: OpenAiApi = retrofit.create(OpenAiApi::class.java)
 }

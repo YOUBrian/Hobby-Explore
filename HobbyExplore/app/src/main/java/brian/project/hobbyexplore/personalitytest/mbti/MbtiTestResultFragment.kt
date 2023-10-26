@@ -21,7 +21,7 @@ class MbtiTestResultFragment : Fragment() {
 
         val typeString = arguments?.getString("typeString") ?: return null
         Log.i("MBTI_TYPE", "$typeString")
-        // 根據typeString找到對應的Personality
+        // Find the corresponding Personality based on typeString
         val matchedPersonality = personalities.find { it.type == typeString }
         Log.i("MBTI_TYPE", "$matchedPersonality")
 
@@ -38,7 +38,11 @@ class MbtiTestResultFragment : Fragment() {
 
 
         binding.systemRecommendButton.setOnClickListener {
-            it.findNavController().navigate(MbtiTestResultFragmentDirections.actionMbtiTestResultFragmentToChatGptFragment(typeString))
+            it.findNavController().navigate(
+                MbtiTestResultFragmentDirections.actionMbtiTestResultFragmentToChatGptFragment(
+                    typeString
+                )
+            )
         }
         return binding.root
     }

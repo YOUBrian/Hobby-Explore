@@ -53,7 +53,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private lateinit var databaseReference: DatabaseReference
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
+    HandleImageSelectionTest, HasWritePermissionTest, RequestWritePermissionTest, SeekBarTest {
+
+    override lateinit var calendarViewModel: CalendarViewModel
+    override lateinit var calendarBinding: FragmentCalendarBinding
+
     // Binding and Views
     private lateinit var binding: FragmentCalendarBinding
     private lateinit var lineChart2: LineChart
@@ -124,19 +129,20 @@ class CalendarFragment : Fragment() {
         return binding.root
 
     }
+
     private fun setupInitialData() {
         val currentDate = Calendar.getInstance()
         stringDateSelected = getCurrentDateString(currentDate)
     }
 
-    private fun getCurrentDateString(date: Calendar): String {
+    override fun getCurrentDateString(date: Calendar): String {
         year = date.get(Calendar.YEAR)
         month = date.get(Calendar.MONTH)
         day = date.get(Calendar.DAY_OF_MONTH)
         return "$year/${String.format("%02d", month + 1)}/${String.format("%02d", day)}"
     }
 
-    private fun setUpUIObservers(viewModel: CalendarViewModel) {
+    override fun setUpUIObservers(viewModel: CalendarViewModel) {
         viewModel.uploadPhoto.observe(viewLifecycleOwner, Observer { newImageUri ->
             if (isAdded()) {
                 Glide.with(this).load(newImageUri).into(binding.calendarImage)
@@ -167,7 +173,7 @@ class CalendarFragment : Fragment() {
         })
     }
 
-    private fun handleImageSelection() {
+    override fun handleImageSelection() {
         if (hasWritePermission()) {
             val intent = Intent().apply {
                 type = "image/*"
@@ -180,7 +186,8 @@ class CalendarFragment : Fragment() {
     }
 
     private fun handleRecordButtonPress(viewModel: CalendarViewModel) {
-        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val logInSharedPref =
+            activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val userId = logInSharedPref?.getString("userId", "N/A") ?: "N/A"
 
         viewModel.handleRecordButtonPress(
@@ -191,13 +198,16 @@ class CalendarFragment : Fragment() {
         )
 
         viewModel.eventSaveStatus.observe(viewLifecycleOwner, Observer { status ->
-            when(status) {
+            when (status) {
                 Status.SUCCESS -> {
                     playSuccessAnimation()
                 }
+
                 Status.FAILURE -> {
-                    Toast.makeText(requireContext(), "Error: Operation failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Error: Operation failed", Toast.LENGTH_SHORT)
+                        .show()
                 }
+
                 else -> {
                     // do noting
                 }
@@ -213,10 +223,12 @@ class CalendarFragment : Fragment() {
         month: Int,
         dayOfMonth: Int
     ) {
-        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val logInSharedPref =
+            activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val userId = logInSharedPref?.getString("userId", "N/A") ?: "N/A"
 
-        stringDateSelected = "$year/${String.format("%02d", month + 1)}/${String.format("%02d", dayOfMonth)}"
+        stringDateSelected =
+            "$year/${String.format("%02d", month + 1)}/${String.format("%02d", dayOfMonth)}"
 
         viewModel.handleDateChange(year, month, dayOfMonth, userId)
 
@@ -232,7 +244,8 @@ class CalendarFragment : Fragment() {
             if (event != null) {
                 currentEventId = event.eventId
                 binding.ratingSeekBar.progress = event.eventRating?.toInt() ?: 0
-                binding.ratingTextview.text = event.eventRating?.toString() ?: getString(R.string.unrated)
+                binding.ratingTextview.text =
+                    event.eventRating?.toString() ?: getString(R.string.unrated)
 
                 if (event.eventImage?.isNotBlank() == true) {
                     Glide.with(this).load(event.eventImage).into(binding.calendarImage)
@@ -262,15 +275,14 @@ class CalendarFragment : Fragment() {
     }
 
 
-
-    private fun hasWritePermission(): Boolean {
+    override fun hasWritePermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun requestWritePermission() {
+    override fun requestWritePermission() {
         ActivityCompat.requestPermissions(
             requireActivity(),
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -353,7 +365,8 @@ class CalendarFragment : Fragment() {
         when (item.itemId) {
             R.id.calendar_share -> {
 
-                val sharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+                val sharedPref =
+                    activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
                 val userIdFromPref = sharedPref?.getString("userId", null)
 
                 if (userIdFromPref != null) {
@@ -370,15 +383,25 @@ class CalendarFragment : Fragment() {
                                 )
                             )
 
-                            val bottomNavigation = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavView)
-                            bottomNavigation.menu.findItem(R.id.navigation_hobbyBoards).isChecked = true
+                            val bottomNavigation =
+                                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavView)
+                            bottomNavigation.menu.findItem(R.id.navigation_hobbyBoards).isChecked =
+                                true
 
                         } else {
-                            Toast.makeText(requireContext(), getString(R.string.no_data_for_date), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.no_data_for_date),
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     })
                 } else {
-                    Toast.makeText(requireContext(), getString(R.string.cannot_get_user_id), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.cannot_get_user_id),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 return true
@@ -400,4 +423,9 @@ class CalendarFragment : Fragment() {
             }
         })
     }
+
+    fun createIntent(): Intent {
+        return Intent()
+    }
+
 }

@@ -18,7 +18,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        val application = requireNotNull(activity).application
+
         val binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -33,19 +33,26 @@ class DetailFragment : Fragment() {
         Log.i("viewModel", "viewModelData:${introduce}")
         binding.detailAppliance.setOnClickListener {
             Log.i("asfddasf", "${introduce.name}")
-            it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHobbyAppliaceFragment(introduce.name,9999))
+            it.findNavController().navigate(
+                DetailFragmentDirections.actionDetailFragmentToHobbyAppliaceFragment(
+                    introduce.name,
+                    9999
+                )
+            )
         }
 
         binding.detailCourse.setOnClickListener {
-            it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHobbyCourseFragment(introduce.name))
+            it.findNavController().navigate(
+                DetailFragmentDirections.actionDetailFragmentToHobbyCourseFragment(introduce.name)
+            )
         }
 
         binding.detailPlace.setOnClickListener {
-            it.findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHobbyPlaceFragment(introduce.name))
+            it.findNavController().navigate(
+                DetailFragmentDirections.actionDetailFragmentToHobbyPlaceFragment(introduce.name)
+            )
         }
 
         return binding.root
     }
-
-
 }

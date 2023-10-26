@@ -24,10 +24,11 @@ import java.util.Locale
 
 class ChatGptViewModel : ViewModel() {
     // All the sports
-    private val allSports = listOf("baseball", "basketball", "tennis", "badminton", "table_tennis", "volleyball")
+    private val allSports =
+        listOf("baseball", "basketball", "tennis", "badminton", "table_tennis", "volleyball")
+
     // Copy of all sports to be modified during random selection
     private var availableSports = mutableListOf<String>().apply { addAll(allSports) }
-
 
     private val _errorLiveData = MutableLiveData<String>()
     val errorLiveData: LiveData<String>
@@ -42,22 +43,22 @@ class ChatGptViewModel : ViewModel() {
         get() = _introduceList
 
     private val _messageList = MutableLiveData<MutableList<ChatGPTMessage>>()
-    val messageList : LiveData<MutableList<ChatGPTMessage>> get() = _messageList
+    val messageList: LiveData<MutableList<ChatGPTMessage>> get() = _messageList
 
     init {
         _messageList.value = mutableListOf()
     }
 
-    fun addToChat(message : String , sentBy : String , timestamp : String){
+    fun addToChat(message: String, sentBy: String, timestamp: String) {
         val currentList = _messageList.value ?: mutableListOf()
-        currentList.add(ChatGPTMessage(message,sentBy,timestamp))
+        currentList.add(ChatGPTMessage(message, sentBy, timestamp))
         _messageList.postValue(currentList)
     }
 
 
-    private fun addResponse(response : String){
+    private fun addResponse(response: String) {
         _messageList.value?.removeAt(_messageList.value?.size?.minus(1) ?: 0)
-        addToChat(response,ChatGPTMessage.SENT_BY_BOT,getCurrentTimestamp())
+        addToChat(response, ChatGPTMessage.SENT_BY_BOT, getCurrentTimestamp())
     }
 
     fun callApi(typeString: String) {
@@ -104,20 +105,18 @@ class ChatGptViewModel : ViewModel() {
     }
 
 
-
-
-
     fun getCurrentTimestamp(): String {
         return SimpleDateFormat("hh mm a", Locale.getDefault()).format(Date())
     }
 
     fun getRandomSport(): String {
-        val sports = listOf("baseball", "basketball", "tennis", "badminton", "table_tennis", "volleyball")
+        val sports =
+            listOf("baseball", "basketball", "tennis", "badminton", "table_tennis", "volleyball")
         return sports.random()
     }
 
 
-    fun getHobbyData(sportName:String) {
+    fun getHobbyData(sportName: String) {
         val docRef = db.collection("sports").document(sportName) // 使用sportName而不是硬編碼的"baseball"
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {

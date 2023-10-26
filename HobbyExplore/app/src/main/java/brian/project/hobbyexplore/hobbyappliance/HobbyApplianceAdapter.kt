@@ -11,7 +11,8 @@ import brian.project.hobbyexplore.databinding.ViewholderApplianceBinding
 import brian.project.hobbyexplore.databinding.ViewholderCategoryBinding
 import brian.project.hobbyexplore.hobbycategory.HobbyCategoryAdapter
 
-class HobbyApplianceAdapter (private val onClickListener: OnClickListener) : ListAdapter<Appliance, HobbyApplianceAdapter.ApplianceViewHolder>(DiffCallback()) {
+class HobbyApplianceAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<Appliance, HobbyApplianceAdapter.ApplianceViewHolder>(DiffCallback()) {
 
     class OnClickListener(val clickListener: (introduce: Appliance) -> Unit) {
         fun onClick(introduce: Appliance) = clickListener(introduce)
@@ -26,7 +27,6 @@ class HobbyApplianceAdapter (private val onClickListener: OnClickListener) : Lis
         }
     }
 
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -38,7 +38,10 @@ class HobbyApplianceAdapter (private val onClickListener: OnClickListener) : Lis
         )
     }
 
-    override fun onBindViewHolder(holder: HobbyApplianceAdapter.ApplianceViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: HobbyApplianceAdapter.ApplianceViewHolder,
+        position: Int
+    ) {
         holder.bind(getItem(position))
         holder.itemView.setOnClickListener {
             onClickListener.onClick(getItem(position))

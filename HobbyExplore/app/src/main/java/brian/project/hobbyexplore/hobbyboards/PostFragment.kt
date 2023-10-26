@@ -24,7 +24,6 @@ import brian.project.hobbyexplore.databinding.FragmentPostBinding
 class PostFragment : Fragment() {
 
     private var _binding: FragmentPostBinding? = null
-    // This property is only valid between onCreateView and onDestroyView.
     val binding get() = _binding!!
 
     companion object {
@@ -36,6 +35,7 @@ class PostFragment : Fragment() {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ).toTypedArray()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,9 +46,10 @@ class PostFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
 //        val content = binding.userContentInput.text.toString()
-        val imageUri =  PostFragmentArgs.fromBundle(requireArguments()).imageUri
+        val imageUri = PostFragmentArgs.fromBundle(requireArguments()).imageUri
         val imageStringToUri = Uri.parse(imageUri)
-        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val logInSharedPref =
+            activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val userName = logInSharedPref?.getString("displayName", "趣探朋友")
         val postSharedPref = activity?.getSharedPreferences("postMessageData", Context.MODE_PRIVATE)
 
@@ -71,8 +72,6 @@ class PostFragment : Fragment() {
                 .into(binding.postImage)
         })
 
-
-
         viewModel.userContent.observe(viewLifecycleOwner, Observer {
             binding.userContentInput.setText(it)
         })
@@ -86,14 +85,16 @@ class PostFragment : Fragment() {
             viewModel.userContent.value = binding.userContentInput.text.toString()
             viewModel.userRating.value = binding.ratingBar.rating
             savePostMessageToPreferences()
-            it.findNavController().navigate(PostFragmentDirections.actionPostFragmentToCameraFragment())
+            it.findNavController()
+                .navigate(PostFragmentDirections.actionPostFragmentToCameraFragment())
         }
 
         binding.publishButton.setOnClickListener {
             val content = binding.userContentInput.text.toString()
             val rating = binding.ratingBar.rating
             val category = binding.categoryMenu.selectedItem.toString()
-            it.findNavController().navigate(PostFragmentDirections.actionPostFragmentToHobbyBoardsFragment())
+            it.findNavController()
+                .navigate(PostFragmentDirections.actionPostFragmentToHobbyBoardsFragment())
             viewModel.postMessageData(content, rating, imageUri, category, userName!!)
             Log.i("getImageUri", "getImageUri: $imageUri")
             Log.i("getimageStringToUri", "imageStringToUri: $imageStringToUri")
@@ -102,8 +103,7 @@ class PostFragment : Fragment() {
             clearPostMessagePreferences()
         }
 
-        binding.ratingBar.setOnRatingBarChangeListener{ _, rating, _ ->
-//            Log.i("getrating", "star: $rating")
+        binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
 //            viewModel.postMessageData(content.toString(),rating.toFloat(),imageUrl.toString())
         }
 
@@ -120,9 +120,9 @@ class PostFragment : Fragment() {
 
         Glide.with(this).load(imageUrlFromArgs).into(binding.postImage)
 
-
         return binding.root
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -134,6 +134,7 @@ class PostFragment : Fragment() {
             }
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -147,21 +148,24 @@ class PostFragment : Fragment() {
         }
 
     }
+
     private fun allPermissionsGranted() = CameraFragment.REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
             requireContext(),
             it
         ) == PackageManager.PERMISSION_GRANTED
     }
+
     private fun showPermissionDeniedMessage() {
-        Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun getPreferences(): SharedPreferences {
         return requireActivity().getSharedPreferences("postMessageData", Context.MODE_PRIVATE)
     }
 
-    private fun savePostMessageToPreferences(){
+    private fun savePostMessageToPreferences() {
         val preferencesEditor = getPreferences().edit()
         preferencesEditor.putString("postRating", binding.ratingBar.rating.toString())
         preferencesEditor.putString("postContent", binding.userContentInput.text.toString())

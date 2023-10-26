@@ -25,9 +25,11 @@ class HobbyCourseViewModel : ViewModel() {
     private val _navigateToYoutube = MutableLiveData<Course>()
     val navigateToYoutube: LiveData<Course>
         get() = _navigateToYoutube
-    init {
+
+//    init {
 //        getCourseData(sportName)
-    }
+//    }
+
     fun getCourseData(sportName: String) {
         val docRef = db.collection("sports")
             .document(sportName)
@@ -37,7 +39,6 @@ class HobbyCourseViewModel : ViewModel() {
                 Log.w("READ_DATA", "Listen failed.", e)
                 return@addSnapshotListener
             } else if (snapshot != null && !snapshot.metadata.hasPendingWrites()) {
-//            Log.i("getdata", "document:${snapshot?.data}")
                 try {
                     val courseData = mutableListOf<Course>()
 
@@ -50,8 +51,6 @@ class HobbyCourseViewModel : ViewModel() {
                             courseData.add(course)
                         }
                     }
-
-
                     _courseList.postValue(courseData)
                     Log.i("getApplianceData", "introduceData:$courseData")
                 } catch (e: Exception) {
@@ -65,6 +64,7 @@ class HobbyCourseViewModel : ViewModel() {
     fun navigateToYoutube(course: Course) {
         _navigateToYoutube.value = course
     }
+
     fun onYoutubeNavigated() {
         _navigateToYoutube.value = null
     }

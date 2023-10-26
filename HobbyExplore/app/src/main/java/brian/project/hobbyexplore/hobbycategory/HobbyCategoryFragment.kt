@@ -22,7 +22,8 @@ class HobbyCategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewModel: HobbyCategoryViewModel = ViewModelProvider(this).get(HobbyCategoryViewModel::class.java)
+        val viewModel: HobbyCategoryViewModel =
+            ViewModelProvider(this).get(HobbyCategoryViewModel::class.java)
 
         val binding = FragmentHobbyCategoryBinding.inflate(inflater)
 
@@ -33,21 +34,24 @@ class HobbyCategoryFragment : Fragment() {
 
         binding.hobbyCategoryRecyclerView.adapter = hobbyCategoryAdapter
 
-        viewModel.introduceList.observe(viewLifecycleOwner, Observer { sports->
+        viewModel.introduceList.observe(viewLifecycleOwner, Observer { sports ->
             hobbyCategoryAdapter.submitList(sports)
             hobbyCategoryAdapter.notifyDataSetChanged()
         })
 
 //        binding.button.setOnClickListener {
 //            it.findNavController().navigate(HobbyCategoryFragmentDirections.actionHobbyCategoryFragmentToYouTubePlayerFragment())
-//            Log.i("abcde","aaaaaa")
 //        }
 
         viewModel.navigateToDetail.observe(
             viewLifecycleOwner,
             Observer {
                 if (null != it) {
-                    this.findNavController().navigate(HobbyCategoryFragmentDirections.actionHobbyCategoryFragmentToDetailFragment(it))
+                    this.findNavController().navigate(
+                        HobbyCategoryFragmentDirections.actionHobbyCategoryFragmentToDetailFragment(
+                            it
+                        )
+                    )
                     viewModel.onDetailNavigated()
                 }
             }

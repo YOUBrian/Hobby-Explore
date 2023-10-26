@@ -7,8 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import brian.project.hobbyexplore.data.Introduce
 
-class DetailViewModel(introduce: Introduce) :ViewModel()
-     {
+class DetailViewModel(introduce: Introduce) : ViewModel() {
 
     private val _selectProduct = MutableLiveData<Introduce>()
     val selectProduct: LiveData<Introduce>

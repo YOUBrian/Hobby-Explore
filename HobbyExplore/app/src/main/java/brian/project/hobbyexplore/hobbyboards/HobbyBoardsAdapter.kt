@@ -27,7 +27,6 @@ class HobbyBoardsAdapter(private val onClickListener: OnClickListener) :
             binding.executePendingBindings()
         }
 
-        // Update the icon based on image visibility
         private fun updateIcon() {
             if (binding.boardsImage.visibility == View.VISIBLE) {
                 binding.downIcon.setImageResource(R.drawable.baseline_up_36)
@@ -36,7 +35,6 @@ class HobbyBoardsAdapter(private val onClickListener: OnClickListener) :
             }
         }
 
-        // Toggle visibility of the boards_image using TransitionManager
         fun toggleImageVisibility() {
             val isImageVisible = binding.boardsImage.visibility == View.VISIBLE
             TransitionManager.beginDelayedTransition(binding.root as ViewGroup)
@@ -45,7 +43,10 @@ class HobbyBoardsAdapter(private val onClickListener: OnClickListener) :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HobbyBoardsAdapter.BoardsViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): HobbyBoardsAdapter.BoardsViewHolder {
         return HobbyBoardsAdapter.BoardsViewHolder(
             ViewholderBoardsBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
@@ -56,9 +57,7 @@ class HobbyBoardsAdapter(private val onClickListener: OnClickListener) :
     override fun onBindViewHolder(holder: HobbyBoardsAdapter.BoardsViewHolder, position: Int) {
         holder.bind(getItem(position))
         holder.itemView.setOnClickListener {
-            // Toggle image visibility when an item is clicked
             holder.toggleImageVisibility()
-            // If you want to keep the original click behavior, uncomment the following line:
             // onClickListener.onClick(getItem(position))
         }
     }

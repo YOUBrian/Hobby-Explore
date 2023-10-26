@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import brian.project.hobbyexplore.data.Introduce
 import brian.project.hobbyexplore.databinding.ViewholderCategoryBinding
 
-class HobbyCategoryAdapter(private val onClickListener: OnClickListener) : ListAdapter<Introduce, HobbyCategoryAdapter.CategoryViewHolder>(DiffCallback()) {
+class HobbyCategoryAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<Introduce, HobbyCategoryAdapter.CategoryViewHolder>(DiffCallback()) {
 
     class OnClickListener(val clickListener: (introduce: Introduce) -> Unit) {
         fun onClick(introduce: Introduce) = clickListener(introduce)

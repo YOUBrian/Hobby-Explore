@@ -30,7 +30,7 @@ class HobbyCategoryViewModel() : ViewModel() {
         getCategoryData("")
     }
 
-    private fun getCategoryData(sportName:String) {
+    private fun getCategoryData(sportName: String) {
         val docRef = db.collection("sports")//.document(sport)
 //            .document("baseball")
         docRef.addSnapshotListener { snapshot, e ->
@@ -39,25 +39,25 @@ class HobbyCategoryViewModel() : ViewModel() {
                 return@addSnapshotListener
             } else if (snapshot != null && !snapshot.metadata.hasPendingWrites()) {
 //            Log.i("getdata", "document:${snapshot}")
-            try {
-                val introduceData = mutableListOf<Introduce>()
+                try {
+                    val introduceData = mutableListOf<Introduce>()
 
-                for (document in snapshot) {
-                    Log.i("getdata", "document:${document.data}")
-                    Log.i("getdata", "snapshot:$snapshot")
-                    val introduce = document.toObject(Introduce::class.java)
-                    Log.i("getdata", "introduce:$introduce")
-                    if (introduce != null) {
-                        introduceData.add(introduce)
+                    for (document in snapshot) {
+                        Log.i("getdata", "document:${document.data}")
+                        Log.i("getdata", "snapshot:$snapshot")
+                        val introduce = document.toObject(Introduce::class.java)
+                        Log.i("getdata", "introduce:$introduce")
+                        if (introduce != null) {
+                            introduceData.add(introduce)
+                        }
                     }
+
+
+                    _introduceList.postValue(introduceData)
+                    Log.i("getdata", "introduceData:$introduceData")
+                } catch (e: Exception) {
+                    println("error: ${e.message}")
                 }
-
-
-                _introduceList.postValue(introduceData)
-                Log.i("getdata", "introduceData:$introduceData")
-            } catch (e: Exception) {
-                println("error: ${e.message}")
-            }
             }
             _refreshStatus.value = false
         }
@@ -95,6 +95,7 @@ class HobbyCategoryViewModel() : ViewModel() {
     fun navigateToDetail(introduce: Introduce) {
         _navigateToDetail.value = introduce
     }
+
     fun onDetailNavigated() {
         _navigateToDetail.value = null
     }

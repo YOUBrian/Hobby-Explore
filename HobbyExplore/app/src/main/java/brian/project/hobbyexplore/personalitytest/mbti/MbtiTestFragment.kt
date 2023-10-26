@@ -14,7 +14,7 @@ import brian.project.hobbyexplore.databinding.FragmentMbtiTestBinding
 import brian.project.hobbyexplore.personalitytest.questions
 
 class MbtiTestFragment : Fragment() {
-    private lateinit var viewBinding : FragmentMbtiTestBinding
+    private lateinit var viewBinding: FragmentMbtiTestBinding
     private var currentQuestionIndex = 0
 
     lateinit var progressBar: ProgressBar
@@ -55,15 +55,18 @@ class MbtiTestFragment : Fragment() {
 
         } else {
             val bundle = Bundle()
-            bundle.putString("typeString", typeString) // 假設typeString是你要傳遞的字串
+            bundle.putString("typeString", typeString)
 
             val resultFragment = MbtiTestResultFragment()
             resultFragment.arguments = bundle
-            findNavController().navigate(MbtiTestFragmentDirections.actionMbtiTestFragmentToMbtiTestResultFragment(typeString))
+            findNavController().navigate(
+                MbtiTestFragmentDirections.actionMbtiTestFragmentToMbtiTestResultFragment(
+                    typeString
+                )
+            )
             dialogDismissed()
         }
     }
-
 
 
     private fun onChoiceButtonClick(view: View) {
@@ -74,18 +77,17 @@ class MbtiTestFragment : Fragment() {
         }
 
         if (choiceIndex != -1 && currentQuestionIndex < questions.size) {
-            // 更新分數
+            // update score
             questions[currentQuestionIndex].choices[choiceIndex].score++
 
-            // 繼續下一個問題或計算最終結果
+            // Continue to the next question or calculate the final result
             currentQuestionIndex++
             if (currentQuestionIndex == questions.size) {
-                // 所有問題都已回答，計算結果
+                // All questions have been answered and the results calculated
                 val personalityType = computePersonalityType()
-                // ... 做其他相關的處理，比如顯示結果或導航到另一個頁面
                 showQuestion(currentQuestionIndex)
             } else {
-                // 顯示下一個問題
+                // show next question
                 showQuestion(currentQuestionIndex)
             }
         }
@@ -98,7 +100,7 @@ class MbtiTestFragment : Fragment() {
         currentQuestionIndex++
 
 
-        // 求出 personalityTypeText 屬於的 struct 在陣列中的 index
+        // Find the index of the struct that personalityTypeText belongs to in the array
         index = when (personalityTypeText) {
             "INTJ" -> 0
             "INTP" -> 1
@@ -118,7 +120,7 @@ class MbtiTestFragment : Fragment() {
             "ESFP" -> 15
             else -> -1
         }
-        if (currentQuestionIndex < questions.size) { // 還有題目
+        if (currentQuestionIndex < questions.size) { //There are still questions
             if (view.tag == 0) {
                 questions[currentQuestionIndex - 1].choices[0].score++
                 Log.i(
@@ -132,12 +134,12 @@ class MbtiTestFragment : Fragment() {
                     "Question: $currentQuestionIndex, Choice: 1, Score: ${questions[currentQuestionIndex - 1].choices[1].score}"
                 )
             }
-            showQuestion(currentQuestionIndex) // 顯示下題
+            showQuestion(currentQuestionIndex) //Display next question
         }
-        // 沒下一題了，計算是哪一個人格 type，回傳字串
+        // There is no next question. Calculate which personality type it is and return a string.
         if (currentQuestionIndex == questions.size) {
             personalityTypeText = computePersonalityType()
-    }
+        }
     }
 
     private fun computePersonalityType(): String {
@@ -223,7 +225,6 @@ class MbtiTestFragment : Fragment() {
                     questions[31].choices[0].score
 
 
-
         val arrTemp1 = arrayOf("I", "E")
         typeString += when {
             iTypeScore > eTypeScore -> "I"
@@ -252,19 +253,22 @@ class MbtiTestFragment : Fragment() {
             else -> arrTemp4.random()
         }
         Log.i("Click_Choice", "typeString: $typeString")
-        Log.i("MBTI_Scores", "I Score: $iTypeScore, E Score: $eTypeScore, N Score: $nTypeScore, S Score: $sTypeScore, T Score: $tTypeScore, F Score: $fTypeScore, P Score: $pTypeScore, J Score: $jTypeScore")
+        Log.i(
+            "MBTI_Scores",
+            "I Score: $iTypeScore, E Score: $eTypeScore, N Score: $nTypeScore, S Score: $sTypeScore, T Score: $tTypeScore, F Score: $fTypeScore, P Score: $pTypeScore, J Score: $jTypeScore"
+        )
         return typeString
 
     }
 
     private fun dialogDismissed() {
-        // score歸零
+        //score reset to zero
         for (i in questions.indices) {
             questions[i].choices[0].score = 0
             questions[i].choices[1].score = 0
         }
-        currentQuestionIndex = 0 // 指標回到第1題
-//        progressBar.progress = 0f // 進度條歸零
-        showQuestion(currentQuestionIndex) // 顯示問題
+        currentQuestionIndex = 0 //The indicator returns to question 1
+//        progressBar.progress = 0f //Return progress bar to zero
+        showQuestion(currentQuestionIndex) //Display the problem
     }
 }
