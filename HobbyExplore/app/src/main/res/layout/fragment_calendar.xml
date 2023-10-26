@@ -6,18 +6,34 @@
     <data>
         <variable
             name="image"
-            type="com.example.hobbyexplore.calendar.CalendarViewModel" />
+            type="brian.project.hobbyexplore.calendar.CalendarViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".calendar.CalendarFragment">
-    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/calendar_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".calendar.CalendarFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".calendar.CalendarFragment">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/success"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="8dp"
+            app:lottie_autoPlay="false"
+            app:lottie_loop="false"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/success" />
 
         <CalendarView
             android:id="@+id/calendarView"
@@ -60,14 +76,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/calendar_content" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/record_rating_Button"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginEnd="8dp"
-                    android:backgroundTint="#a3b2d1"
+                    android:background="@drawable/blue_button_full"
                     android:padding="4dp"
-                    android:text="RECORD"
+                    android:text="儲存紀錄"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/calendar_input_rating"
@@ -107,29 +123,23 @@
                     app:layout_constraintEnd_toEndOf="@+id/record_rating_Button"
                     app:layout_constraintTop_toBottomOf="@+id/record_rating_Button" />
 
-                <!--        <Button-->
-                <!--            android:id="@+id/share_Button"-->
-                <!--            android:layout_width="wrap_content"-->
-                <!--            android:layout_height="50dp"-->
-                <!--            android:backgroundTint="#a3b2d1"-->
-                <!--            android:padding="4dp"-->
-                <!--            android:text="SHARE"-->
-                <!--            android:textColor="@color/white"-->
-                <!--            android:textSize="20sp"-->
-                <!--            app:layout_constraintEnd_toEndOf="@+id/record_rating_Button"-->
-                <!--            app:layout_constraintTop_toBottomOf="@+id/calendar_image_button" />-->
-
                 <EditText
                     android:id="@+id/calendar_input_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="為你的學習紀錄留下感想"
-                    android:text=""
+                    android:letterSpacing="0.15"
+                    android:lineSpacingMultiplier="1.5"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    app:layout_constraintStart_toStartOf="@+id/rating_seekBar"
-                    app:layout_constraintTop_toBottomOf="@+id/calendar_image_button" />
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/calendar_image_button"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
@@ -177,20 +187,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/calendar_image_cardView">
 
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/relativeLayout1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="500dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent">-->
-
-<!--                <com.github.mikephil.charting.charts.LineChart-->
-<!--                    android:id="@+id/chart1"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent" />-->
-
-<!--            </RelativeLayout>-->
             <RelativeLayout
                 android:id="@+id/relativeLayout2"
                 android:layout_width="wrap_content"

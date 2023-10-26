@@ -8,4 +8,12 @@
 <!--        android:type="linear"-->
 <!--        android:angle="90"-->
 <!--        />-->
+    <gradient
+        android:startColor="#FFFFFF"
+        android:endColor="#faa23e"
+        android:type="radial"
+        android:centerX="0.5"
+        android:centerY="0.5"
+        android:gradientRadius="400dp"
+        />
 </shape>

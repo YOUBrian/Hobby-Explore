@@ -5,7 +5,7 @@
     <data>
         <variable
             name="place"
-            type="com.example.hobbyexplore.data.Place" />
+            type="brian.project.hobbyexplore.data.Place" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,6 +49,7 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    android:letterSpacing="0.15"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/place_image"
                     app:layout_constraintStart_toStartOf="@+id/place_image"
