@@ -146,16 +146,16 @@ class MainActivity : BaseActivity() {
 
     private fun showNetworkErrorDialog() {
         AlertDialog.Builder(this)
-            .setTitle("沒有網路連線")
-            .setMessage("請檢查您的網路連線並重試.")
-            .setPositiveButton("重新嘗試") { _, _ ->
+            .setTitle(R.string.no_internet_connection)
+            .setMessage(R.string.check_internet_and_retry)
+            .setPositiveButton(R.string.try_again) { _, _ ->
                 if (isNetworkConnected(this)) {
                     recreate()
                 } else {
                     showNetworkErrorDialog()
                 }
             }
-            .setNegativeButton("離開") { _, _ -> finish() }
+            .setNegativeButton(R.string.exit) { _, _ -> finish() }
             .setCancelable(false)
             .show()
     }

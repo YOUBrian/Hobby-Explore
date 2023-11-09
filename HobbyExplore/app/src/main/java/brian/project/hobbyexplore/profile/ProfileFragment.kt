@@ -34,12 +34,12 @@ class ProfileFragment : Fragment() {
         binding.photo = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val mbtiResult = sharedPref?.getString("MBTI_Result", "未測驗")
-        val selectedHobbyTitle = sharedPref?.getString("Selected_Hobby_Title", "未選擇")
+        val mbtiResult = sharedPref?.getString("MBTI_Result", R.string.untested.toString())
+        val selectedHobbyTitle = sharedPref?.getString("Selected_Hobby_Title", R.string.unselected.toString())
 
         val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val userImage = logInSharedPref?.getString("photoUrl", "https://firebasestorage.googleapis.com/v0/b/hobby-explore.appspot.com/o/images%2Fuser%20(2).png?alt=media&token=d7986b56-0d57-44cb-bd8e-1dfce4e45d19&_gl=1*10s2fv6*_ga*MjA2MTUwOTE5LjE2OTI1OTUxNzY.*_ga_CW55HF8NVT*MTY5NzUwNzkzMy4xNDguMS4xNjk3NTA5MDM4LjUyLjAuMA..")
-        val userName = logInSharedPref?.getString("displayName", "趣探朋友")
+        val userName = logInSharedPref?.getString("displayName", R.string.hobby_explore_friends.toString())
 
         viewModel.getUserPhoto(userImage.toString())
         binding.nickname.text = "$userName"
@@ -70,9 +70,9 @@ class ProfileFragment : Fragment() {
 
         viewModel.isLoggedIn.observe(viewLifecycleOwner, Observer { loggedIn ->
             if (loggedIn) {
-                binding.loginLogoutButton.text = "登出"
+                binding.loginLogoutButton.text = getString(R.string.sign_out)
             } else {
-                binding.loginLogoutButton.text = "登入"
+                binding.loginLogoutButton.text = getString(R.string.log_in)
             }
         })
 
@@ -121,19 +121,19 @@ class ProfileFragment : Fragment() {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
-            // 當使用者已登入
+
             binding.nickname.text = account.displayName
             viewModel.getUserPhoto(account.photoUrl.toString())
         } else {
-            // 當使用者登出
-            binding.nickname.text = "趣探朋友"
 
-            // 從SharedPreferences拿取預設值
+            binding.nickname.text = getString(R.string.hobby_explore_friends)
+
+
             val defaultUserImage = "https://firebasestorage.googleapis.com/v0/b/hobby-explore.appspot.com/o/images%2Fuser%20(2).png?alt=media&token=d7986b56-0d57-44cb-bd8e-1dfce4e45d19&_gl=1*10s2fv6*_ga*MjA2MTUwOTE5LjE2OTI1OTUxNzY.*_ga_CW55HF8NVT*MTY5NzUwNzkzMy4xNDguMS4xNjk3NTA5MDM8LjUyLjAuMA.."
             viewModel.getUserPhoto(defaultUserImage)
 
-            binding.selectHobby.text = "未選擇"
-            binding.mbtiResult.text = "未測驗"
+            binding.selectHobby.text = getString(R.string.unselected)
+            binding.mbtiResult.text = getString(R.string.untested)
 
             viewModel.resetValues()
         }

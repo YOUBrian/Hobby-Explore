@@ -41,7 +41,7 @@ class WhetherTakeMbtiTest : Fragment() {
                 }
                 it.findNavController().navigate(WhetherTakeMbtiTestDirections.actionWhetherTakeMbtiTestToChatGptFragment(userInput))
             } else {
-                Toast.makeText(context, "填寫內容並不是MBTI的人格", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.non_mbti_personality, Toast.LENGTH_SHORT).show()
             }
         }
         binding.mbtiYesButton.setOnClickListener {

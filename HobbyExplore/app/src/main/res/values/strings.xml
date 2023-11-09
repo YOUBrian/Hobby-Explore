@@ -41,5 +41,19 @@
     <string name="Unauthorized_location_permission">未授權定位權限</string>
     <string name="location_permission_denied">定位權限被拒絕</string>
     <string name="your_location">你的位置</string>
-
+    <string name="non_mbti_personality">填寫內容並不是MBTI的人格</string>
+    <string name="hobby_explore_friends">趣探朋友</string>
+    <string name="unselected">未選擇</string>
+    <string name="untested">未測驗</string>
+    <string name="learning_record">學習紀錄</string>
+    <string name="hobby_board">興趣版</string>
+    <string name="hobby_category">興趣類別</string>
+    <string name="personal_page">個人頁面</string>
+    <string name="hobby_recommendation">興趣推薦</string>
+    <string name="sign_out">登出</string>
+    <string name="log_in">登入</string>
+    <string name="no_internet_connection">沒有網路連線</string>
+    <string name="check_internet_and_retry">請檢查您的網路連線並重試.</string>
+    <string name="try_again">重新嘗試</string>
+    <string name="exit">離開</string>
 </resources>

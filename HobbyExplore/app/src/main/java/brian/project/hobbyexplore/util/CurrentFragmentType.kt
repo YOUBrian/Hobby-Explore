@@ -1,5 +1,7 @@
 package brian.project.hobbyexplore.util
 
+import brian.project.hobbyexplore.R
+
 enum class CurrentFragmentType(val value: String) {
     HOBBY_EXPLORE("趣探"),
     CALENDAR("學習紀錄"),
