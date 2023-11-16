@@ -117,7 +117,7 @@ class ChatGptViewModel : ViewModel() {
 
 
     fun getHobbyData(sportName: String) {
-        val docRef = db.collection("sports").document(sportName) // 使用sportName而不是硬編碼的"baseball"
+        val docRef = db.collection("sports").document(sportName)
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w("READ_DATA", "Listen failed.", e)
