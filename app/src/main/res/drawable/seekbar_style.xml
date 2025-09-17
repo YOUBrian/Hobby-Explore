@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<!--    //SeekBar的背景-->
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="#e3d9ca"/>
+            <corners android:radius="8dp"/>
+        </shape>
+    </item>
+
+<!--    //主要進度條的背景-->
+    <item android:id="@android:id/progress" >
+        <clip>
+            <shape>
+                <gradient
+                    android:angle="45"
+                    android:centerX="35%"
+                    android:centerColor="#f5ad42"
+                    android:startColor="#e3d9ca"
+                    android:endColor="#fa8f55"
+                    android:type="linear"
+                    />
+                <corners android:radius="8dp"/>
+            </shape>
+        </clip>
+    </item>
+</layer-list>

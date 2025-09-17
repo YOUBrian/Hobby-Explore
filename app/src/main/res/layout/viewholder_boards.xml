@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="boards"
+            type="brian.project.hobbyexplore.data.Message" />
+    </data>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/place_image_cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="10dp"
+            app:contentPadding="8dp"
+            app:cardBackgroundColor="#e8ecf5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/boards_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/content_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/white_rounded_background"
+                    app:cardElevation="-4dp"
+                    android:padding="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/boards_user_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/boards_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@{boards.name}"
+                    android:textColor="#1B377E"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@+id/boards_content"
+                    app:layout_constraintTop_toTopOf="@+id/boards_content" />
+
+                <TextView
+                    android:id="@+id/boards_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/light_blue_rounded_background"
+                    android:padding="8dp"
+                    android:text="@{boards.category}"
+                    android:textColor="#1B377E"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/boards_content" />
+
+                <TextView
+                    android:id="@+id/boards_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="#1B377E"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/boards_content"
+                    app:layout_constraintStart_toStartOf="@id/boards_user"
+                    app:layout_constraintTop_toBottomOf="@+id/boards_user"
+                    app:timeStamp="@{boards.createdTime}" />
+
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="-4dp"
+                    android:layout_marginTop="4dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:rating="@{boards.rating}"
+                    android:stepSize="1"
+                    app:layout_constraintStart_toStartOf="@+id/boards_time"
+                    app:layout_constraintTop_toBottomOf="@+id/boards_time"
+                    app:mrb_progressTint="#fecb3c"
+                    app:mrb_secondaryProgressTint="#ffffff" />
+
+                <ImageButton
+                    android:id="@+id/down_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="#00000000"
+                    android:clickable="false"
+                    android:src="@drawable/baseline_down_36"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/ratingBar" />
+
+                <TextView
+                    android:id="@+id/boards_user_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:paddingBottom="8dp"
+                    android:text="@{boards.content}"
+                    android:textColor="#1B377E"
+                    android:textSize="14sp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:letterSpacing="0.15"
+                    app:layout_constraintBottom_toBottomOf="@id/content_view"
+                    app:layout_constraintEnd_toEndOf="@+id/boards_content"
+                    app:layout_constraintStart_toStartOf="@+id/boards_user"
+                    app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+                <ImageView
+                    android:id="@+id/boards_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    app:imageUrl="@{boards.image}"
+                    app:layout_constraintBottom_toBottomOf="@+id/boards_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/boards_user_content" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+</layout>

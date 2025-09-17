@@ -1,0 +1,7 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/baseline_send_24"
+        android:gravity="center"
+        android:right="-8dp"
+        android:bottom="8dp"/>
+</layer-list>
