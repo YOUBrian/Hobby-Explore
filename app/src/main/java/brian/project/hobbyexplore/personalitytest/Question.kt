@@ -74,7 +74,7 @@ val questions = listOf(
     Question(
         listOf(
             Choice("我會事前詳細考慮各種可能性，事後反覆思考。", 0),
-            Choice("我會蒐集需要的資料，稍作考慮後，作出明快決定。", 0)
+            Choice("我會蒐集需要的資料，稍作考慮後，作出明確決定。", 0)
         )
     ),
     Question(

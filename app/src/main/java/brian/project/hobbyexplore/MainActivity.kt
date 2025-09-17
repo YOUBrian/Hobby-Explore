@@ -9,15 +9,11 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
@@ -38,8 +34,6 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
-//import com.google.firebase.FirebaseApp
-
 class MainActivity : BaseActivity() {
     private lateinit var auth: FirebaseAuth
     val viewModel by viewModels<MainViewModel> { getVmFactory() }
@@ -49,10 +43,7 @@ class MainActivity : BaseActivity() {
     private val statusBarHeight: Int
         get() {
             val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-            return when {
-                resourceId > 0 -> resources.getDimensionPixelSize(resourceId)
-                else -> 0
-            }
+            return if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,28 +55,24 @@ class MainActivity : BaseActivity() {
 
         FirebaseApp.initializeApp(this)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
         navController = navHostFragment?.navController ?: return
 
-
-
-
-        //check internet
+        // check internet
         if (!isNetworkConnected(this)) {
             showNetworkErrorDialog()
         } else {
             Log.d("DEBUGGGG", "Checking navigation condition...")
             navHostFragment?.view?.post {
-                val sharedPreferences = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-                val accountId = sharedPreferences.getString("userId", "N/A")
-
-                if (accountId != "N/A") {
-                    // User is signed in
-                    Log.d("DEBUGGGG", "$accountId")
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                if (currentUser != null) {
+                    // User is already signed in
+                    Log.d("DEBUGGGG", "User already logged in: ${currentUser.uid}")
                     navController.navigate(R.id.hobbyCategoryFragment)
                 } else {
-                    // No user is signed in
-                    Log.d("DEBUGGGG", "$accountId")
+                    // No user signed in
+                    Log.d("DEBUGGGG", "No user logged in")
                     navController.navigate(R.id.googleLogInFragment)
                 }
             }
@@ -103,7 +90,7 @@ class MainActivity : BaseActivity() {
         })
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            // For BottomNav visibility
+            // BottomNav visibility
             if (destination.id in listOf(
                     R.id.personalityTestFragment,
                     R.id.whetherTakeMbtiTest,
@@ -119,25 +106,22 @@ class MainActivity : BaseActivity() {
                 binding.bottomNavView.visibility = View.VISIBLE
             }
 
-            // For toolbar back button visibility
+            // Toolbar back button
             when (destination.id) {
                 R.id.hobbyCategoryFragment,
                 R.id.calendarFragment,
                 R.id.hobbyBoardsFragment,
                 R.id.profileFragment,
                 R.id.googleLogInFragment -> {
-                    // Hide back button
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
+
                 else -> {
-                    // Show back button for other fragments
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                    // Set the custom back button
                     supportActionBar?.setHomeAsUpIndicator(R.drawable.main_back_icon)
                 }
             }
         }
-
 
         setupToolbar()
         setupBottomNav()
@@ -165,103 +149,96 @@ class MainActivity : BaseActivity() {
             when (item.itemId) {
                 R.id.navigation_hobbyCategory -> {
                     navController.navigate(NavigationDirections.navigateToHobbyCategoryFragment())
-                    return@setOnItemSelectedListener true
+                    true
                 }
-                R.id.navigation_calendar -> {
-                    navController.navigate(NavigationDirections.navigateToCalendarFragment("",""))
-                    return@setOnItemSelectedListener true
-                }
-                R.id.navigation_hobbyBoards -> {
 
-                    findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToHobbyBoardsFragment())
-                    return@setOnItemSelectedListener true
+                R.id.navigation_calendar -> {
+                    navController.navigate(NavigationDirections.navigateToCalendarFragment("", ""))
+                    true
+                }
+
+                R.id.navigation_hobbyBoards -> {
+                    findNavController(R.id.nav_host_fragment)
+                        .navigate(NavigationDirections.navigateToHobbyBoardsFragment())
+                    true
                 }
 
                 R.id.navigation_profile -> {
-
-                    findNavController(R.id.nav_host_fragment).navigate(NavigationDirections.navigateToProfileFragment())
-                    return@setOnItemSelectedListener true
+                    findNavController(R.id.nav_host_fragment)
+                        .navigate(NavigationDirections.navigateToProfileFragment())
+                    true
                 }
+
                 R.id.personalityTestFragment -> {
                     binding.bottomNavView.visibility = View.GONE
-                    return@setOnItemSelectedListener true
+                    true
                 }
-            }
 
-            false
+                else -> false
+            }
         }
+
         val menuView = binding.bottomNavView.getChildAt(0) as BottomNavigationMenuView
         val itemView = menuView.getChildAt(2) as BottomNavigationItemView
     }
 
     private fun setupNavController() {
-        findNavController(R.id.nav_host_fragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
-            viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
-                R.id.calendarFragment -> CurrentFragmentType.CALENDAR
-                R.id.hobbyBoardsFragment -> CurrentFragmentType.BOARDS
-                R.id.hobbyCategoryFragment -> CurrentFragmentType.CATEGORY
-                R.id.profileFragment -> CurrentFragmentType.PROFILE
-                R.id.detailFragment -> CurrentFragmentType.HOBBY_EXPLORE
-                R.id.hobbyApplianceFragment -> CurrentFragmentType.HOBBY_APPLIANCE
-                R.id.hobbyCourseFragment -> CurrentFragmentType.HOBBY_COURSE
-                R.id.hobbyPlaceFragment -> CurrentFragmentType.HOBBY_PLACE
-                R.id.chatGptFragment -> CurrentFragmentType.RECOMMEND_HOBBY
-                R.id.applianceRecommendFragment -> CurrentFragmentType.RECOMMEND_APPLIANCE
-                R.id.courseRecommendFragment -> CurrentFragmentType.RECOMMEND_COURSE
-                R.id.placeRecommendFragment -> CurrentFragmentType.RECOMMEND_PLACE
-                else -> CurrentFragmentType.HOBBY_EXPLORE
+        findNavController(R.id.nav_host_fragment)
+            .addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
+                viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
+                    R.id.calendarFragment -> CurrentFragmentType.CALENDAR
+                    R.id.hobbyBoardsFragment -> CurrentFragmentType.BOARDS
+                    R.id.hobbyCategoryFragment -> CurrentFragmentType.CATEGORY
+                    R.id.profileFragment -> CurrentFragmentType.PROFILE
+                    R.id.detailFragment -> CurrentFragmentType.HOBBY_EXPLORE
+                    R.id.hobbyApplianceFragment -> CurrentFragmentType.HOBBY_APPLIANCE
+                    R.id.hobbyCourseFragment -> CurrentFragmentType.HOBBY_COURSE
+                    R.id.hobbyPlaceFragment -> CurrentFragmentType.HOBBY_PLACE
+                    R.id.chatGptFragment -> CurrentFragmentType.RECOMMEND_HOBBY
+                    R.id.applianceRecommendFragment -> CurrentFragmentType.RECOMMEND_APPLIANCE
+                    R.id.courseRecommendFragment -> CurrentFragmentType.RECOMMEND_COURSE
+                    R.id.placeRecommendFragment -> CurrentFragmentType.RECOMMEND_PLACE
+                    else -> CurrentFragmentType.HOBBY_EXPLORE
+                }
             }
-        }
     }
 
     private fun setupToolbar() {
-
         binding.toolbar.setPadding(0, statusBarHeight, 0, 0)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        binding.toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.main_back_icon)
         launch {
-
             val dpi = resources.displayMetrics.densityDpi.toFloat()
             val dpiMultiple = dpi / DisplayMetrics.DENSITY_DEFAULT
-
             val cutoutHeight = getCutoutHeight()
 
             Logger.i("====== ${Build.MODEL} ======")
             Logger.i("$dpi dpi (${dpiMultiple}x)")
             Logger.i("statusBarHeight: ${statusBarHeight}px/${statusBarHeight / dpiMultiple}dp")
 
-            when {
-                cutoutHeight > 0 -> {
-                    Logger.i("cutoutHeight: ${cutoutHeight}px/${cutoutHeight / dpiMultiple}dp")
+            if (cutoutHeight > 0) {
+                Logger.i("cutoutHeight: ${cutoutHeight}px/${cutoutHeight / dpiMultiple}dp")
 
-                    val oriStatusBarHeight =
-                        resources.getDimensionPixelSize(R.dimen.height_status_bar_origin)
+                val oriStatusBarHeight =
+                    resources.getDimensionPixelSize(R.dimen.height_status_bar_origin)
 
-                    binding.toolbar.setPadding(0, oriStatusBarHeight, 0, 0)
-                    val layoutParams = Toolbar.LayoutParams(
-                        Toolbar.LayoutParams.WRAP_CONTENT,
-                        Toolbar.LayoutParams.WRAP_CONTENT
-                    )
-                    layoutParams.gravity = Gravity.CENTER
+                binding.toolbar.setPadding(0, oriStatusBarHeight, 0, 0)
+                val layoutParams = Toolbar.LayoutParams(
+                    Toolbar.LayoutParams.WRAP_CONTENT,
+                    Toolbar.LayoutParams.WRAP_CONTENT
+                )
+                layoutParams.gravity = Gravity.CENTER
 
-                    when (Build.MODEL) {
-                        "Pixel 5" -> {
-                            Logger.i("Build.MODEL is ${Build.MODEL}")
-                        }
-
-                        else -> {
-                            layoutParams.topMargin = statusBarHeight - oriStatusBarHeight
-                        }
-                    }
-                    binding.textToolbarTitle.layoutParams = layoutParams
+                if (Build.MODEL != "Pixel 5") {
+                    layoutParams.topMargin = statusBarHeight - oriStatusBarHeight
                 }
+                binding.textToolbarTitle.layoutParams = layoutParams
             }
             Logger.i("====== ${Build.MODEL} ======")
         }
     }
 
     fun isNetworkConnected(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
     }
@@ -298,11 +275,9 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                return true
-            }
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
         }
         return super.onOptionsItemSelected(item)
     }

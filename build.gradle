@@ -35,7 +35,8 @@ buildscript {
         classpath("org.jlleitschuh.gradle:ktlint-gradle:$version_ktlint")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        classpath 'com.google.gms:google-services:4.3.14'
+        classpath 'com.google.gms:google-services:4.4.2'
+
     }
 }
 

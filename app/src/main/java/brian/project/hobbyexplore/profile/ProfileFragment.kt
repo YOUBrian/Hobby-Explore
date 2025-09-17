@@ -1,13 +1,12 @@
 package brian.project.hobbyexplore.profile
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -16,68 +15,84 @@ import brian.project.hobbyexplore.databinding.FragmentProfileBinding
 import brian.project.hobbyexplore.googlelogin.GoogleSignInHelper
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 class ProfileFragment : Fragment() {
 
     private val signInHelper by lazy { GoogleSignInHelper(requireContext()) }
+    private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private lateinit var viewModel: ProfileViewModel
     private lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-        binding = FragmentProfileBinding.inflate(inflater)
-        val sharedPref = activity?.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         binding.photo = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val mbtiResult = sharedPref?.getString("MBTI_Result", R.string.untested.toString())
-        val selectedHobbyTitle = sharedPref?.getString("Selected_Hobby_Title", R.string.unselected.toString())
+        val currentUser = firebaseAuth.currentUser
+        viewModel.setLoggedIn(currentUser != null && !currentUser.isAnonymous)
 
-        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        val userImage = logInSharedPref?.getString("photoUrl", "https://firebasestorage.googleapis.com/v0/b/hobby-explore.appspot.com/o/images%2Fuser%20(2).png?alt=media&token=d7986b56-0d57-44cb-bd8e-1dfce4e45d19&_gl=1*10s2fv6*_ga*MjA2MTUwOTE5LjE2OTI1OTUxNzY.*_ga_CW55HF8NVT*MTY5NzUwNzkzMy4xNDguMS4xNjk3NTA5MDM4LjUyLjAuMA..")
-        val userName = logInSharedPref?.getString("displayName", R.string.hobby_explore_friends.toString())
-
-        viewModel.getUserPhoto(userImage.toString())
-        binding.nickname.text = "$userName"
-        binding.selectHobby.text = selectedHobbyTitle
-        binding.mbtiResult.text = "$mbtiResult"
-
-        binding.mbtiButton.setOnClickListener {
-            it.findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToWhetherTakeMbtiTest())
+        if (currentUser != null) {
+            loadUserProfile(currentUser.uid, currentUser.isAnonymous)
         }
 
-        val currentUser = signInHelper.getCurrentUser()
-        viewModel.setLoggedIn(currentUser != null)
+        // Navigate to MBTI test
+        binding.mbtiButton.setOnClickListener {
+            it.findNavController()
+                .navigate(ProfileFragmentDirections.actionProfileFragmentToWhetherTakeMbtiTest())
+        }
 
+        // Login / Logout
         binding.loginLogoutButton.setOnClickListener {
-            Log.d("GoogleSignIn", "Attempting to sign out")
-            if (viewModel.isLoggedIn.value == true) {
+            val user = firebaseAuth.currentUser
+            if (user != null && !user.isAnonymous) {
+                // Case: Google user → Sign out and switch to anonymous guest
+                firebaseAuth.signOut()
                 signInHelper.signOut {
-                    viewModel.setLoggedIn(false)
-                    viewModel.resetValues()
-                    updateUI(null)
-                    logInSharedPref?.edit()?.clear()?.apply()
+                    firebaseAuth.signInAnonymously()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val guestUser = firebaseAuth.currentUser
+                                guestUser?.let {
+                                    val guestData = mapOf(
+                                        "displayName" to "趣探朋友",
+                                        "mbtiResult" to "未測驗",
+                                        "selectedHobby" to "未選擇"
+                                    )
+                                    firestore.collection("users").document(it.uid)
+                                        .set(guestData, SetOptions.merge())
+                                }
+                                viewModel.setLoggedIn(false)
+                                updateUI(null, true)
+                            } else {
+                                Log.e("ProfileFragment", "Anonymous sign-in failed", task.exception)
+                            }
+                        }
                 }
             } else {
+                // Case: Guest → Try Google login
                 val signInIntent = signInHelper.getSignInIntent()
                 startActivityForResult(signInIntent, GoogleSignInHelper.RC_SIGN_IN)
             }
         }
 
+        // Observe login state
         viewModel.isLoggedIn.observe(viewLifecycleOwner, Observer { loggedIn ->
-            if (loggedIn) {
-                binding.loginLogoutButton.text = getString(R.string.sign_out)
-            } else {
-                binding.loginLogoutButton.text = getString(R.string.log_in)
-            }
+            binding.loginLogoutButton.text =
+                if (loggedIn) getString(R.string.sign_out) else getString(R.string.log_in)
         })
 
+        // Observe user photo
         viewModel.userPhotoUrl.observe(viewLifecycleOwner, Observer { url ->
-
             Glide.with(this).load(url).into(binding.imageView)
         })
 
@@ -90,53 +105,81 @@ class ProfileFragment : Fragment() {
         if (requestCode == GoogleSignInHelper.RC_SIGN_IN) {
             signInHelper.handleSignInResult(data,
                 onSuccess = { account ->
-                    // save data SharedPreference
-                    saveLoginInfoToSharedPreference(account)
-
-                    viewModel.setLoggedIn(true)
-                    updateUI(account)
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    firebaseAuth.signInWithCredential(credential)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val user = firebaseAuth.currentUser
+                                if (user != null) {
+                                    saveUserProfile(user.uid, account)
+                                    viewModel.setLoggedIn(true)
+                                    updateUI(account, false)
+                                    loadUserProfile(user.uid, false)
+                                }
+                            } else {
+                                Log.e("ProfileFragment", "Firebase sign in failed", task.exception)
+                                updateUI(null, true)
+                            }
+                        }
                 },
                 onFailure = { e ->
-                    Log.w("ProfileFragment", "signInResult:failed code=" + e.message)
-                    updateUI(null)
+                    Log.w("ProfileFragment", "Google sign in failed ${e.message}")
+                    updateUI(null, true)
                 }
             )
         }
     }
 
-    private fun saveLoginInfoToSharedPreference(account: GoogleSignInAccount) {
-        val logInSharedPref = activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        logInSharedPref?.edit()?.apply {
-            putString("displayName", account.displayName)
-            putString("photoUrl", account.photoUrl.toString())
-            putString("userId", account.id)
-            putString("idToken", account.idToken)
-            putString("email", account.email)
-            putString("familyName", account.familyName)
-            putString("givenName", account.givenName)
-            apply()
-        }
+    // Save only basic info to Firestore
+    private fun saveUserProfile(uid: String, account: GoogleSignInAccount) {
+        val userData = mapOf(
+            "displayName" to (account.displayName ?: "趣探朋友"),
+            "email" to (account.email ?: ""),
+            "photoUrl" to (account.photoUrl?.toString() ?: "")
+        )
+        firestore.collection("users").document(uid)
+            .set(userData, SetOptions.merge()) // Merge to avoid overwriting mbtiResult or hobby
     }
 
+    // Load profile info (support guest and google user)
+    private fun loadUserProfile(uid: String, isAnonymous: Boolean) {
+        firestore.collection("users").document(uid).get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    binding.nickname.text =
+                        if (isAnonymous) "趣探朋友"
+                        else document.getString("displayName") ?: getString(R.string.hobby_explore_friends)
 
-    private fun updateUI(account: GoogleSignInAccount?) {
-        if (account != null) {
+                    binding.mbtiResult.text =
+                        document.getString("mbtiResult") ?: "未測驗"
 
+                    binding.selectHobby.text =
+                        document.getString("selectedHobby") ?: "未選擇"
+
+                    val photoUrl = document.getString("photoUrl")
+                        ?: "https://firebasestorage.googleapis.com/v0/b/hobby-explore.appspot.com/o/images%2Fuser%20(2).png?alt=media&token=d7986b56-0d57-44cb-bd8e-1dfce4e45d19"
+                    viewModel.getUserPhoto(photoUrl)
+                } else {
+                    Log.d("ProfileFragment", "No profile found for uid=$uid")
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("ProfileFragment", "Failed to load user profile", e)
+            }
+    }
+
+    // Update UI (guest or google user)
+    private fun updateUI(account: GoogleSignInAccount?, isGuest: Boolean) {
+        if (account != null && !isGuest) {
             binding.nickname.text = account.displayName
-            viewModel.getUserPhoto(account.photoUrl.toString())
+            viewModel.getUserPhoto(account.photoUrl?.toString() ?: "")
         } else {
-
-            binding.nickname.text = getString(R.string.hobby_explore_friends)
-
-
-            val defaultUserImage = "https://firebasestorage.googleapis.com/v0/b/hobby-explore.appspot.com/o/images%2Fuser%20(2).png?alt=media&token=d7986b56-0d57-44cb-bd8e-1dfce4e45d19&_gl=1*10s2fv6*_ga*MjA2MTUwOTE5LjE2OTI1OTUxNzY.*_ga_CW55HF8NVT*MTY5NzUwNzkzMy4xNDguMS4xNjk3NTA5MDM8LjUyLjAuMA.."
+            binding.nickname.text = "趣探朋友"
+            val defaultUserImage =
+                "https://firebasestorage.googleapis.com/v0/b/hobby-explore.appspot.com/o/images%2Fuser%20(2).png?alt=media&token=d7986b56-0d57-44cb-bd8e-1dfce4e45d19"
             viewModel.getUserPhoto(defaultUserImage)
-
-            binding.selectHobby.text = getString(R.string.unselected)
-            binding.mbtiResult.text = getString(R.string.untested)
-
-            viewModel.resetValues()
+            binding.selectHobby.text = "未選擇"
+            binding.mbtiResult.text = "未測驗"
         }
     }
-
 }

@@ -1,8 +1,5 @@
 package brian.project.hobbyexplore.chatgpt
 
-import android.annotation.SuppressLint
-import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import brian.project.hobbyexplore.R
 import brian.project.hobbyexplore.data.Introduce
 import brian.project.hobbyexplore.data.gpt.ChatGPTMessage
@@ -28,8 +29,9 @@ class ChatGptFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentSystemRecommendsHobbyBinding.inflate(inflater)
+        val binding = FragmentSystemRecommendsHobbyBinding.inflate(inflater, container, false)
 
+        // Initial UI state
         binding.selectButton.visibility = View.GONE
         binding.changeButton.visibility = View.GONE
         binding.orangeView.visibility = View.GONE
@@ -38,8 +40,10 @@ class ChatGptFragment : Fragment() {
         binding.detailContentCardView.visibility = View.GONE
         binding.loadingAnimation.playAnimation()
 
+        // Get MBTI type from arguments
         val typeString = arguments?.getString("typeString") ?: return null
 
+        // Observe introduce data
         viewModel.introduceList.observe(viewLifecycleOwner, Observer { introduce ->
             introduce?.let {
                 binding.loadingAnimation.pauseAnimation()
@@ -59,9 +63,11 @@ class ChatGptFragment : Fragment() {
             }
         })
 
+        // Call GPT API with MBTI type
         viewModel.addToChat(typeString, ChatGPTMessage.SENT_BY_ME, viewModel.getCurrentTimestamp())
         viewModel.callApi(typeString)
 
+        // Change hobby suggestion
         binding.changeButton.setOnClickListener {
             binding.nestedScrollView.smoothScrollTo(0, 0)
             binding.loadingAnimation.visibility = View.VISIBLE
@@ -71,23 +77,33 @@ class ChatGptFragment : Fragment() {
             viewModel.getHobbyData(randomSport)
         }
 
-        binding.selectButton.setOnClickListener {
+        // Select hobby and save to Firestore
+        binding.selectButton.setOnClickListener { button ->
             currentIntroduce?.let { introduce ->
+                val uid = FirebaseAuth.getInstance().currentUser?.uid
+                if (uid != null) {
+                    val userDoc = FirebaseFirestore.getInstance()
+                        .collection("users")
+                        .document(uid)
 
-                val sharedPref = activity?.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-                with(sharedPref?.edit()) {
-                    this?.putString("Selected_Hobby_Title", introduce.title)
-                    this?.apply()
-                    Log.i("cccccccccc", "$typeString")
-                    it.findNavController().navigate(ChatGptFragmentDirections.actionChatGptFragmentToHobbyApplianceFragment(introduce.name, 9999))
+                    val data = mapOf("selectedHobby" to introduce.title)
+                    userDoc.set(data, SetOptions.merge())
+                        .addOnSuccessListener {
+                            Log.i("ChatGptFragment", "Selected hobby saved: ${introduce.title}")
+                            button.findNavController().navigate(
+                                ChatGptFragmentDirections.actionChatGptFragmentToHobbyApplianceFragment(
+                                    introduce.name,
+                                    9999
+                                )
+                            )
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("ChatGptFragment", "Failed to save selected hobby", e)
+                        }
                 }
             }
-
         }
-
 
         return binding.root
     }
-
-
 }

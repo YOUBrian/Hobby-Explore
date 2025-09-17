@@ -11,45 +11,31 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
+import android.view.*
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import brian.project.hobbyexplore.R
 import brian.project.hobbyexplore.data.CalendarEvent
 import brian.project.hobbyexplore.databinding.FragmentCalendarBinding
-import com.google.firebase.database.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import java.util.*
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
+import java.util.*
 
 private lateinit var databaseReference: DatabaseReference
 
@@ -63,23 +49,23 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
     private lateinit var binding: FragmentCalendarBinding
     private lateinit var lineChart2: LineChart
 
-    // Firebase & Data-related
+    // Firebase and Data-related
     private lateinit var firestore: FirebaseFirestore
     private var currentEventId: String? = null
     private var selectedPhotoUri: Uri? = null
-    private var dateObserver: Observer<CalendarEvent?>? = null
     private var currentDocumentId: String? = null
-
 
     // Fragment State
     var stringDateSelected: String? = null
-
     private var year: Int = 0
     private var month: Int = 0
     private var day: Int = 0
 
     private val viewModel: CalendarViewModel by viewModels()
 
+    // Get Firebase user UID
+    private val userId: String
+        get() = FirebaseAuth.getInstance().currentUser?.uid ?: "N/A"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,11 +73,6 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
     ): View? {
         setHasOptionsMenu(true)
         binding = FragmentCalendarBinding.inflate(inflater)
-
-
-        val logInSharedPref =
-            activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        val userId = logInSharedPref?.getString("userId", "N/A")
 
         lineChart2 = binding.chart2
         firestore = FirebaseFirestore.getInstance()
@@ -104,8 +85,8 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
         setInitialValues(viewModel)
 
         setLineChartData(viewModel)
-        viewModel.dataList.observe(viewLifecycleOwner, Observer { updatedDataList ->
-            Log.d("DEBUG", "Data List: $updatedDataList")
+        viewModel.dataList.observe(viewLifecycleOwner, Observer {
+            Log.d("DEBUG", "Data List: $it")
             setLineChartData(viewModel)
         })
 
@@ -117,17 +98,13 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
             }
         })
 
-
         handleDateChange(viewModel, year, month, day)
 
-        viewModel.getCalendarData(userId.toString())
+        // Use Firebase uid directly
+        viewModel.getCalendarData(userId)
 
         Log.d("CalendarFragment", "ViewModel: $viewModel")
-
-
-
         return binding.root
-
     }
 
     private fun setupInitialData() {
@@ -144,7 +121,7 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
 
     override fun setUpUIObservers(viewModel: CalendarViewModel) {
         viewModel.uploadPhoto.observe(viewLifecycleOwner, Observer { newImageUri ->
-            if (isAdded()) {
+            if (isAdded) {
                 Glide.with(this).load(newImageUri).into(binding.calendarImage)
             }
         })
@@ -167,7 +144,6 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
                 binding.ratingTextview.text = getString(R.string.progress_text, progress)
                 viewModel.progress.value = progress
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
@@ -186,31 +162,18 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
     }
 
     private fun handleRecordButtonPress(viewModel: CalendarViewModel) {
-        val logInSharedPref =
-            activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        val userId = logInSharedPref?.getString("userId", "N/A") ?: "N/A"
-
         viewModel.handleRecordButtonPress(
             stringDateSelected ?: "",
             viewModel.progress.value ?: 0,
             binding.calendarInputContent.text.toString(),
-            userId
+            userId // Firebase uid
         )
 
         viewModel.eventSaveStatus.observe(viewLifecycleOwner, Observer { status ->
             when (status) {
-                Status.SUCCESS -> {
-                    playSuccessAnimation()
-                }
-
-                Status.FAILURE -> {
-                    Toast.makeText(requireContext(), "Error: Operation failed", Toast.LENGTH_SHORT)
-                        .show()
-                }
-
-                else -> {
-                    // do noting
-                }
+                Status.SUCCESS -> playSuccessAnimation()
+                Status.FAILURE -> Toast.makeText(requireContext(), "Error: Operation failed", Toast.LENGTH_SHORT).show()
+                else -> {}
             }
         })
 
@@ -223,20 +186,14 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
         month: Int,
         dayOfMonth: Int
     ) {
-        val logInSharedPref =
-            activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        val userId = logInSharedPref?.getString("userId", "N/A") ?: "N/A"
+        stringDateSelected = "$year/${String.format("%02d", month + 1)}/${String.format("%02d", dayOfMonth)}"
 
-        stringDateSelected =
-            "$year/${String.format("%02d", month + 1)}/${String.format("%02d", dayOfMonth)}"
-
-        viewModel.handleDateChange(year, month, dayOfMonth, userId)
+        viewModel.handleDateChange(year, month, dayOfMonth, userId) // Firebase uid
 
         viewModel.specificDateData.observe(viewLifecycleOwner, Observer { event ->
             updateUIBasedOnEvent(event)
             currentDocumentId = event?.eventId
         })
-
     }
 
     private fun updateUIBasedOnEvent(event: CalendarEvent?) {
@@ -258,7 +215,6 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
                 binding.recordRatingButton.text = getString(R.string.confirm_edit)
                 binding.calendarImageCardView.visibility =
                     if (event.eventImage?.isNotBlank() == true) View.VISIBLE else View.GONE
-
             } else {
                 currentEventId = null
                 binding.ratingSeekBar.progress = 0
@@ -273,7 +229,6 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
             }
         }
     }
-
 
     override fun hasWritePermission(): Boolean {
         return ContextCompat.checkSelfPermission(
@@ -295,11 +250,8 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
         setLineChartData(viewModel)
     }
 
-
     class IntegerValueFormatter : ValueFormatter() {
-        override fun getFormattedValue(value: Float): String {
-            return value.toInt().toString()
-        }
+        override fun getFormattedValue(value: Float): String = value.toInt().toString()
     }
 
     private fun setLineChartData(viewModel: CalendarViewModel) {
@@ -353,8 +305,6 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
         }
     }
 
-
-    // Toolbar share fun
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -362,52 +312,35 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.calendar_share -> {
+                stringDateSelected?.let { viewModel.fetchEventForDate(userId, it) } // Firebase uid
 
-                val sharedPref =
-                    activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-                val userIdFromPref = sharedPref?.getString("userId", null)
-
-                if (userIdFromPref != null) {
-                    stringDateSelected?.let { viewModel.fetchEventForDate(userIdFromPref, it) }
-
-                    viewModel.eventForDate.observe(viewLifecycleOwner, Observer { event ->
-                        if (event != null) {
-                            val contentFromFirebase = event.eventContent
-                            val imageUrlFromFirebase = event.eventImage
-                            findNavController().navigate(
-                                CalendarFragmentDirections.actionCalendarFragmentToPostFragment(
-                                    contentFromFirebase,
-                                    imageUrlFromFirebase
-                                )
+                viewModel.eventForDate.observe(viewLifecycleOwner, Observer { event ->
+                    if (event != null) {
+                        val contentFromFirebase = event.eventContent
+                        val imageUrlFromFirebase = event.eventImage
+                        findNavController().navigate(
+                            CalendarFragmentDirections.actionCalendarFragmentToPostFragment(
+                                contentFromFirebase,
+                                imageUrlFromFirebase
                             )
+                        )
 
-                            val bottomNavigation =
-                                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavView)
-                            bottomNavigation.menu.findItem(R.id.navigation_hobbyBoards).isChecked =
-                                true
-
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                getString(R.string.no_data_for_date),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    })
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.cannot_get_user_id),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                return true
+                        val bottomNavigation =
+                            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavView)
+                        bottomNavigation.menu.findItem(R.id.navigation_hobbyBoards).isChecked = true
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.no_data_for_date),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+                true
             }
-
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -424,8 +357,5 @@ class CalendarFragment : Fragment(), DateStringProvider, SetUpUIObserversTest,
         })
     }
 
-    fun createIntent(): Intent {
-        return Intent()
-    }
-
+    fun createIntent(): Intent = Intent()
 }
