@@ -5,26 +5,30 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import brian.project.hobbyexplore.databinding.FragmentPostBinding
 
 class PostFragment : Fragment() {
 
     private var _binding: FragmentPostBinding? = null
     val binding get() = _binding!!
+
+    private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    private var currentUserName: String = "趣探朋友" // default name for guest
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
@@ -45,31 +49,29 @@ class PostFragment : Fragment() {
         binding.user = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-//        val content = binding.userContentInput.text.toString()
-        val imageUri = PostFragmentArgs.fromBundle(requireArguments()).imageUri
+        val args = PostFragmentArgs.fromBundle(requireArguments())
+        val imageUri = args.imageUri
         val imageStringToUri = Uri.parse(imageUri)
-        val logInSharedPref =
-            activity?.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        val userName = logInSharedPref?.getString("displayName", "趣探朋友")
+
+        // Load correct user name from Firestore
+        loadCurrentUserName { name ->
+            currentUserName = name
+            viewModel.updateUserName(name)
+        }
+
         val postSharedPref = activity?.getSharedPreferences("postMessageData", Context.MODE_PRIVATE)
 
         /*------------Write post data when callback---------------*/
         binding.ratingBar.rating = postSharedPref?.getString("postRating", "5")?.toFloat()!!
-        binding.userContentInput.setText(postSharedPref?.getString("postContent", ""))
-        val category = postSharedPref?.getString("postCategory", "")
+        binding.userContentInput.setText(postSharedPref.getString("postContent", ""))
+        val category = postSharedPref.getString("postCategory", "")
         val position = (binding.categoryMenu.adapter as ArrayAdapter<String>).getPosition(category)
         binding.categoryMenu.setSelection(position)
         /*------------Write post data when callback---------------*/
 
-
-        viewModel.updateUserName(userName.toString())
-
         viewModel.uploadPhoto.value = imageUri
         viewModel.uploadPhoto.observe(viewLifecycleOwner, Observer { newImageUri ->
-
-            Glide.with(this)
-                .load(newImageUri)
-                .into(binding.postImage)
+            Glide.with(this).load(newImageUri).into(binding.postImage)
         })
 
         viewModel.userContent.observe(viewLifecycleOwner, Observer {
@@ -81,7 +83,6 @@ class PostFragment : Fragment() {
         })
 
         binding.cameraButton.setOnClickListener {
-            // Save data to ViewModel before navigating
             viewModel.userContent.value = binding.userContentInput.text.toString()
             viewModel.userRating.value = binding.ratingBar.rating
             savePostMessageToPreferences()
@@ -93,26 +94,22 @@ class PostFragment : Fragment() {
             val content = binding.userContentInput.text.toString()
             val rating = binding.ratingBar.rating
             val category = binding.categoryMenu.selectedItem.toString()
+
             it.findNavController()
                 .navigate(PostFragmentDirections.actionPostFragmentToHobbyBoardsFragment())
-            viewModel.postMessageData(content, rating, imageUri, category, userName!!)
-            Log.i("getImageUri", "getImageUri: $imageUri")
-            Log.i("getimageStringToUri", "imageStringToUri: $imageStringToUri")
-            Log.i("getrating", "star: $rating")
+
+            // Use currentUserName instead of SharedPreferences
+            viewModel.postMessageData(content, rating, imageUri, category, currentUserName)
+            Log.i("PostFragment", "Post by $currentUserName, image=$imageStringToUri, rating=$rating")
 
             clearPostMessagePreferences()
         }
 
-        binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-//            viewModel.postMessageData(content.toString(),rating.toFloat(),imageUrl.toString())
-        }
-
-        val postContent = postSharedPref?.getString("postContent", "")
-        val args = PostFragmentArgs.fromBundle(requireArguments())
+        val postContent = postSharedPref.getString("postContent", "")
         val contentFromArgs = args.content
         val imageUrlFromArgs = args.imageUri
 
-        if (contentFromArgs != null && contentFromArgs.isNotEmpty()) {
+        if (!contentFromArgs.isNullOrEmpty()) {
             binding.userContentInput.setText(contentFromArgs)
         } else if (!postContent.isNullOrEmpty()) {
             binding.userContentInput.setText(postContent)
@@ -121,6 +118,28 @@ class PostFragment : Fragment() {
         Glide.with(this).load(imageUrlFromArgs).into(binding.postImage)
 
         return binding.root
+    }
+
+    // Fetch the current user nickname from Firestore
+    private fun loadCurrentUserName(callback: (String) -> Unit) {
+        val user = firebaseAuth.currentUser
+        if (user != null) {
+            firestore.collection("users").document(user.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val name = document.getString("displayName") ?: "趣探朋友"
+                        callback(name)
+                    } else {
+                        callback("趣探朋友")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("PostFragment", "Failed to load nickname", e)
+                    callback("趣探朋友")
+                }
+        } else {
+            callback("趣探朋友")
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -138,7 +157,6 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Check and request permissions
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
                 requireActivity(),
@@ -146,7 +164,6 @@ class PostFragment : Fragment() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
-
     }
 
     private fun allPermissionsGranted() = CameraFragment.REQUIRED_PERMISSIONS.all {

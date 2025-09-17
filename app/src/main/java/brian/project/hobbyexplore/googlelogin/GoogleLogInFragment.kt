@@ -29,7 +29,7 @@ class GoogleLogInFragment : Fragment() {
     ): View {
         val binding = FragmentGoogleLogInBinding.inflate(inflater, container, false)
 
-        // Guest login (訪客登入)
+        // Guest login
         binding.guestLoginButton.setOnClickListener { v ->
             firebaseAuth.signInAnonymously()
                 .addOnCompleteListener { task ->
@@ -82,7 +82,7 @@ class GoogleLogInFragment : Fragment() {
                             if (task.isSuccessful) {
                                 val user = firebaseAuth.currentUser
                                 if (user != null) {
-                                    // 只更新基本資訊，不覆蓋 MBTI 與 hobby
+
                                     val userData = mapOf(
                                         "displayName" to (user.displayName ?: "趣探朋友"),
                                         "email" to (user.email ?: ""),
