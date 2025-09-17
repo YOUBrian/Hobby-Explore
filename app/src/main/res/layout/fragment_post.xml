@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="brian.project.hobbyexplore.hobbyboards.PostViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/post_cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/post_constraint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".hobbyboards.PostFragment">
+
+            <View
+                android:layout_width="550dp"
+                android:layout_height="550dp"
+                android:layout_marginEnd="-355dp"
+                android:layout_marginTop="-350dp"
+                android:background="@drawable/blue_gradient"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="550dp"
+                android:layout_height="550dp"
+                android:layout_marginStart="-364dp"
+                android:layout_marginBottom="-350dp"
+                android:background="@drawable/yellow_gradient"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/post_image"
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:layout_marginTop="16dp"
+                android:scaleType="fitCenter"
+                app:imageUrl="@{user.uploadPhoto}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_content_input" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@{user.userName}"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="-4dp"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="5"
+                android:stepSize="1"
+                app:layout_constraintStart_toStartOf="@+id/user_name"
+                app:layout_constraintTop_toBottomOf="@+id/user_name"
+                app:mrb_progressTint="#fecb3c"
+                app:mrb_secondaryProgressTint="#ffffff" />
+
+            <Spinner
+                android:id="@+id/category_menu"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:background="@drawable/light_blue_rounded_background"
+                android:entries="@array/dropdown_menu_items"
+                app:layout_constraintEnd_toEndOf="@+id/publish_button"
+                app:layout_constraintStart_toStartOf="@+id/publish_button"
+                app:layout_constraintTop_toBottomOf="@+id/publish_button" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/publish_button"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/yellow_button_full"
+                android:padding="8dp"
+                android:text="發佈"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/user_content_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="16dp"
+                android:hint="分享您對興趣的想法"
+                android:lineSpacingMultiplier="1.5"
+                android:letterSpacing="0.15"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/ratingBar"
+                app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+            <ImageButton
+                android:id="@+id/camera_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/camera_48"
+                app:layout_constraintEnd_toStartOf="@+id/publish_button"
+                app:layout_constraintTop_toTopOf="@+id/publish_button" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+</layout>
