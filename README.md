@@ -69,7 +69,7 @@
       <img src="https://github.com/YOUBrian/Hobby-Explore/assets/124262250/cef0410a-41c5-49c6-8fc3-06dcd2de1ea6" alt="場地" width="150"/>
     </th>
     <td width="400">
-      透過點擊想去的場地在App中直接開啟開啟Goolge map 並透過點擊標籤，啟用右下角的導航功能。
+      透過點擊想去的場地在App中直接開啟Goolge map 並透過點擊標籤，啟用右下角的導航功能。
     </td>
   </tr>
 </table>
