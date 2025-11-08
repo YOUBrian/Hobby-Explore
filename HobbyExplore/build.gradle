@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        version_android_gradle_plugin = '7.4.2'
+        version_android_gradle_plugin = '8.1.1'
         version_core = '1.10.0'
         version_constraint_layout = '2.1.4'
         version_glide = '4.15.1'

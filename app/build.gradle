@@ -8,16 +8,17 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'org.jlleitschuh.gradle.ktlint'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'org.jetbrains.kotlin.plugin.compose'
 }
 
 android {
     namespace 'brian.project.hobbyexplore'
-    compileSdk 33
+    compileSdk 35
 
     defaultConfig {
         applicationId "brian.project.hobbyexplore"
         minSdk 24
-        targetSdk 33
+        targetSdk 35
         versionCode 1000001
         versionName "1.0.1"
 
@@ -211,7 +212,7 @@ dependencies {
     //Youtube
 //    implementation 'com.google.android.youtube:android-player:1.2.2'
 //    implementation 'com.google.android.gms:play-services-identity:19.0.0'
-    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:13.0.0'
 
     //google calendar
 //    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
@@ -256,6 +257,12 @@ dependencies {
     //circle
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     apply plugin: 'com.google.gms.google-services'
+
+    //compose
+    implementation platform("androidx.compose:compose-bom:2024.12.01")
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.material:material"
+    implementation "androidx.compose.ui:ui-tooling-preview"
 
 /*---------------------------------------------------------------------*/
 }
