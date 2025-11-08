@@ -27,3 +27,4 @@ Thumbs.db
 *.keystore
 *.signing
 .idea_backup/
+.idea/
